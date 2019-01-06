@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="final关键字的作用 被final修饰的类不可以被继承 被final修饰的方法不可以被重写 被final修饰的变量不可被改变  重点 被fianl修饰不可变的是变量的引用，而不是引用指向的内容，引用指向的内容是可以改变的。 被fina修饰的常量，在编译阶段会存入调用类的常量池中。  static关键字的作用 被static修饰的变量属于类变量，可以通过 类名.变量名 直接引用，而不需要new出一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-06T06:56:02.123Z">
+<meta property="og:updated_time" content="2019-01-06T07:01:49.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="final和static的作用">
 <meta name="twitter:description" content="final关键字的作用 被final修饰的类不可以被继承 被final修饰的方法不可以被重写 被final修饰的变量不可被改变  重点 被fianl修饰不可变的是变量的引用，而不是引用指向的内容，引用指向的内容是可以改变的。 被fina修饰的常量，在编译阶段会存入调用类的常量池中。  static关键字的作用 被static修饰的变量属于类变量，可以通过 类名.变量名 直接引用，而不需要new出一">
@@ -451,8 +451,10 @@
         return 1;
     }
 }
-</code></pre><p>打印结果：<br>    Enter A.B()<br>    Enter A.static block</p>
-<p>结论：</p>
+</code></pre><p>打印结果：</p>
+<pre><code>Enter A.B()
+Enter A.static block
+</code></pre><p>结论：</p>
 <p>静态资源的加载顺序是严格安装静态资源的定义顺序加载的。</p>
 <pre><code>public class A{
     static
