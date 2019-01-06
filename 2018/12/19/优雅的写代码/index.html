@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="代码优化的目标1.减小代码的体积。 2.提高代码运行效率 代码规范 所有文件的开头都要有Java文档的注释（/* /） 常量应该全部大写，单词之间由下划线分隔(例如，MAX_WORK_HOURS) 数组标识：要用”int[] packets”，而不是”int packets[]”，后一种永远也不要用 不要在循环中构造和释放对象 不要在循环中频繁查询数据库 方法要通盘考虑，尽量做到复用。（多想）">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-06T07:14:11.067Z">
+<meta property="og:updated_time" content="2019-01-06T07:17:53.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="优雅的写代码">
 <meta name="twitter:description" content="代码优化的目标1.减小代码的体积。 2.提高代码运行效率 代码规范 所有文件的开头都要有Java文档的注释（/* /） 常量应该全部大写，单词之间由下划线分隔(例如，MAX_WORK_HOURS) 数组标识：要用”int[] packets”，而不是”int packets[]”，后一种永远也不要用 不要在循环中构造和释放对象 不要在循环中频繁查询数据库 方法要通盘考虑，尽量做到复用。（多想）">
@@ -421,7 +421,6 @@
 <p>在class文件中有一部分来存储编译期间生成的字面常量以及符合的引用，这部分叫做class文件常量池，在运行期间对应着方法区的运行时常量池。下面代码  str1和str3都存储在常量池中，只存了一份。</p>
 <pre><code>public class Main {
     public static void main(String[] args) {
-
         String str1 = &quot;hello world&quot;;
         String str2 = new String(&quot;hello world&quot;);
         String str3 = &quot;hello world&quot;;
@@ -436,7 +435,6 @@
 输出结果为false true false
 </code></pre><p>既然已经有了String类，那为什么还需要StringBuilder、StringBuffer类呢</p>
 <pre><code>public class Main {
-
     public static void main(String[] args) {
         String string = &quot;&quot;;
         for(int i=0;i&lt;10000;i++){
@@ -446,7 +444,6 @@
 }
 </code></pre><p>这句 string += “hello”;的过程相当于将原有的string变量指向的对象内容取出与”hello”作字符串相加操作再存进另一个新的String对象当中，再让string变量指向新生成的对象。结论：使用String进行字符串拼接会造成内存资源浪费。</p>
 <pre><code>public class Main {
-
     public static void main(String[] args) {
         StringBuilder stringBuilder = new StringBuilder();
         for(int i=0;i&lt;10000;i++){
@@ -459,7 +456,6 @@
 <pre><code>StringBuilder的insert方法：
 
 public StringBuilder insert(int index, char str[], int offset, int len){
-
   super.insert(index, str, offset, len);
   return this;
 }
@@ -467,6 +463,7 @@ public StringBuilder insert(int index, char str[], int offset, int len){
 StringBuffer的insert方法：
 
 public synchronized StringBuffer insert(int index, char str[], int offset, int len) {
+
     super.insert(index, str, offset, len);
     return this;
 }
