@@ -334,7 +334,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/06/final修饰符的作用/" itemprop="url">final修饰符的作用</a></h1>
+                <a class="post-title-link" href="/2019/01/06/final修饰符的作用/" itemprop="url">final和static的作用</a></h1>
         
 
         <div class="post-meta">
@@ -417,6 +417,96 @@
 <li>被fianl修饰不可变的是变量的引用，而不是引用指向的内容，引用指向的内容是可以改变的。</li>
 <li>被fina修饰的常量，在编译阶段会存入调用类的常量池中。</li>
 </ol>
+<h1 id="static关键字的作用"><a href="#static关键字的作用" class="headerlink" title="static关键字的作用"></a>static关键字的作用</h1><ol>
+<li>被static修饰的变量属于类变量，可以通过 类名.变量名 直接引用，而不需要new出一个类。</li>
+<li>被static修饰的方法属于类方法，可以通过 类名.变量名 直接引用，而不需要new出一个类。</li>
+</ol>
+<p>被static修饰的变量和方法属于类的静态资源，是类实例之间共享的。JDK把不同的静态资源放在了不同的类中而不把所有的静态资源放在一个类里面是因为：</p>
+<ol>
+<li>不同的类有自己的静态资源，这可以实现静态资源分类。比如和数学相关的静态资源放在java.lang.Math中，和日历相关的静态资源放在java.util.Calendar中，这样比较清晰</li>
+<li>避免重名。不同的类之间有重名的静态变量名，静态方法名也是很正常。</li>
+<li>避免静态资源类无限膨胀。</li>
+</ol>
+<p><strong>问题</strong><br>静态方法能不能引用非静态资源？静态方法里面能不能引用静态资源？非静态方法里面能不能引用静态资源？比如就以这段代码为例，是否有错？</p>
+<pre><code>public class A{
+     private int i = 1;
+    public static void main(String[] args){
+    i = 1;//错误
+    }
+}
+</code></pre><p>静态资源属于类，但是是独立于类存在的。从JVM类的加载机制的角度讲，静态资源是类初始化的时候加载的，而非静态资源是类new的时候加载的。类的初始化早于类的new,比如Class.forName(“xxx”),就是初始化了一个类，但是并没有new它，只是加载这个类的静态资源。所以对于静态资源来说，它是不可能知道一个类中有哪些非静态资源的；但是对于非静态资源来说就不一样了，它是new出来之后产生的，因此属于类的它都认识。所以结论是：</p>
+<ol>
+<li>静态方法不能引用非静态资源。非静态资源在new对象的时候才会产生，晚于一初始化就存在的静态资源。</li>
+<li>静态方法里面可以引用静态资源。都是类初始化的时候加载的。</li>
+<li>非静态方法可以引用静态资源。非静态方法是new之后产生的，静态资源是类一初始化就存在的。</li>
+</ol>
+<h1 id="静态块"><a href="#静态块" class="headerlink" title="静态块"></a>静态块</h1><p>静态块是static的重要应用之一。主要用于初始化一个类的时候做操作用的，和静态变量，静态方法一样，静态块里面的代码只执行一次，且只在类初始化的时候执行。</p>
+<pre><code>public class A{
+    private static int a = B();
+    static{
+        System.out.println(&quot;Enter A.static block&quot;);
+    }
+    public static void main(String[] args){
+        new A();
+    }
+
+    public static int B(){
+        System.out.println(&quot;Enter A.B()&quot;);
+        return 1;
+    }
+}
+</code></pre><p>打印结果：<br>    Enter A.B()<br>    Enter A.static block</p>
+<p>结论：</p>
+<p>静态资源的加载顺序是严格安装静态资源的定义顺序加载的。</p>
+<pre><code>public class A{
+    static
+    {
+        c = 3;
+        System.out.println(c);//Cannot reference a field before it is defined
+    }
+
+     private static int c;
+}
+</code></pre><p>结论：</p>
+<p>静态代码块对于定义在它之后的静态变量，可以赋值，但是不能访问。</p>
+<pre><code>public class A{
+    static
+    {
+        System.out.println(&quot;A.static block&quot;);
+    }
+
+    public A()
+    {
+        System.out.println(&quot;A.constructor()&quot;);
+    }
+}
+
+public class B extends A{
+    static 
+    {
+        System.out.println(&quot;B.static block&quot;);
+    }
+
+    public B()
+    {
+        System.out.println(&quot;B.constructor()&quot;);
+    }
+
+    public static void main(String[] args)
+    {
+        new B();
+        new B();
+    }
+}
+</code></pre><p>打印结果：</p>
+<pre><code>A.static block
+B.static block
+A.constructor()
+B.constructor()
+A.constructor()
+B.constructor()
+</code></pre><p>结论：</p>
+<p>静态代码块是严格按照父类静态代码块》子类静态代码块的顺序加载的，且只加载一次。</p>
 <h1 id="项目中用到的"><a href="#项目中用到的" class="headerlink" title="项目中用到的"></a>项目中用到的</h1><p>项目中的角色类型通常用static final修饰</p>
 <pre><code>public static final String TYPE_A = &quot;a&quot;;
 public static final String TYPE_B = &quot;b&quot;;
