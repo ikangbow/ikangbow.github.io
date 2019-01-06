@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[final修饰符的作用]]></title>
     <url>%2F2019%2F01%2F06%2Ffinal%E4%BF%AE%E9%A5%B0%E7%AC%A6%E7%9A%84%E4%BD%9C%E7%94%A8%2F</url>
-    <content type="text"><![CDATA[final关键字的作用 被final修饰的类不可以被继承 被final修饰的方法不可以被重写 被final修饰的变量不可被改变 重点： 被fianl修饰不可变的是变量的引用，而不是引用指向的内容，引用指向的内容是可以改变的。 被fina修饰的常量，在编译阶段会存入调用类的常量池中。 项目中用到的：项目中的角色类型通常用static final修饰 public static final String TYPE_A = &quot;a&quot;; public static final String TYPE_B = &quot;b&quot;; public:使接口的实现类可以使用这个常量 static:static修饰的表示是属于类的，随着类的加载而存在。如果是非static的，就表示属于对象的，只有建立对象时才有它，而接口是不能建立对象的，所以接口的常量必须定义为satic final:fina修饰保证接口定义的常量不能被实现类去修改，如果没有final的话，任由子类随意去修改的话，接口建立这个常量就没有意义了。]]></content>
+    <content type="text"><![CDATA[final关键字的作用 被final修饰的类不可以被继承 被final修饰的方法不可以被重写 被final修饰的变量不可被改变 重点 被fianl修饰不可变的是变量的引用，而不是引用指向的内容，引用指向的内容是可以改变的。 被fina修饰的常量，在编译阶段会存入调用类的常量池中。 项目中用到的项目中的角色类型通常用static final修饰 public static final String TYPE_A = &quot;a&quot;; public static final String TYPE_B = &quot;b&quot;; public:使接口的实现类可以使用这个常量 static:static修饰的表示是属于类的，随着类的加载而存在。如果是非static的，就表示属于对象的，只有建立对象时才有它，而接口是不能建立对象的，所以接口的常量必须定义为satic final:fina修饰保证接口定义的常量不能被实现类去修改，如果没有final的话，任由子类随意去修改的话，接口建立这个常量就没有意义了。]]></content>
       <categories>
         <category>java</category>
       </categories>
