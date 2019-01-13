@@ -1649,7 +1649,7 @@ System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
 zSetValue = redisTemplate.opsForZSet().range(&quot;unionListSet&quot;,0,-1);
 System.out.print(&quot;通过removeRange(K key, long start, long end)方法移除元素的个数:&quot; + removeCount);
 System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
-</code></pre><h1 id="RedisTemplate实践"><a href="#RedisTemplate实践" class="headerlink" title="RedisTemplate实践"></a>RedisTemplate实践</h1><p>参赛号的自增</p>
+</code></pre><h1 id="RedisTemplate实践"><a href="#RedisTemplate实践" class="headerlink" title="RedisTemplate实践"></a>RedisTemplate实践</h1><p>参赛号的自增，利用自增获取参赛号的值，写入对象存库。</p>
 <pre><code>//参赛号为空，且起始值大于-1
 if (StringUtils.isEmpty(enrollMatch.getSeq()) &amp;&amp; match.getSeqStart() &gt; -1) {
         //第一次参赛证生成

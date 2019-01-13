@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="定义redis是一个key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set –有序集合)和hash（哈希类型）。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis支持各种不同方式的排序">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-13T01:59:19.661Z">
+<meta property="og:updated_time" content="2019-01-13T02:09:00.616Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis相关及实践">
 <meta name="twitter:description" content="定义redis是一个key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set –有序集合)和hash（哈希类型）。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis支持各种不同方式的排序">
@@ -890,7 +890,7 @@ System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
 zSetValue = redisTemplate.opsForZSet().range(&quot;unionListSet&quot;,0,-1);
 System.out.print(&quot;通过removeRange(K key, long start, long end)方法移除元素的个数:&quot; + removeCount);
 System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
-</code></pre><h1 id="RedisTemplate实践"><a href="#RedisTemplate实践" class="headerlink" title="RedisTemplate实践"></a>RedisTemplate实践</h1><p>参赛号的自增</p>
+</code></pre><h1 id="RedisTemplate实践"><a href="#RedisTemplate实践" class="headerlink" title="RedisTemplate实践"></a>RedisTemplate实践</h1><p>参赛号的自增，利用自增获取参赛号的值，写入对象存库。</p>
 <pre><code>//参赛号为空，且起始值大于-1
 if (StringUtils.isEmpty(enrollMatch.getSeq()) &amp;&amp; match.getSeqStart() &gt; -1) {
         //第一次参赛证生成
