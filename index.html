@@ -1779,35 +1779,41 @@ if (StringUtils.isEmpty(enrollMatch.getSeq()) &amp;&amp; match.getSeqStart() &gt
 <p>需求：给每个参赛选手分配座位号。</p>
 <p>实现过程：</p>
 <pre><code>//查询所有需要分配考场座位的记录。根据比赛阶段（复赛，线下形式），已交报名费，已选赛点，未分配考场。
-List&lt;MenrollPhase&gt; menrollPhaseList = mongoTemplate.find(Query.query(Criteria.where(&quot;phaseId&quot;).is(phaseId).and(&quot;state&quot;).is(2).and(&quot;matchPlaceId&quot;).ne(null
-            ).ne(&quot;&quot;).and(&quot;matchPlaceRoomId&quot;).in(null,&quot;&quot;)).with(new Sort(&quot;_id&quot;, &quot;ASC&quot;)), MenrollPhase.class);
+List&lt;MenrollPhase&gt; menrollPhaseList = mongoTemplate.find(Query.query(Criteria.where(&quot;phaseId&quot;).is(phaseId).and(&quot;state&quot;).is(2).and(&quot;matchPlaceId&quot;).ne(null).ne(&quot;&quot;).and(&quot;matchPlaceRoomId&quot;).in(null,&quot;&quot;)).with(new Sort(&quot;_id&quot;, &quot;ASC&quot;)), MenrollPhase.class);
 //查询比赛是否设置赛区、需要分配考场的记录不为空且size大于0
 if(mphase.getMatchPlaceIds()!=null&amp;&amp;menrollPhaseList!=null&amp;&amp;menrollPhaseList.size()&gt;0){
-        lineNumber=menrollPhaseList.size();//要生成参赛证总数
-        //查询该比赛所有赛区
-        List&lt;MmatchPlace&gt; mmatchPlaceList = mongoTemplate.find(Query.query(Criteria.where(&quot;_id&quot;).in(mphase.getMatchPlaceIds())), MmatchPlace.class);
-        if(mmatchPlaceList!=null&amp;&amp;mmatchPlaceList.size()&gt;0){
-            ListOperations&lt;String, Object&gt; lo = redisTemplate.opsForList();
-            //循环遍历赛区，将考场设置到赛区中
-            for(MmatchPlace mmatchPlace : mmatchPlaceList){
-                List&lt;MmatchPlaceRoom&gt; mmatchPlaceRoomList = mongoTemplate.find(Query.query(Criteria.where(&quot;placeId&quot;).in(mmatchPlace.get_id())).with(new Sort(&quot;order&quot;, &quot;ASC&quot;)), MmatchPlaceRoom.class);
-                mmatchPlace.setMmatchPlaceRooms(mmatchPlaceRoomList);
-            }
-            //参赛证模板
-            String[] temp = mphase.getCertTpl().split(&quot;\\|&quot;);
-            //文件名
-            String fileName = temp[2];
+lineNumber=menrollPhaseList.size();//要生成参赛证总数
+    //查询该比赛所有赛区
+    List&lt;MmatchPlace&gt; mmatchPlaceList = mongoTemplate.find(Query.query(Criteria.where(&quot;_id&quot;).in(mphase.getMatchPlaceIds())), MmatchPlace.class);
+    if(mmatchPlaceList!=null&amp;&amp;mmatchPlaceList.size()&gt;0){
+        ListOperations&lt;String, Object&gt; lo = redisTemplate.opsForList();
+        //循环遍历赛区，将考场设置到赛区中
+        for(MmatchPlace mmatchPlace : mmatchPlaceList){
+            List&lt;MmatchPlaceRoom&gt; mmatchPlaceRoomList = mongoTemplate.find(Query.query(Criteria.where(&quot;placeId&quot;).in(mmatchPlace.get_id())).with(new Sort(&quot;order&quot;, &quot;ASC&quot;)), MmatchPlaceRoom.class);
+            mmatchPlace.setMmatchPlaceRooms(mmatchPlaceRoomList);
+        }
+        //参赛证模板
+        String[] temp = mphase.getCertTpl().split(&quot;\\|&quot;);
+        //文件名
+        String fileName = temp[2];
 
-            String quchu=null;
-            boolean groupAbsent = redisTemplate.opsForValue().setIfAbsent(&quot;placeRoom_&quot; + mphase.get_id(), &quot;roomsuo&quot;);
+        String quchu=null;
+        //加锁，分布式环境下只能有一个线程去考场获取座位号
+        boolean groupAbsent = redisTemplate.opsForValue().setIfAbsent(&quot;placeRoom_&quot; + mphase.get_id(), &quot;roomsuo&quot;);
+        //groupAbsent为true  可以执行当前代码
         if(groupAbsent){
+            //遍历赛区
             for(MmatchPlace mmatchPlace : mmatchPlaceList){
+                //比赛和赛区id共同组成key
                 String mmatchPlaceIdKey = &quot;matchPlace_&quot; +mphase.get_id()+mmatchPlace.get_id();
+                //首次分配
                 if(!redisTemplate.hasKey(mmatchPlaceIdKey)&amp;&amp;mmatchPlace.getMmatchPlaceRooms()!=null&amp;&amp;mmatchPlace.getMmatchPlaceRooms().size()&gt;0){
+                    //遍历赛区下的考场，考场id和座位号共同组成value，赛区为key,考场和座位为value中间以“，”隔开，存入
+                    //redis。
                     for(MmatchPlaceRoom mmatchPlaceRoom : mmatchPlace.getMmatchPlaceRooms()){
                         for(int i=0;i&lt;mmatchPlaceRoom.getCounts();i++){
                             String placeValue = mmatchPlaceRoom.get_id()+&quot;,&quot;+(i+1);
-                            lo.leftPush(mmatchPlaceIdKey, placeValue);
+                            lo.leftPush(mmatchPlaceIdKey, placeValue);//存入redis
                         }
                     }
                 }
@@ -1818,7 +1824,9 @@ if(mphase.getMatchPlaceIds()!=null&amp;&amp;menrollPhaseList!=null&amp;&amp;menr
                 if(!StringUtils.isEmpty(menrollPhase.getMatchPlaceId())&amp;&amp;StringUtils.isEmpty(menrollPhase.getMatchPlaceRoomId())){
                     for(MmatchPlace mmatchPlace : mmatchPlaceList){
                         if(mmatchPlace.get_id().equals(menrollPhase.getMatchPlaceId())){
+                            //取出分配好的座位
                             quchu = (String) lo.rightPop(&quot;matchPlace_&quot; +mphase.get_id()+mmatchPlace.get_id());
+                            //redis里面没有说明已经取出了。
                             if(StringUtils.isEmpty(quchu)){
                                 continue;
                             }
@@ -1827,6 +1835,7 @@ if(mphase.getMatchPlaceIds()!=null&amp;&amp;menrollPhaseList!=null&amp;&amp;menr
                             String numBer = tempNum[1];//座位号
                             for(MmatchPlaceRoom mmatchPlaceRoom : mmatchPlace.getMmatchPlaceRooms()){
                                 if(mmatchPlaceRoom.get_id().equals(roomId)){
+                                    //将取出的考场和座位号存入对象写入数据库
                                     menrollPhase.setMatchPlaceRoomId(mmatchPlaceRoom.get_id());
                                     menrollPhase.setMatchPlaceRoomNum(Integer.valueOf(numBer));
                                     mongoTemplate.save(menrollPhase);
@@ -1837,8 +1846,9 @@ if(mphase.getMatchPlaceIds()!=null&amp;&amp;menrollPhaseList!=null&amp;&amp;menr
                         }
                     }
                 }
-              }
+                }
             }
+            //删除锁
             redisTemplate.delete(&quot;placeRoom_&quot; + mphase.get_id());
 
             //开始生成参赛证
@@ -1875,7 +1885,7 @@ if(mphase.getMatchPlaceIds()!=null&amp;&amp;menrollPhaseList!=null&amp;&amp;menr
             }catch (IOException|DocumentException e) {
              e.printStackTrace();
          }
-     }
+       }
     }
 </code></pre>
           
