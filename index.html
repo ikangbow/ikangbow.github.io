@@ -1757,7 +1757,7 @@ removeCount = redisTemplate.opsForZSet().removeRange(&quot;unionListSet&quot;,3,
 zSetValue = redisTemplate.opsForZSet().range(&quot;unionListSet&quot;,0,-1);
 System.out.print(&quot;通过removeRange(K key, long start, long end)方法移除元素的个数:&quot; + removeCount);
 System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
-</code></pre><h1 id="RedisTemplate实践"><a href="#RedisTemplate实践" class="headerlink" title="RedisTemplate实践"></a>RedisTemplate实践</h1><p>参赛号的自增，利用自增获取参赛号的值，写入对象存库。</p>
+</code></pre><h1 id="RedisTemplate实践一"><a href="#RedisTemplate实践一" class="headerlink" title="RedisTemplate实践一"></a>RedisTemplate实践一</h1><p>参赛号的自增，利用自增获取参赛号的值，写入对象存库。</p>
 <pre><code>//参赛号为空，且起始值大于-1
 if (StringUtils.isEmpty(enrollMatch.getSeq()) &amp;&amp; match.getSeqStart() &gt; -1) {
         //第一次参赛证生成
@@ -1887,6 +1887,78 @@ lineNumber=menrollPhaseList.size();//要生成参赛证总数
          }
        }
     }
+</code></pre><h1 id="Redis分布式锁解决抢购问题"><a href="#Redis分布式锁解决抢购问题" class="headerlink" title="Redis分布式锁解决抢购问题"></a>Redis分布式锁解决抢购问题</h1><p>先新建一个RedisLock类：</p>
+<pre><code>public class RedisService {
+
+    @Autowired
+    private RedisTemplate stringRedisTemplate;
+
+    /***
+     * 加锁
+     * @param key
+     * @param value 当前时间+超时时间
+     * @return 锁住返回true
+     */
+    public boolean lock(String key,String value){
+        if(stringRedisTemplate.opsForValue().setIfAbsent(key,value)){//setNX 返回boolean
+            return true;
+        }
+        //如果锁超时 ***
+        String currentValue = stringRedisTemplate.opsForValue().get(key);
+        if(!StringUtils.isEmpty(currentValue) &amp;&amp; Long.parseLong(currentValue)&lt;System.currentTimeMillis()){
+            //获取上一个锁的时间
+            String oldvalue  = stringRedisTemplate.opsForValue().getAndSet(key,value);
+            if(!StringUtils.isEmpty(oldvalue)&amp;&amp;oldvalue.equals(currentValue)){
+                return true;
+            }
+        }
+        return false;
+    }
+    /***
+     * 解锁
+     * @param key
+     * @param value
+     * @return
+     */
+    public void unlock(String key,String value){
+        try {
+            String currentValue = stringRedisTemplate.opsForValue().get(key);
+            if(!StringUtils.isEmpty(currentValue)&amp;&amp;currentValue.equals(value)){
+                stringRedisTemplate.opsForValue().getOperations().delete(key);
+            }
+        } catch (Exception e) {
+            log.error(&quot;解锁异常&quot;);
+        }
+    }
+}
+</code></pre><p>首先，锁的value值是当前时间加上过期时间的时间戳，Long类型。首先看到用setiFAbsent方法也就是对应的SETNX，在没有线程获得锁的情况下可以直接拿到锁，并返回true也就是加锁，最后没有获得锁的线程会返回false。 </p>
+<p>最重要的是中间对于锁超时的处理，如果没有这段代码，当秒杀方法发生异常的时候，后续的线程都无法得到锁，也就陷入了一个死锁的情况。我们可以假设CurrentValue为A，并且在执行过程中抛出了异常，这时进入了两个value为B的线程来争夺这个锁，也就是走到了注释*的地方。currentValue==A，这时某一个线程执行到了getAndSet(key,value)函数(某一时刻一定只有一个线程执行这个方法，其他要等待)。这时oldvalue也就是之前的value等于A，在方法执行过后，oldvalue会被设置为当前的value也就是B。这时继续执行，由于oldValue==currentValue所以该线程获取到锁。而另一个线程获取的oldvalue是B，而currentValue是A，所以他就获取不到锁啦。</p>
+<p>业务代码：</p>
+<pre><code>private static final int TIMEOUT= 10*1000;
+@Transactional
+public void orderProductMockDiffUser(String productId){
+   long time = System.currentTimeMillions()+TIMEOUT;
+   if(!redislock.lock(productId,String.valueOf(time)){
+    throw new SellException(101,&quot;换个姿势再试试&quot;)
+    }
+    //1.查库存
+    int stockNum  = stock.get(productId);
+    if(stocknum == 0){
+        throw new SellException(ProductStatusEnum.STOCK_EMPTY);
+        //这里抛出的异常要是运行时异常，否则无法进行数据回滚，这也是spring中比较基础的   
+    }else{
+        //2.下单
+        orders.put(KeyUtil.genUniqueKey(),productId);//生成随机用户id模拟高并发
+        sotckNum = stockNum-1;
+        try{
+            Thread.sleep(100);
+        } catch (InterruptedExcption e){
+            e.printStackTrace();
+        }
+        stock.put(productId,stockNum);
+    }
+    redisLock.unlock(productId,String.valueOf(time));
+}
 </code></pre>
           
         
