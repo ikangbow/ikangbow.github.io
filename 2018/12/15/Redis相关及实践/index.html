@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="定义redis是一个key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set –有序集合)和hash（哈希类型）。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis支持各种不同方式的排序">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-18T14:33:09.357Z">
+<meta property="og:updated_time" content="2019-01-13T01:59:19.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis相关及实践">
 <meta name="twitter:description" content="定义redis是一个key-value存储系统。和Memcached类似，它支持存储的value类型相对更多，包括string(字符串)、list(链表)、set(集合)、zset(sorted set –有序集合)和hash（哈希类型）。这些数据类型都支持push/pop、add/remove及取交集并集和差集及更丰富的操作，而且这些操作都是原子性的。在此基础上，redis支持各种不同方式的排序">
@@ -890,6 +890,23 @@ System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
 zSetValue = redisTemplate.opsForZSet().range(&quot;unionListSet&quot;,0,-1);
 System.out.print(&quot;通过removeRange(K key, long start, long end)方法移除元素的个数:&quot; + removeCount);
 System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
+</code></pre><h1 id="RedisTemplate实践"><a href="#RedisTemplate实践" class="headerlink" title="RedisTemplate实践"></a>RedisTemplate实践</h1><p>参赛号的自增</p>
+<pre><code>//参赛号为空，且起始值大于-1
+if (StringUtils.isEmpty(enrollMatch.getSeq()) &amp;&amp; match.getSeqStart() &gt; -1) {
+        //第一次参赛证生成
+        //判断redis里面是否有对应的比赛的key,如果没有，
+        //执行redisTemplate.opsForHash().increment(&quot;match_seq&quot;, match.get_id(), match.getSeqStart());
+        //在起始参赛号自增1。
+        //redisTemplate.opsForHash().hasKey(&quot;match_seq&quot;, match.get_id())
+        if (!redisTemplate.opsForHash().hasKey(&quot;match_seq&quot;, match.get_id()))
+            redisTemplate.opsForHash().increment(&quot;match_seq&quot;, match.get_id(), match.getSeqStart());
+        //非第一次
+        long num = redisTemplate.opsForHash().increment(&quot;match_seq&quot;, match.get_id(), 1);
+        String numStr = &quot;&quot; + num;
+        while (numStr.length() &lt; 5) // 凑够长度5
+            numStr = &quot;0&quot; + numStr;
+        String seq = match.getSeqPrefix() + numStr;
+}
 </code></pre>
       
     </div>
@@ -1077,7 +1094,7 @@ System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForValue"><span class="nav-number">2.</span> <span class="nav-text">RedisTemplate常用集合-opsForValue</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForList"><span class="nav-number">3.</span> <span class="nav-text">RedisTemplate常用集合-opsForList</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForHash"><span class="nav-number">4.</span> <span class="nav-text">RedisTemplate常用集合-opsForHash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForSet"><span class="nav-number">5.</span> <span class="nav-text">RedisTemplate常用集合-opsForSet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForZSet"><span class="nav-number">6.</span> <span class="nav-text">RedisTemplate常用集合-opsForZSet</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForValue"><span class="nav-number">2.</span> <span class="nav-text">RedisTemplate常用集合-opsForValue</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForList"><span class="nav-number">3.</span> <span class="nav-text">RedisTemplate常用集合-opsForList</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForHash"><span class="nav-number">4.</span> <span class="nav-text">RedisTemplate常用集合-opsForHash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForSet"><span class="nav-number">5.</span> <span class="nav-text">RedisTemplate常用集合-opsForSet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate常用集合-opsForZSet"><span class="nav-number">6.</span> <span class="nav-text">RedisTemplate常用集合-opsForZSet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RedisTemplate实践"><span class="nav-number">7.</span> <span class="nav-text">RedisTemplate实践</span></a></li></ol></div>
             
 
           </div>

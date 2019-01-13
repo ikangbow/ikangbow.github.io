@@ -1649,6 +1649,23 @@ System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
 zSetValue = redisTemplate.opsForZSet().range(&quot;unionListSet&quot;,0,-1);
 System.out.print(&quot;通过removeRange(K key, long start, long end)方法移除元素的个数:&quot; + removeCount);
 System.out.println(&quot;,移除后剩余的元素:&quot; + zSetValue);
+</code></pre><h1 id="RedisTemplate实践"><a href="#RedisTemplate实践" class="headerlink" title="RedisTemplate实践"></a>RedisTemplate实践</h1><p>参赛号的自增</p>
+<pre><code>//参赛号为空，且起始值大于-1
+if (StringUtils.isEmpty(enrollMatch.getSeq()) &amp;&amp; match.getSeqStart() &gt; -1) {
+        //第一次参赛证生成
+        //判断redis里面是否有对应的比赛的key,如果没有，
+        //执行redisTemplate.opsForHash().increment(&quot;match_seq&quot;, match.get_id(), match.getSeqStart());
+        //在起始参赛号自增1。
+        //redisTemplate.opsForHash().hasKey(&quot;match_seq&quot;, match.get_id())
+        if (!redisTemplate.opsForHash().hasKey(&quot;match_seq&quot;, match.get_id()))
+            redisTemplate.opsForHash().increment(&quot;match_seq&quot;, match.get_id(), match.getSeqStart());
+        //非第一次
+        long num = redisTemplate.opsForHash().increment(&quot;match_seq&quot;, match.get_id(), 1);
+        String numStr = &quot;&quot; + num;
+        while (numStr.length() &lt; 5) // 凑够长度5
+            numStr = &quot;0&quot; + numStr;
+        String seq = match.getSeqPrefix() + numStr;
+}
 </code></pre>
           
         
