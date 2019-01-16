@@ -315,6 +315,229 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/16/docker系列/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/16/docker系列/" itemprop="url">docker系列</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-16T21:54:46+08:00">
+                2019-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="CentOS-Docker-安装"><a href="#CentOS-Docker-安装" class="headerlink" title="CentOS Docker 安装"></a>CentOS Docker 安装</h1><p>Docker支持以下的CentOS版本：</p>
+<ul>
+<li>CentOS 7 (64-bit)</li>
+<li>CentOS 6.5 (64-bit) 或更高的版本</li>
+</ul>
+<p>使用 yum 安装（CentOS 7下）</p>
+<p>通过 uname -r 命令查看你当前的内核版本 </p>
+<pre><code>[root@runoob ~]# uname -r 3.10.0-327.el7.x86_64
+</code></pre><p>只需通过以下命令即可安装 Docker 软件：</p>
+<pre><code>yum -y install docker-io
+</code></pre><p>可使用以下命令，查看 Docker 是否安装成功</p>
+<pre><code>docker version
+</code></pre><p>若输出了 Docker 的版本号，则说明安装成功了，可通过以下命令启动 Docker 服务：</p>
+<pre><code>service docker start
+</code></pre><h1 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h1><p>使用以下命令查看本地所有的镜像：</p>
+<pre><code>docker images
+</code></pre><p>首先，访问 Docker 中文网，在首页中搜索名为“centos”的镜像，在搜索的结果中，有一个“官方镜像”，它就是我们所需的。</p>
+<p>然后，进入 CentOS 官方镜像页面，在“Pull this repository”输入框中，有一段命令，把它复制下来，在自己的命令行上运行该命令，随后将立即下载该镜像。</p>
+<p>最后，使用以下命令查看本地所有的镜像：</p>
+<pre><code>REPOSITORY                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+docker.cn/docker/centos   centos6             25c5298b1a36        7 weeks ago         215.8 MB
+</code></pre><p>如果看到以上输出，说明您可以使用“docker.cn/docker/centos”这个镜像了，或将其称为仓库（Repository），该镜像有一个名为“centos6”的标签（Tag），此外还有一个名为“25c5298b1a36 ”的镜像 ID（可能您所看到的镜像 ID 与此处的不一致，那是正常现象，因为这个数字是随机生成的）。此外，我们可以看到该镜像只有 215.8 MB，非常小巧，而不像虚拟机的镜像文件那样庞大。</p>
+<h1 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h1><p>容器是在镜像的基础上来运行的，一旦容器启动了，我们就可以登录到容器中，安装自己所需的软件或应用程序。</p>
+<p>只需使用以下命令即可启动容器：</p>
+<pre><code>docker run -i -t -v /root/software/:/mnt/software/ 25c5298b1a36 /bin/bash
+</code></pre><p>docker run &lt;相关参数&gt; &lt;镜像 ID&gt; &lt;初始命令&gt;解析</p>
+<ul>
+<li>-i：表示以“交互模式”运行容器</li>
+<li>-t：表示容器启动后会进入其命令行</li>
+<li>-v：表示需要将本地哪个目录挂载到容器中，格式：-v &lt;宿主机目录&gt;:&lt;容器目录&gt;<br>假设我们的所有安装程序都放在了宿主机的/root/software/目录下，现在需要将其挂载到容器的/mnt/software/目录下。</li>
+</ul>
+<p>需要说明的是，不一定要使用“镜像 ID”，也可以使用“仓库名:标签名”，例如：docker.cn/docker/centos:centos6。</p>
+<p>初始命令表示一旦容器启动，需要运行的命令，此时使用“/bin/bash”，表示什么也不做，只需进入命令行即可。</p>
+<h1 id="安装相关软件"><a href="#安装相关软件" class="headerlink" title="安装相关软件"></a>安装相关软件</h1><p>为了搭建 Java Web 运行环境，我们需要安装 JDK 、数据库、redis与 Tomcat，首先要再宿主机上传JDK 、数据库、redis与 Tomcat压缩包，以/mnt/software/为例。下面的过程均在容器内部进行。我们不妨选择/opt/目录作为安装目录，首先需要通过cd /opt/命令进入该目录。</p>
+<h2 id="首先，解压程序包"><a href="#首先，解压程序包" class="headerlink" title="首先，解压程序包"></a>首先，解压程序包</h2><pre><code>tar -zxf /mnt/software/jdk-7u67-linux-x64.tar.gz
+tar -zxf /mnt/software/apache-tomcat-7.0.55.tar.gz
+tar -zxf /mnt/software/redis
+tar -zxf /mnt/software/mongo
+</code></pre><h2 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h2><p> 首先，编辑.bashrc文件</p>
+<pre><code>vi ~/.bashrc
+</code></pre><p>然后，在该文件末尾添加如下配置：</p>
+<pre><code>export JAVA_HOME=/opt/jdk
+export PATH=$PATH:$JAVA_HOME
+</code></pre><p>最后，需要使用source命令，让环境变量生效：</p>
+<pre><code>source ~/.bashrc
+</code></pre><p>编写运行脚本</p>
+<pre><code>vi /root/run.sh
+</code></pre><p>然后，编辑脚本内容如下：</p>
+<pre><code>source ~/.bashrc
+sh /opt/tomcat/bin/catalina.sh run
+</code></pre><p>注意：这里必须先加载环境变量，然后使用 Tomcat 的运行脚本来启动 Tomcat 服务。</p>
+<p>最后，为运行脚本添加执行权限：</p>
+<pre><code>chmod u+x /root/run.sh
+</code></pre><h1 id="退出容器"><a href="#退出容器" class="headerlink" title="退出容器"></a>退出容器</h1><p>当以上步骤全部完成后，可使用exit命令，退出容器。</p>
+<p>随后，可使用如下命令查看正在运行的容器：</p>
+<pre><code>docker ps//未输出
+docker ps -a//输出
+</code></pre><p>输出如下内容：</p>
+<pre><code>CONTAINER ID        IMAGE                             COMMAND             CREATED             STATUS                      PORTS               NAMES
+57c312bbaad1        docker.cn/docker/centos:centos6   &quot;/bin/bash&quot;         27 minutes ago      Exited (0) 19 seconds ago                       naughty_goldstine
+</code></pre><p>记住以上CONTAINER ID（容器 ID），随后我们将通过该容器，创建一个可运行 Java Web 的镜像。</p>
+<h1 id="创建-Java-Web-镜像"><a href="#创建-Java-Web-镜像" class="headerlink" title="创建 Java Web 镜像"></a>创建 Java Web 镜像</h1><p>使用以下命令，根据某个“容器 ID”来创建一个新的“镜像”：</p>
+<pre><code>docker commit 57c312bbaad1 ikangbow/javaweb:0.1
+</code></pre><p>该容器的 ID 是“57c312bbaad1”，所创建的镜像名是“ikangbow/javaweb:0.1”，随后可使用镜像来启动 Java Web 容器。</p>
+<h1 id="启动-Java-Web-容器"><a href="#启动-Java-Web-容器" class="headerlink" title="启动 Java Web 容器"></a>启动 Java Web 容器</h1><p>首先使用docker images命令，查看当前所有的镜像：</p>
+<pre><code>REPOSITORY                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+huangyong/javaweb         0.1                 fc826a4706af        38 seconds ago      562.8 MB
+docker.cn/docker/centos   centos6             25c5298b1a36        7 weeks ago         215.8 MB
+</code></pre><p>可见，此时已经看到了最新创建的镜像“ikangbow/javaweb:0.1”，其镜像 ID 是“fc826a4706af”。正如上面所描述的那样，我们可以通过“镜像名”或“镜像 ID”来启动容器，与上次启动容器不同的是，我们现在不再进入容器的命令行，而是直接启动容器内部的 Tomcat 服务。此时，需要使用以下命令：</p>
+<pre><code>docker run -d -p 58080:8080 --name javaweb huangyong/javaweb:0.1 /root/run.sh
+</code></pre><p>稍作解释：</p>
+<ul>
+<li>-d：表示以“守护模式”执行/root/run.sh脚本，此时 Tomcat 控制台不会出现在输出终端上。</li>
+<li>-p：表示宿主机与容器的端口映射，此时将容器内部的 8080 端口映射为宿主机的 58080 端口，这样就向外界暴露了 58080 端口，可通过 Docker 网桥来访问容器内部的 8080 端口了。</li>
+<li>–name：表示容器名称，用一个有意义的名称命名即可。</li>
+</ul>
+<p>关于 Docker 网桥的内容，需要补充说明一下。实际上 Docker 在宿主机与容器之间，搭建了一座网络通信的桥梁，我们可通过宿主机 IP 地址与端口号来映射容器内部的 IP 地址与端口号，</p>
+<p>在一系列参数后面的是“镜像名”或“镜像 ID”，怎么方便就怎么来。最后是“初始命令”，它是上面编写的运行脚本，里面封装了加载环境变量并启动 Tomcat 服务的命令。</p>
+<p>当运行以上命令后，会立即输出一长串“容器 ID”，我们可通过docker ps命令来查看当前正在运行的容器。</p>
+<pre><code>CONTAINER ID        IMAGE                   COMMAND             CREATED             STATUS              PORTS                     NAMES
+82f47923f926        huangyong/javaweb:0.1   &quot;/root/run.sh&quot;      4 seconds ago       Up 3 seconds        0.0.0.0:58080-&gt;8080/tcp   javaweb
+</code></pre><p>此处实测有问题，需要继续研究。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/07/http/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2262,7 +2485,7 @@ http://www.joes.com/seanonal/goods.html?item=45454#name
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2273,7 +2496,7 @@ http://www.joes.com/seanonal/goods.html?item=45454#name
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2284,7 +2507,7 @@ http://www.joes.com/seanonal/goods.html?item=45454#name
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
