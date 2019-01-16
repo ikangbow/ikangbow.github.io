@@ -420,6 +420,25 @@
 <pre><code>yum -y install docker-io
 </code></pre><p>可使用以下命令，查看 Docker 是否安装成功</p>
 <pre><code>docker version
+
+Client:
+Version:           18.09.1
+API version:       1.39
+Go version:        go1.10.6
+Git commit:        4c52b90
+Built:             Wed Jan  9 19:35:01 2019
+OS/Arch:           linux/amd64
+Experimental:      false
+
+Server: Docker Engine - Community
+Engine:
+Version:          18.09.1
+ API version:      1.39 (minimum version 1.12)
+ Go version:       go1.10.6
+ Git commit:       4c52b90
+Built:            Wed Jan  9 19:06:30 2019
+OS/Arch:          linux/amd64
+Experimental:     false
 </code></pre><p>若输出了 Docker 的版本号，则说明安装成功了，可通过以下命令启动 Docker 服务：</p>
 <pre><code>service docker start
 </code></pre><h1 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h1><p>使用以下命令查看本地所有的镜像：</p>
@@ -428,18 +447,18 @@
 <p>然后，进入 CentOS 官方镜像页面，在“Pull this repository”输入框中，有一段命令，把它复制下来，在自己的命令行上运行该命令，随后将立即下载该镜像。</p>
 <p>最后，使用以下命令查看本地所有的镜像：</p>
 <pre><code>REPOSITORY                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-docker.cn/docker/centos   centos6             25c5298b1a36        7 weeks ago         215.8 MB
-</code></pre><p>如果看到以上输出，说明您可以使用“docker.cn/docker/centos”这个镜像了，或将其称为仓库（Repository），该镜像有一个名为“centos6”的标签（Tag），此外还有一个名为“25c5298b1a36 ”的镜像 ID（可能您所看到的镜像 ID 与此处的不一致，那是正常现象，因为这个数字是随机生成的）。此外，我们可以看到该镜像只有 215.8 MB，非常小巧，而不像虚拟机的镜像文件那样庞大。</p>
+centos                   latest             1e1148e4cc2c        5 weeks ago         202MB
+</code></pre><p>如果看到以上输出，说明您可以使用“centos”这个镜像了，或将其称为仓库（Repository），该镜像有一个名为“latest ”的标签（Tag），此外还有一个名为“1e1148e4cc2c ”的镜像 ID（可能您所看到的镜像 ID 与此处的不一致，那是正常现象，因为这个数字是随机生成的）。此外，我们可以看到该镜像只有 202MB MB，非常小巧，而不像虚拟机的镜像文件那样庞大。</p>
 <h1 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h1><p>容器是在镜像的基础上来运行的，一旦容器启动了，我们就可以登录到容器中，安装自己所需的软件或应用程序。</p>
 <p>只需使用以下命令即可启动容器：</p>
-<pre><code>docker run -i -t -v /root/software/:/mnt/software/ 25c5298b1a36 /bin/bash
+<pre><code>docker run -i -t -v /root/software/:/mnt/software/ 1e1148e4cc2c /bin/bash
 </code></pre><p>docker run &lt;相关参数&gt; &lt;镜像 ID&gt; &lt;初始命令&gt;解析</p>
 <ul>
 <li>-i：表示以“交互模式”运行容器</li>
 <li>-t：表示容器启动后会进入其命令行</li>
 <li>-v：表示需要将本地哪个目录挂载到容器中，格式：-v &lt;宿主机目录&gt;:&lt;容器目录&gt;<br>假设我们的所有安装程序都放在了宿主机的/root/software/目录下，现在需要将其挂载到容器的/mnt/software/目录下。</li>
 </ul>
-<p>需要说明的是，不一定要使用“镜像 ID”，也可以使用“仓库名:标签名”，例如：docker.cn/docker/centos:centos6。</p>
+<p>需要说明的是，不一定要使用“镜像 ID”，也可以使用“仓库名:标签名”，例如：centos: latest。</p>
 <p>初始命令表示一旦容器启动，需要运行的命令，此时使用“/bin/bash”，表示什么也不做，只需进入命令行即可。</p>
 <h1 id="安装相关软件"><a href="#安装相关软件" class="headerlink" title="安装相关软件"></a>安装相关软件</h1><p>为了搭建 Java Web 运行环境，我们需要安装 JDK 、数据库、redis与 Tomcat，首先要再宿主机上传JDK 、数据库、redis与 Tomcat压缩包，以/mnt/software/为例。下面的过程均在容器内部进行。我们不妨选择/opt/目录作为安装目录，首先需要通过cd /opt/命令进入该目录。</p>
 <p>首先，解压程序包</p>
@@ -475,11 +494,11 @@ docker ps -a//输出
 <pre><code>docker commit 57c312bbaad1 ikangbow/javaweb:0.1
 </code></pre><p>该容器的 ID 是“57c312bbaad1”，所创建的镜像名是“ikangbow/javaweb:0.1”，随后可使用镜像来启动 Java Web 容器。</p>
 <h1 id="启动-Java-Web-容器"><a href="#启动-Java-Web-容器" class="headerlink" title="启动 Java Web 容器"></a>启动 Java Web 容器</h1><p>首先使用docker images命令，查看当前所有的镜像：</p>
-<pre><code>REPOSITORY                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-huangyong/javaweb         0.1                 fc826a4706af        38 seconds ago      562.8 MB
-docker.cn/docker/centos   centos6             25c5298b1a36        7 weeks ago         215.8 MB
-</code></pre><p>可见，此时已经看到了最新创建的镜像“ikangbow/javaweb:0.1”，其镜像 ID 是“fc826a4706af”。正如上面所描述的那样，我们可以通过“镜像名”或“镜像 ID”来启动容器，与上次启动容器不同的是，我们现在不再进入容器的命令行，而是直接启动容器内部的 Tomcat 服务。此时，需要使用以下命令：</p>
-<pre><code>docker run -d -p 58080:8080 --name javaweb huangyong/javaweb:0.1 /root/run.sh
+<pre><code>REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ikangbow/javaweb    0.1                 95b5f6b09ca6        6 hours ago         1.51GB
+centos              latest              1e1148e4cc2c        5 weeks ago         202MB
+</code></pre><p>可见，此时已经看到了最新创建的镜像“ikangbow/javaweb:0.1”，其镜像 ID 是“95b5f6b09ca6”。正如上面所描述的那样，我们可以通过“镜像名”或“镜像 ID”来启动容器，与上次启动容器不同的是，我们现在不再进入容器的命令行，而是直接启动容器内部的 Tomcat 服务。此时，需要使用以下命令：</p>
+<pre><code>docker run -d -p 58080:8080 --name javaweb ikangbow/javaweb:0.1 /root/run.sh
 </code></pre><p>稍作解释：</p>
 <ul>
 <li>-d：表示以“守护模式”执行/root/run.sh脚本，此时 Tomcat 控制台不会出现在输出终端上。</li>
@@ -490,9 +509,25 @@ docker.cn/docker/centos   centos6             25c5298b1a36        7 weeks ago   
 <p>在一系列参数后面的是“镜像名”或“镜像 ID”，怎么方便就怎么来。最后是“初始命令”，它是上面编写的运行脚本，里面封装了加载环境变量并启动 Tomcat 服务的命令。</p>
 <p>当运行以上命令后，会立即输出一长串“容器 ID”，我们可通过docker ps命令来查看当前正在运行的容器。</p>
 <pre><code>CONTAINER ID        IMAGE                   COMMAND             CREATED             STATUS              PORTS                     NAMES
-82f47923f926        huangyong/javaweb:0.1   &quot;/root/run.sh&quot;      4 seconds ago       Up 3 seconds        0.0.0.0:58080-&gt;8080/tcp   javaweb
+82f47923f926        ikangbow/javaweb:0.1   &quot;/root/run.sh&quot;      4 seconds ago       Up 3 seconds        0.0.0.0:58080-&gt;8080/tcp   javaweb
 </code></pre><p>此处实测有问题，需要继续研究。</p>
-
+<p>附常用命令：</p>
+<ol>
+<li>删除容器实例</li>
+</ol>
+<p>寻找已经停止运行的container</p>
+<pre><code>docker ps -a  
+docker rm 容器id 删除实例
+docker ps -a 查看实例已经删除
+docker rm $(docker ps -a -q)  删除所有container
+</code></pre><p>2.删除镜像 </p>
+<p>停止所有的container，这样才能够删除其中的images：</p>
+<pre><code>docker stop $(docker ps -a -q)
+docker rmi &lt;image id&gt;
+docker images 查看所有镜像
+docker rmi 镜像id 删除镜像
+docker images 查看镜像 发现已经删除 
+</code></pre>
           
         
       
