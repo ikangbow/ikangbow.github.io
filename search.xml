@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[图片]]></title>
-    <url>%2F2019%2F02%2F02%2F%E5%9B%BE%E7%89%87%2F</url>
+    <title><![CDATA[Java异常及使用]]></title>
+    <url>%2F2019%2F02%2F02%2FJava%E5%BC%82%E5%B8%B8%E5%8F%8A%E4%BD%BF%E7%94%A8%2F</url>
     <content type="text"><![CDATA[]]></content>
+      <categories>
+        <category>throwable</category>
+      </categories>
+      <tags>
+        <tag>throwable</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[docker系列]]></title>
