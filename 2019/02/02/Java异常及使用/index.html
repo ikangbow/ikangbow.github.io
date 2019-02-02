@@ -94,16 +94,19 @@
 
 
 
+<meta name="description" content="Java异常Java异常类层次结构图：java 异常是程序运行过程中出现的错误。Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。在Java API中定义了许多异常类,分为两大类，错误Error和异常Exception。其中异常类Exception又分为运行时异常(RuntimeException)和非运行时异常(非runtimeExceptio">
 <meta name="keywords" content="throwable">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java异常及使用">
 <meta property="og:url" content="http://yoursite.com/2019/02/02/Java异常及使用/index.html">
 <meta property="og:site_name" content="Airthink">
+<meta property="og:description" content="Java异常Java异常类层次结构图：java 异常是程序运行过程中出现的错误。Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。在Java API中定义了许多异常类,分为两大类，错误Error和异常Exception。其中异常类Exception又分为运行时异常(RuntimeException)和非运行时异常(非runtimeExceptio">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/02/02/Java异常及使用/throwable.png">
-<meta property="og:updated_time" content="2019-02-02T03:47:50.259Z">
+<meta property="og:updated_time" content="2019-02-02T04:38:14.015Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java异常及使用">
+<meta name="twitter:description" content="Java异常Java异常类层次结构图：java 异常是程序运行过程中出现的错误。Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。在Java API中定义了许多异常类,分为两大类，错误Error和异常Exception。其中异常类Exception又分为运行时异常(RuntimeException)和非运行时异常(非runtimeExceptio">
 <meta name="twitter:image" content="http://yoursite.com/2019/02/02/Java异常及使用/throwable.png">
 
 
@@ -403,7 +406,50 @@
       
 
       
-        <p><img src="/2019/02/02/Java异常及使用/throwable.png" alt=""></p>
+        <h1 id="Java异常"><a href="#Java异常" class="headerlink" title="Java异常"></a>Java异常</h1><h2 id="Java异常类层次结构图："><a href="#Java异常类层次结构图：" class="headerlink" title="Java异常类层次结构图："></a>Java异常类层次结构图：</h2><p>java 异常是程序运行过程中出现的错误。Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。在Java API中定义了许多异常类,分为两大类，错误Error和异常Exception。其中异常类Exception又分为运行时异常(RuntimeException)和非运行时异常(非runtimeException)，也称之为不检查异常（Unchecked Exception）和检查异常（Checked Exception）。</p>
+<p><img src="/2019/02/02/Java异常及使用/throwable.png" alt=""></p>
+<h2 id="Error与Exception"><a href="#Error与Exception" class="headerlink" title="Error与Exception"></a>Error与Exception</h2><p>Error是程序无法处理的错误，比如OutOfMemoryError、ThreadDeath等。</p>
+<p>这些异常发生时，Java虚拟机（JVM）一般会选择线程终止。</p>
+<p>Exception是程序本身可以处理的异常，这种异常分两大类运行时异常和非运行时异常。程序中应当尽可能去处理这些异常。</p>
+<h2 id="运行时异常和非运行时异常"><a href="#运行时异常和非运行时异常" class="headerlink" title="运行时异常和非运行时异常"></a>运行时异常和非运行时异常</h2><ol>
+<li><p>运行时异常: 都是RuntimeException类及其子类异常：</p>
+<p> IndexOutOfBoundsException索引越界异常</p>
+<p> ArithmeticException：数学计算异常</p>
+<p> NullPointerException：空指针异常</p>
+<p> ArrayOutOfBoundsException：数组索引越界异常</p>
+<p> ClassNotFoundException：类文件未找到异常</p>
+<p> ClassCastException：造型异常（类型转换异常）</p>
+</li>
+</ol>
+<p>这些异常是不检查异常（Unchecked Exception），程序中可以选择捕获处理，也可以不处理。这些异常一般是由程序逻辑错误引起的。</p>
+<p> 2.非运行时异常:是RuntimeException以外的异常，类型上都属于Exception类及其子类。从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。如：</p>
+<pre><code>IOException、文件读写异常
+
+FileNotFoundException：文件未找到异常
+
+EOFException：读写文件尾异常
+
+MalformedURLException：URL格式错误异常
+
+SocketException：Socket异常
+
+SQLException：SQL数据库异常
+</code></pre><h2 id="异常的捕获和处理"><a href="#异常的捕获和处理" class="headerlink" title="异常的捕获和处理"></a>异常的捕获和处理</h2><p>Java异常的捕获和处理是一个不容易把握的事情，如果处理不当，不但会让程序代码的可读性大大降低， 而且导致系统性能低下，甚至引发一些难以发现的错误。</p>
+<p>1.try、catch方式：</p>
+<pre><code>try{   
+//（尝试运行的）程序代码   
+}catch(异常类型 异常的变量名){   
+//异常处理代码   
+}finally{   
+ //异常发生，方法返回之前，总是要执行的代码   
+}  
+</code></pre><p>try、catch、finally三个语句块应注意的问题<br>第一、try、catch、finally三个语句块均不能单独使用，三者可以组成 try…catch…finally、try…catch、 try…finally三种结构，catch语句可以有一个或多个，finally语句最多一个。<br>第二、try、catch、finally三个代码块中变量的作用域为代码块内部，分别独立而不能相互访问。如果要在三个块中都可以访问，则需要将变量定义到这些块的外面。<br>第三、多个catch块时候，只会匹配其中一个异常类并执行catch块代码，而不会再执行别的catch块，并且匹配catch语句的顺序是由上到下。</p>
+<p>2.抛异常给上一级方式：</p>
+<pre><code>public static void demo() throws Exception{   
+  //抛出一个检查异常   
+  throw new Exception(&quot;方法demo中的Exception&quot;);   
+}
+</code></pre><p>上面的代码可以看到两个关键字，throw和throws关键字<br>throw：是用于方法体内部，用来抛出一个Throwable类型的异常。<br>throws：是用于方法体外部的方法声明部分，用来声明方法可能会抛出某些异常。仅当抛出了检查异常，该方法的调用者才必须处理或者重新抛出该异常。当方法的调用者无力处理该异常的时候，应该继续抛出。<br>异常处理是为了程序的健壮性。异常能处理就处理，不能处理就抛出，最终没有处理的异常JVM会进行处理。对于一个应用系统来说，应该有自己的一套异常处理框架，这样当异常发生时，也能得到统一的处理风格，将优雅的异常信息反馈给用户。</p>
 
       
     </div>
@@ -494,8 +540,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Airthink">
           <p class="site-author-name" itemprop="name">Airthink</p>
@@ -568,6 +623,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java异常"><span class="nav-number">1.</span> <span class="nav-text">Java异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java异常类层次结构图："><span class="nav-number">1.1.</span> <span class="nav-text">Java异常类层次结构图：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Error与Exception"><span class="nav-number">1.2.</span> <span class="nav-text">Error与Exception</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时异常和非运行时异常"><span class="nav-number">1.3.</span> <span class="nav-text">运行时异常和非运行时异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常的捕获和处理"><span class="nav-number">1.4.</span> <span class="nav-text">异常的捕获和处理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
