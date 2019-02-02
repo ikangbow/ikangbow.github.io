@@ -408,22 +408,24 @@
       
         
           
-            <h1 id="Java异常"><a href="#Java异常" class="headerlink" title="Java异常"></a>Java异常</h1><h2 id="Java异常类层次结构图："><a href="#Java异常类层次结构图：" class="headerlink" title="Java异常类层次结构图："></a>Java异常类层次结构图：</h2><p>java 异常是程序运行过程中出现的错误。Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。在Java API中定义了许多异常类,分为两大类，错误Error和异常Exception。其中异常类Exception又分为运行时异常(RuntimeException)和非运行时异常(非runtimeException)，也称之为不检查异常（Unchecked Exception）和检查异常（Checked Exception）。</p>
+            <h1 id="Java异常"><a href="#Java异常" class="headerlink" title="Java异常"></a>Java异常</h1><h2 id="Java异常类层次结构图"><a href="#Java异常类层次结构图" class="headerlink" title="Java异常类层次结构图"></a>Java异常类层次结构图</h2><p>java 异常是程序运行过程中出现的错误。Java把异常当作对象来处理，并定义一个基类java.lang.Throwable作为所有异常的超类。在Java API中定义了许多异常类,分为两大类，错误Error和异常Exception。其中异常类Exception又分为运行时异常(RuntimeException)和非运行时异常(非runtimeException)，也称之为不检查异常（Unchecked Exception）和检查异常（Checked Exception）。</p>
 <p><img src="/2019/02/02/Java异常及使用/throwable.png" alt=""></p>
 <h2 id="Error与Exception"><a href="#Error与Exception" class="headerlink" title="Error与Exception"></a>Error与Exception</h2><p>Error是程序无法处理的错误，比如OutOfMemoryError、ThreadDeath等。</p>
 <p>这些异常发生时，Java虚拟机（JVM）一般会选择线程终止。</p>
 <p>Exception是程序本身可以处理的异常，这种异常分两大类运行时异常和非运行时异常。程序中应当尽可能去处理这些异常。</p>
-<h2 id="运行时异常和非运行时异常"><a href="#运行时异常和非运行时异常" class="headerlink" title="运行时异常和非运行时异常"></a>运行时异常和非运行时异常</h2><ol>
-<li><p>运行时异常: 都是RuntimeException类及其子类异常：</p>
-<p> IndexOutOfBoundsException索引越界异常</p>
-<p> ArithmeticException：数学计算异常</p>
-<p> NullPointerException：空指针异常</p>
-<p> ArrayOutOfBoundsException：数组索引越界异常</p>
-<p> ClassNotFoundException：类文件未找到异常</p>
-<p> ClassCastException：造型异常（类型转换异常）</p>
-</li>
-</ol>
-<p>这些异常是不检查异常（Unchecked Exception），程序中可以选择捕获处理，也可以不处理。这些异常一般是由程序逻辑错误引起的。</p>
+<h2 id="运行时异常和非运行时异常"><a href="#运行时异常和非运行时异常" class="headerlink" title="运行时异常和非运行时异常"></a>运行时异常和非运行时异常</h2><p>1.运行时异常: 都是RuntimeException类及其子类异常：</p>
+<pre><code>IndexOutOfBoundsException索引越界异常
+
+ArithmeticException：数学计算异常
+
+NullPointerException：空指针异常
+
+ArrayOutOfBoundsException：数组索引越界异常
+
+ClassNotFoundException：类文件未找到异常
+
+ClassCastException：造型异常（类型转换异常）
+</code></pre><p>这些异常是不检查异常（Unchecked Exception），程序中可以选择捕获处理，也可以不处理。这些异常一般是由程序逻辑错误引起的。</p>
 <p> 2.非运行时异常:是RuntimeException以外的异常，类型上都属于Exception类及其子类。从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。如：</p>
 <pre><code>IOException、文件读写异常
 
