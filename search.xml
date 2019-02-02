@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Java异常体系及使用]]></title>
     <url>%2F2019%2F02%2F02%2FJava%E5%BC%82%E5%B8%B8%E4%BD%93%E7%B3%BB%E5%8F%8A%E4%BD%BF%E7%94%A8%2F</url>
-    <content type="text"><![CDATA[异常体系的概念Java异常类层次结构图： ！[异常体系]（/Java异常体系及使用/throwable.png）]]></content>
+    <content type="text"><![CDATA[异常体系的概念Java异常类层次结构图： ！[异常体系]（Java异常体系及使用/throwable.png）]]></content>
       <categories>
         <category>throwable</category>
       </categories>
