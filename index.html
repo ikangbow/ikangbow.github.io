@@ -423,7 +423,15 @@
 <p> JAVA_HOME=/usr/local/jdk1.8.0_162<br> export JRE_HOME=/usr/local/jdk1.8.0_162/jre<br> export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH<br> export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH</p>
 <p> redis配置</p>
 <p> 找到redis.conf文件将bind 127.0.0.1注释，改为bind 0.0.0.0这样就可以支持远程连接<br> 找到requirepass  设置redis登录密码</p>
-<p> mongo配置</p>
+<p> mongo配置<br> 找到mongo.conf配置auth先设置false<br> port=27017<br> logpath=/airthink/mongodb-linux-x86_64-3.6.3/mongod.log<br> pidfilepath=/airthink/mongodb-linux-x86_64-3.6.3/mongod.pid<br> logappend=true<br> fork=true<br> maxConns=3000<br> dbpath=/airthink/mongodb-linux-x86_64-3.6.3/data<br> auth=false</p>
+<p> ./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell  创建超级管理员admin账户<br> use admin<br> db.createUser(<br>   {</p>
+<pre><code>user: &quot;admin&quot;,
+pwd: &quot;123456&quot;,
+roles: [ { role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; } ]
+</code></pre><p>   } )</p>
+<p> 现在启用auth 将配置文件中auth=false 改为 auth=true</p>
+<p> use admin<br> db.auth(‘admin’,’123456’);授权</p>
+<p> 创建数据库<br> db.createUser({user:”用户名”,pwd:”密码”,roles:[{role:”readWrite”,db:”项目名”}]})</p>
 </li>
 </ol>
 
