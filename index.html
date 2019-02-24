@@ -419,8 +419,10 @@
 <ol>
 <li>使用shell工具上传 JDK、tomcat、mongo、redis安装包</li>
 <li><p>配置环境变量</p>
-<p> java环境变量<br> JAVA_HOME=/usr/local/jdk1.8.0_162<br> export JRE_HOME=/usr/local/jdk1.8.0_162/jre<br> export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH<br> export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH</p>
-<p> redis配置<br> 找到redis.conf文件将bind 127.0.0.1注释，改为bind 0.0.0.0这样就可以支持远程连接<br> 找到requirepass  设置redis登录密码</p>
+<p> java环境变量</p>
+<p> JAVA_HOME=/usr/local/jdk1.8.0_162<br> export JRE_HOME=/usr/local/jdk1.8.0_162/jre<br> export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH<br> export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH</p>
+<p> redis配置</p>
+<p> 找到redis.conf文件将bind 127.0.0.1注释，改为bind 0.0.0.0这样就可以支持远程连接<br> 找到requirepass  设置redis登录密码</p>
 <p> mongo配置</p>
 </li>
 </ol>
