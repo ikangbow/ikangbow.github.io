@@ -408,15 +408,13 @@
       
         
           
-            <p>一、阿里云服务器</p>
-<ol>
+            <h1 id="阿里云服务器"><a href="#阿里云服务器" class="headerlink" title="阿里云服务器"></a>阿里云服务器</h1><ol>
 <li>阿里云服务器的注册及申请</li>
 <li>添加安全组规则。安全组在云端提供类似虚拟防火墙功能，用于设置单个或多个 ECS 实例的网络访问控制，它是重要的安全隔离手段。在创建 ECS 实例时，必须选择一个安全组。您还可以添加安全组规则，对该安全组下的所有 ECS 实例的出方向和入方向进行网络控制。 若没有配置安全组规则，直接在本地ping服务器，结果ping不通，ssh也连不上。</li>
 </ol>
 <p>默认安全组中的默认规则仅设置针对ICMP协议、SSH 22端口、RDP 3389端口、HTTP 80端口和HTTPS 443端口的入方向规则。网络类型不同，安全且规则不同。</p>
 <p>安全组常用配置 例如：redis端口6379/mongo数据库端口27017/mysql端口3306/</p>
-<p>二、服务器环境部署</p>
-<ol>
+<h1 id="服务器环境部署"><a href="#服务器环境部署" class="headerlink" title="服务器环境部署"></a>服务器环境部署</h1><ol>
 <li>使用shell工具上传 JDK；安装svn；新建项目文件夹上传tomcat、mongo、redis安装包。</li>
 <li><p>配置环境变量</p>
 <p> java环境变量</p>
@@ -456,8 +454,7 @@ db.auth(&apos;admin&apos;,&apos;123456&apos;);授权
 db.createUser({user:&quot;用户名&quot;,pwd:&quot;密码&quot;,roles:[{role:&quot;readWrite&quot;,db:&quot;项目名&quot;}]})
 </code></pre></li>
 </ol>
-<p>三、部署web项目</p>
-<p>在项目文件夹下使用svn命令<br>svn checkout svn://路径(目录或文件的全路径)</p>
+<h1 id="部署web项目"><a href="#部署web项目" class="headerlink" title="部署web项目"></a>部署web项目</h1><p>在项目文件夹下使用svn命令<br>svn checkout svn://路径(目录或文件的全路径)</p>
 <p>首次checkout出项目后，运行自动发布脚本，删除开发配置文件，替换生产配置文件，使用mvn打包，将war包复制到tomcat的webapp下，重启tomcat。</p>
 
           
