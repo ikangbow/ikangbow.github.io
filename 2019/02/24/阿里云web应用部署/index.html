@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="运维,">
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="The Pursuit of Happyness">
+<meta name="description" content="一、阿里云服务器  阿里云服务器的注册及申请 添加安全组规则。安全组在云端提供类似虚拟防火墙功能，用于设置单个或多个 ECS 实例的网络访问控制，它是重要的安全隔离手段。在创建 ECS 实例时，必须选择一个安全组。您还可以添加安全组规则，对该安全组下的所有 ECS 实例的出方向和入方向进行网络控制。 若没有配置安全组规则，直接在本地ping服务器，结果ping不通，ssh也连不上。  默认安全组中">
+<meta name="keywords" content="运维">
 <meta property="og:type" content="article">
 <meta property="og:title" content="阿里云web应用部署">
 <meta property="og:url" content="http://yoursite.com/2019/02/24/阿里云web应用部署/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="The Pursuit of Happyness">
+<meta property="og:description" content="一、阿里云服务器  阿里云服务器的注册及申请 添加安全组规则。安全组在云端提供类似虚拟防火墙功能，用于设置单个或多个 ECS 实例的网络访问控制，它是重要的安全隔离手段。在创建 ECS 实例时，必须选择一个安全组。您还可以添加安全组规则，对该安全组下的所有 ECS 实例的出方向和入方向进行网络控制。 若没有配置安全组规则，直接在本地ping服务器，结果ping不通，ssh也连不上。  默认安全组中">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-24T01:19:46.187Z">
+<meta property="og:updated_time" content="2019-02-24T02:09:03.039Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阿里云web应用部署">
-<meta name="twitter:description" content="The Pursuit of Happyness">
+<meta name="twitter:description" content="一、阿里云服务器  阿里云服务器的注册及申请 添加安全组规则。安全组在云端提供类似虚拟防火墙功能，用于设置单个或多个 ECS 实例的网络访问控制，它是重要的安全隔离手段。在创建 ECS 实例时，必须选择一个安全组。您还可以添加安全组规则，对该安全组下的所有 ECS 实例的出方向和入方向进行网络控制。 若没有配置安全组规则，直接在本地ping服务器，结果ping不通，ssh也连不上。  默认安全组中">
 
 
 
@@ -354,6 +355,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -381,7 +404,23 @@
       
 
       
-        
+        <p>一、阿里云服务器</p>
+<ol>
+<li>阿里云服务器的注册及申请</li>
+<li>添加安全组规则。安全组在云端提供类似虚拟防火墙功能，用于设置单个或多个 ECS 实例的网络访问控制，它是重要的安全隔离手段。在创建 ECS 实例时，必须选择一个安全组。您还可以添加安全组规则，对该安全组下的所有 ECS 实例的出方向和入方向进行网络控制。 若没有配置安全组规则，直接在本地ping服务器，结果ping不通，ssh也连不上。</li>
+</ol>
+<p>默认安全组中的默认规则仅设置针对ICMP协议、SSH 22端口、RDP 3389端口、HTTP 80端口和HTTPS 443端口的入方向规则。网络类型不同，安全且规则不同。</p>
+<p>安全组常用配置 例如：redis端口6379/mongo数据库端口27017/mysql端口3306/</p>
+<p>二、服务器环境部署</p>
+<ol>
+<li>使用shell工具上传 JDK、tomcat、mongo、redis安装包</li>
+<li><p>配置环境变量</p>
+<p> java环境变量<br> JAVA_HOME=/usr/local/jdk1.8.0_162<br> export JRE_HOME=/usr/local/jdk1.8.0_162/jre<br> export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH<br> export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH</p>
+<p> redis配置<br> 找到redis.conf文件将bind 127.0.0.1注释，改为bind 0.0.0.0这样就可以支持远程连接<br> 找到requirepass  设置redis登录密码</p>
+<p> mongo配置</p>
+</li>
+</ol>
+
       
     </div>
     
@@ -395,6 +434,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/运维/" rel="tag"># 运维</a>
+          
+        </div>
       
 
       
@@ -501,7 +546,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
