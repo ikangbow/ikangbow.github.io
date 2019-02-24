@@ -417,7 +417,7 @@
 <p>安全组常用配置 例如：redis端口6379/mongo数据库端口27017/mysql端口3306/</p>
 <p>二、服务器环境部署</p>
 <ol>
-<li>使用shell工具上传 JDK、tomcat、mongo、redis安装包</li>
+<li>使用shell工具上传 JDK；安装svn；新建项目文件夹上传tomcat、mongo、redis安装包。</li>
 <li><p>配置环境变量</p>
 <p> java环境变量</p>
 <p> JAVA_HOME=/usr/local/jdk1.8.0_162<br> export JRE_HOME=/usr/local/jdk1.8.0_162/jre<br> export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH<br> export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH</p>
@@ -434,7 +434,12 @@ roles: [ { role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; } ]
 <p> 创建数据库<br> db.createUser({user:”用户名”,pwd:”密码”,roles:[{role:”readWrite”,db:”项目名”}]})</p>
 </li>
 </ol>
+<p>三、部署web项目</p>
+<pre><code>在项目文件夹下使用svn命令
+svn checkout svn://路径(目录或文件的全路径)
 
+首次checkout出项目后，运行自动发布脚本，删除开发配置文件，替换生产配置文件，使用mvn打包，将war包复制到tomcat的webapp下，重启tomcat。
+</code></pre>
           
         
       
