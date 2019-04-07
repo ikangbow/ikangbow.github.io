@@ -425,7 +425,7 @@
 <li>MongoDB支持各种编程语言:RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言。</li>
 <li>MongoDB安装简单。</li>
 </ul>
-<h1 id="mongoTemplate使用示例"><a href="#mongoTemplate使用示例" class="headerlink" title="mongoTemplate使用示例"></a>mongoTemplate使用示例</h1><h2 id="对匹配到的数据进行更新-inc"><a href="#对匹配到的数据进行更新-inc" class="headerlink" title="对匹配到的数据进行更新(inc)"></a>对匹配到的数据进行更新(inc)</h2><pre><code> Query query = new Query();
+<h1 id="mongoTemplate使用示例"><a href="#mongoTemplate使用示例" class="headerlink" title="mongoTemplate使用示例"></a>mongoTemplate使用示例</h1><h2 id="对匹配到的数据进行更新-inc"><a href="#对匹配到的数据进行更新-inc" class="headerlink" title="对匹配到的数据进行更新(inc)"></a>对匹配到的数据进行更新(inc)</h2><pre><code>Query query = new Query();
 query.addCriteria(Criteria.where(&quot;accountName&quot;).is(username));
 if (null != password){
      query.addCriteria(Criteria.where(&quot;accountPwd&quot;).is(password));
@@ -460,13 +460,13 @@ List&lt;VerifyCode&gt; codes = mongoTemplate.find(Query.query(criteria), VerifyC
 </code></pre><h2 id="根据id查找并删除"><a href="#根据id查找并删除" class="headerlink" title="根据id查找并删除"></a>根据id查找并删除</h2><pre><code>Account account = mongoTemplate.findById(id, Account.class); 
 mongoTemplate.remove(account);
 </code></pre><h2 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h2><pre><code>long count = mongoTemplate.count(Query.query(Criteria.where(&quot;accountName&quot;).is(accountName)), Account.class);
-</code></pre><h2 id="模糊匹配并排序"><a href="#模糊匹配并排序" class="headerlink" title="模糊匹配并排序"></a>模糊匹配并排序</h2><pre><code>Criteria criteria = new Criteria();
-  criteria.andOperator(Criteria.where(&quot;province&quot;).regex(province));//正则
-mongoTemplate.find(Query.query(criteria).with(new Sort(Direction.ASC, &quot;order&quot;)), Bbatch.class);
-</code></pre><h2 id="distinct查询"><a href="#distinct查询" class="headerlink" title="distinct查询"></a>distinct查询</h2><pre><code> DBObject dbObject = new BasicDBObject(&quot;schoolId&quot;, bschool.get_id());
-List&lt;String&gt; provinces = mongoTemplate.getCollection(
-mongoTemplate.getCollectionName(BschoolScoreline.class)) .distinct(&quot;province&quot;, dbObject);
-bschool.setProvinces(provinces);
+</code></pre><h2 id="模糊匹配并排序"><a href="#模糊匹配并排序" class="headerlink" title="模糊匹配并排序"></a>模糊匹配并排序</h2><pre><code> Criteria criteria = new Criteria();
+criteria.andOperator(Criteria.where(&quot;province&quot;).regex(province));//正则
+ mongoTemplate.find(Query.query(criteria).with(new Sort(Direction.ASC, &quot;order&quot;)), Bbatch.class);
+</code></pre><h2 id="distinct查询"><a href="#distinct查询" class="headerlink" title="distinct查询"></a>distinct查询</h2><pre><code>DBObject dbObject = new BasicDBObject(&quot;schoolId&quot;, bschool.get_id());
+   List&lt;String&gt; provinces = mongoTemplate.getCollection(
+   mongoTemplate.getCollectionName(BschoolScoreline.class)) .distinct(&quot;province&quot;, dbObject);
+   bschool.setProvinces(provinces);
 </code></pre><h2 id="查找并所有排序"><a href="#查找并所有排序" class="headerlink" title="查找并所有排序"></a>查找并所有排序</h2><pre><code>mongoTemplate.find(new Query().with(new Sort(&quot;order&quot;, &quot;DESC&quot;)), Bschool.class);
 </code></pre><h2 id="in查询"><a href="#in查询" class="headerlink" title="in查询"></a>in查询</h2><pre><code>List&lt;MpropValue&gt; mpropValueList = mongoTemplate.find(Query.query(Criteria.where(&quot;propId&quot;).in(mprop1.get_id())), MpropValue.class);
 </code></pre><h2 id="设置唯一字段"><a href="#设置唯一字段" class="headerlink" title="设置唯一字段"></a>设置唯一字段</h2><pre><code>//used 是1 将其他所有是1的更新为0
