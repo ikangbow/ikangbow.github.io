@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-07T02:45:29.232Z">
+<meta property="og:updated_time" content="2019-04-07T02:48:34.436Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -459,10 +459,10 @@ mongoTemplate.remove(account);
 </code></pre><h2 id="模糊匹配并排序"><a href="#模糊匹配并排序" class="headerlink" title="模糊匹配并排序"></a>模糊匹配并排序</h2><pre><code> Criteria criteria = new Criteria();
 criteria.andOperator(Criteria.where(&quot;province&quot;).regex(province));//正则
  mongoTemplate.find(Query.query(criteria).with(new Sort(Direction.ASC, &quot;order&quot;)), Bbatch.class);
-</code></pre><h2 id="distinct查询"><a href="#distinct查询" class="headerlink" title="distinct查询"></a>distinct查询</h2><pre><code>DBObject dbObject = new BasicDBObject(&quot;schoolId&quot;, bschool.get_id());
-   List&lt;String&gt; provinces = mongoTemplate.getCollection(
-   mongoTemplate.getCollectionName(BschoolScoreline.class)) .distinct(&quot;province&quot;, dbObject);
-   bschool.setProvinces(provinces);
+</code></pre><h2 id="distinct查询"><a href="#distinct查询" class="headerlink" title="distinct查询"></a>distinct查询</h2><pre><code> DBObject dbObject = new BasicDBObject(&quot;schoolId&quot;, bschool.get_id());
+List&lt;String&gt; provinces = mongoTemplate.getCollection(
+mongoTemplate.getCollectionName(BschoolScoreline.class)) .distinct(&quot;province&quot;, dbObject);
+bschool.setProvinces(provinces);
 </code></pre><h2 id="查找并所有排序"><a href="#查找并所有排序" class="headerlink" title="查找并所有排序"></a>查找并所有排序</h2><pre><code>mongoTemplate.find(new Query().with(new Sort(&quot;order&quot;, &quot;DESC&quot;)), Bschool.class);
 </code></pre><h2 id="in查询"><a href="#in查询" class="headerlink" title="in查询"></a>in查询</h2><pre><code>List&lt;MpropValue&gt; mpropValueList = mongoTemplate.find(Query.query(Criteria.where(&quot;propId&quot;).in(mprop1.get_id())), MpropValue.class);
 </code></pre><h2 id="设置唯一字段"><a href="#设置唯一字段" class="headerlink" title="设置唯一字段"></a>设置唯一字段</h2><pre><code>//used 是1 将其他所有是1的更新为0
