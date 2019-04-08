@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-08T14:06:19.730Z">
+<meta property="og:updated_time" content="2019-04-08T14:08:36.059Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -491,8 +491,6 @@ bschool.setProvinces(provinces);
 </code></pre><p>mongo中建立索引用ensureIndex({“字段1”:1,”字段2”:”-1”},{“name”:”索引名”})   1和-1代表正序和倒序</p>
 </li>
 <li><p>mongo数据库备份操作(在mongo的安装目录的bin下执行如下命令)</p>
-</li>
-</ol>
 <pre><code>不带验证的数据库备份：
 
 mongodump -d mrmf -o /tools/test   mrmf数据库名   /tools/test要备份到的地方
@@ -508,7 +506,7 @@ mongodump -d mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase
 带验证的数据库恢复：
 
 mongorestore --db mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase=admin /tools/test/red
-</code></pre><ol start="5">
+</code></pre></li>
 <li><p>建库操作</p>
 <pre><code> ./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell
 
