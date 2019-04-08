@@ -512,15 +512,15 @@ mongodump -d mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase
 带验证的数据库恢复：
 
 mongorestore --db mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase=admin /tools/test/red
-</code></pre><p>5.建库操作</p>
-<pre><code> ./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell
+</code></pre><ol start="5">
+<li><p>建库操作</p>
+<p>   ./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell</p>
+<p>  use admin(使用)</p>
+<p>  db.auth(‘admin’, ‘admin’);（授权）</p>
+<p>  db.createUser({user:”admin”,pwd:”admin”,roles:[{role:”readWrite”,db:”admin”}]})（创建）</p>
+</li>
+</ol>
 
-use admin(使用)
-
-db.auth(&apos;admin&apos;, &apos;admin&apos;);（授权）
-
-db.createUser({user:&quot;admin&quot;,pwd:&quot;admin&quot;,roles:[{role:&quot;readWrite&quot;,db:&quot;admin&quot;}]})（创建）
-</code></pre>
           
         
       
