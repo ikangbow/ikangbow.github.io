@@ -866,6 +866,9 @@ db.createUser({user:&quot;用户名&quot;,pwd:&quot;密码&quot;,roles:[{role:&q
 </ol>
 <h1 id="部署web项目"><a href="#部署web项目" class="headerlink" title="部署web项目"></a>部署web项目</h1><p>在项目文件夹下使用svn命令<br>svn checkout svn://路径(目录或文件的全路径)</p>
 <p>首次checkout出项目后，运行自动发布脚本，删除开发配置文件，替换生产配置文件，使用mvn打包，将war包复制到tomcat的webapp下，重启tomcat。</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Linux执行.sh文件，提示No such file or directory的问题的解决方法：</p>
+<p>原因：在windows中写好shell脚本测试正常，但是上传到 Linux 上以脚本方式运行命令时提示No such file or directory错误，那么一般是文件格式是dos格式的缘故，改成unix 格式即可。一般有如下几种修改办法。</p>
+<p>用vim打开该sh文件，输入：<br>:set ff<br>回车，显示fileformat=dos，重新设置下文件格式：<br>:set ff=unix<br>保存退出:<br>:wq<br>再执行，竟然可以了 </p>
 
           
         
