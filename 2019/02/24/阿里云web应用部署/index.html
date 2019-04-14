@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="阿里云服务器 阿里云服务器的注册及申请 添加安全组规则。安全组在云端提供类似虚拟防火墙功能，用于设置单个或多个 ECS 实例的网络访问控制，它是重要的安全隔离手段。在创建 ECS 实例时，必须选择一个安全组。您还可以添加安全组规则，对该安全组下的所有 ECS 实例的出方向和入方向进行网络控制。 若没有配置安全组规则，直接在本地ping服务器，结果ping不通，ssh也连不上。  默认安全组中的默认">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-02-24T03:10:54.174Z">
+<meta property="og:updated_time" content="2019-04-14T06:28:03.348Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阿里云web应用部署">
 <meta name="twitter:description" content="阿里云服务器 阿里云服务器的注册及申请 添加安全组规则。安全组在云端提供类似虚拟防火墙功能，用于设置单个或多个 ECS 实例的网络访问控制，它是重要的安全隔离手段。在创建 ECS 实例时，必须选择一个安全组。您还可以添加安全组规则，对该安全组下的所有 ECS 实例的出方向和入方向进行网络控制。 若没有配置安全组规则，直接在本地ping服务器，结果ping不通，ssh也连不上。  默认安全组中的默认">
@@ -411,13 +411,14 @@
 <p>默认安全组中的默认规则仅设置针对ICMP协议、SSH 22端口、RDP 3389端口、HTTP 80端口和HTTPS 443端口的入方向规则。网络类型不同，安全且规则不同。</p>
 <p>安全组常用配置 例如：redis端口6379/mongo数据库端口27017/mysql端口3306/</p>
 <h1 id="服务器环境部署"><a href="#服务器环境部署" class="headerlink" title="服务器环境部署"></a>服务器环境部署</h1><ol>
-<li>使用shell工具上传 JDK；安装svn；新建项目文件夹上传tomcat、mongo、redis安装包。</li>
+<li>使用shell工具上传 JDK；安装svn，安装maven；新建项目文件夹上传tomcat、mongo、redis安装包。</li>
 <li><p>配置环境变量</p>
 <p> java环境变量</p>
 <pre><code>JAVA_HOME=/usr/local/jdk1.8.0_162
 export JRE_HOME=/usr/local/jdk1.8.0_162/jre
 export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
-export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH
+export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$JAVA_HOME:$PATH:$MAVEN_HOME/bin
+   export MAVEN_HOME=/usr/local/maven/apache-maven-3.5.4
 </code></pre><p> redis配置</p>
 <pre><code>找到redis.conf文件将bind 127.0.0.1注释，改为bind 0.0.0.0这样就可以支持远程连接
 找到requirepass  设置redis登录密码
