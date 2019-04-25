@@ -522,7 +522,7 @@ db.createUser({user:&quot;admin&quot;,pwd:&quot;admin&quot;,roles:[{role:&quot;r
 </code></pre></li>
 </ol>
 <h1 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h1><pre><code>Criteria criteria = new Criteria();
- criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件
+criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件
 
 Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),
         Aggregation.group(&quot;content&quot;).count().as(&quot;count&quot;));
