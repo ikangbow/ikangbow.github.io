@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-25T13:07:27.268Z">
+<meta property="og:updated_time" content="2019-05-04T05:14:54.605Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -508,15 +508,62 @@ mongodump -d mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase
 mongorestore --db mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase=admin /tools/test/red
 </code></pre></li>
 <li><p>建库操作</p>
-<pre><code> ./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell
+<pre><code>./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell
 
 use admin(使用)
 
-db.auth(&apos;admin&apos;, &apos;admin&apos;);（授权）
+db.createUser({user:&quot;root&quot;,pwd:&quot;password&quot;,roles:[&quot;root&quot;]})//创建root用户
 
-db.createUser({user:&quot;admin&quot;,pwd:&quot;admin&quot;,roles:[{role:&quot;readWrite&quot;,db:&quot;admin&quot;}]})（创建）
+db.createUser({user:&quot;admin&quot;,pwd:&quot;admin&quot;,roles:[{role:&quot;userAdminAnyDatabase&quot;,db:&quot;admin&quot;}]})（创建admin用户）
+
+db.auth(&apos;admin&apos;, &apos;admin&apos;);（授权）
 </code></pre></li>
+<li><p>开启慢日志</p>
+<pre><code>在客户端调用db.setProfilingLevel(级别) 命令来实时配置。可以通过db.getProfilingLevel()命令来获取当前的Profile级别。
+
+&gt; db.setProfilingLevel(2); 
+&gt; {&quot;was&quot; : 0 , &quot;ok&quot; : 1} 
+&gt; db.getProfilingLevel()
+上面斜体的级别可以取0，1，2 三个值，他们表示的意义如下：
+0 – 不开启
+1 – 记录慢命令 (默认为&gt;100ms)
+2 – 记录所有命令
+Profile 记录在级别1时会记录慢命令，那么这个慢的定义是什么?上面我们说到其默认为100ms，当然有默认就有设置，其设置方法和级别一样有两种，一种是通过添加–slowms启动参数配置。第二种是调用db.setProfilingLevel时加上第二个参数：
+db.setProfilingLevel( level , slowms ) 
+db.setProfilingLevel( 1 , 10 );
+Mongo Profile 记录是直接存在系统db里的，记录位置 system.profile ，所以，我们只要查询这个Collection的记录就可以获取到我们的 Profile 记录了。
+
+　　Profile 信息内容详解：
+
+　　ts-该命令在何时执行.
+
+　　millis Time-该命令执行耗时，以毫秒记.
+
+　　info-本命令的详细信息.
+
+　　query-表明这是一个query查询操作.
+
+　　ntoreturn-本次查询客户端要求返回的记录数.比如, findOne()命令执行时 ntoreturn 为 1.有limit(n) 条件时ntoreturn为n.
+
+　　query-具体的查询条件(如x&gt;3).
+
+　　nscanned-本次查询扫描的记录数.
+
+　　reslen-返回结果集的大小.
+
+　　nreturned-本次查询实际返回的结果集.
+
+　　update-表明这是一个update更新操作.
+</code></pre><p> upsert-表明update的upsert参数为true.此参数的功能是如果update的记录不存在，则用update的条件insert一条记录.</p>
+</li>
 </ol>
+<p>　　moved-表明本次update是否移动了硬盘上的数据，如果新记录比原记录短，通常不会移动当前记录，如果新记录比原记录长，那么可能会移动记录到其它位置，这时候会导致相关索引的更新.磁盘操作更多，加上索引更新，会使得这样的操作比较慢.</p>
+<p>　　insert-这是一个insert插入操作.</p>
+<p>　　getmore-这是一个getmore 操作，getmore通常发生在结果集比较大的查询时，第一个query返回了部分结果，后续的结果是通过getmore来获取的。</p>
+<pre><code>MongoDB 查询优化
+</code></pre><p>　　如果nscanned(扫描的记录数)远大于nreturned(返回结果的记录数)的话，那么我们就要考虑通过加索引来优化记录定位了。</p>
+<p>　　reslen 如果过大，那么说明我们返回的结果集太大了，这时请查看find函数的第二个参数是否只写上了你需要的属性名。(类似 于MySQL中不要总是select *)</p>
+<p>　　对于创建索引的建议是：如果很少读，那么尽量不要添加索引，因为索引越多，写操作会越慢。如果读量很大，那么创建索引还是比较划算的。</p>
 <h1 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h1><pre><code>Criteria criteria = new Criteria();
 criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件
 
