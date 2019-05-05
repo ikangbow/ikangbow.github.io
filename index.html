@@ -719,31 +719,25 @@ Mongo Profile 记录是直接存在系统db里的，记录位置 system.profile 
 <p>　　reslen 如果过大，那么说明我们返回的结果集太大了，这时请查看find函数的第二个参数是否只写上了你需要的属性名。(类似 于MySQL中不要总是select *)</p>
 <p>　　对于创建索引的建议是：如果很少读，那么尽量不要添加索引，因为索引越多，写操作会越慢。如果读量很大，那么创建索引还是比较划算的。</p>
 <h1 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h1><pre><code>Criteria criteria = new Criteria();
-criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件
-
-Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),
-        Aggregation.group(&quot;content&quot;).count().as(&quot;count&quot;));
-
+ criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件
+Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.group(&quot;content&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC,&quot;count&quot;));
 AggregationResults&lt;SearchKeyWords&gt; ar = mongoTemplate.aggregate(aggregation,
-        Searched.class, SearchKeyWords.class);//Searched为要查询的类，SearchKeyWords为查询结果的vo对象
-List&lt;SearchKeyWords&gt; list = ar.getMappedResults();
-List&lt;SearchKeyWords&gt; ls = new ArrayList&lt;SearchKeyWords&gt;();
-ls.addAll(list);
-ListUtils.sort(ls, false, &quot;count&quot;);//排序
+         Searched.class, SearchKeyWords.class);//Searched为要查询的类，SearchKeyWords为查询结果的vo对象
+ List&lt;SearchKeyWords&gt; list = ar.getMappedResults();
 
-public class SearchKeyWords {
+ public class SearchKeyWords {
 
-    public String _id;//_id: &quot;中华&quot;  重复的字段
-    public int count;//count: 57   重复次数
-    public int getCount() {
-        return count;
-    }
-    public void setCount(int count) {
-        this.count = count;
-    }
+     public String _id;//_id: &quot;中华&quot;  重复的字段
+     public int count;//count: 57   重复次数
+     public int getCount() {
+         return count;
+     }
+     public void setCount(int count) {
+         this.count = count;
+     }
+ }
+</code></pre><p><img src="/2019/04/06/mongo/aggregation.png" alt=""></p>
 
-}
-</code></pre>
           
         
       
