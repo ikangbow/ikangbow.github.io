@@ -103,7 +103,7 @@
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/06/mongo/aggregation.png">
-<meta property="og:updated_time" content="2019-05-05T12:32:10.106Z">
+<meta property="og:updated_time" content="2019-05-05T12:50:01.986Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -423,7 +423,77 @@
 <li>MongoDB支持各种编程语言:RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言。</li>
 <li>MongoDB安装简单。</li>
 </ul>
-<h1 id="mongoTemplate使用示例"><a href="#mongoTemplate使用示例" class="headerlink" title="mongoTemplate使用示例"></a>mongoTemplate使用示例</h1><h2 id="对匹配到的数据进行更新-inc"><a href="#对匹配到的数据进行更新-inc" class="headerlink" title="对匹配到的数据进行更新(inc)"></a>对匹配到的数据进行更新(inc)</h2><pre><code>Query query = new Query();
+<h1 id="MongoDB用户角色配置"><a href="#MongoDB用户角色配置" class="headerlink" title="MongoDB用户角色配置"></a>MongoDB用户角色配置</h1><h2 id="基本知识介绍"><a href="#基本知识介绍" class="headerlink" title="基本知识介绍"></a>基本知识介绍</h2><p>MongoDB基本的角色</p>
+<ol>
+<li>数据库用户角色：read、readWrite;</li>
+<li>数据库管理角色：dbAdmin、dbOwner、userAdmin；</li>
+<li>集群管理角色：clusterAdmin、clusterManager、clusterMonitor、hostManager；</li>
+<li>备份恢复角色：backup、restore；</li>
+<li>所有数据库角色：readAnyDatabase、readWriteAnyDatabase、userAdminAnyDatabase、dbAdminAnyDatabase</li>
+<li>超级用户角色：root (这里还有几个角色间接或直接提供了系统超级用户的访问（dbOwner 、userAdmin、userAdminAnyDatabase,其中MongoDB默认是没有开启用户认证的，也就是说游客也拥有超级管理员的权限。userAdminAnyDatabase：有分配角色和用户的权限，但没有查写的权限)</li>
+</ol>
+<h2 id="连接到MongoDB服务器"><a href="#连接到MongoDB服务器" class="headerlink" title="连接到MongoDB服务器"></a>连接到MongoDB服务器</h2><pre><code>建库操作开始
+
+./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell
+
+use admin(使用)
+
+db.createUser({user:&quot;root&quot;,pwd:&quot;password&quot;,roles:[&quot;root&quot;]})//创建root用户
+
+db.createUser({user:&quot;admin&quot;,pwd:&quot;admin&quot;,roles:[{role:&quot;userAdminAnyDatabase&quot;,db:&quot;admin&quot;}]})（创建admin用户）
+
+db.auth(&apos;admin&apos;, &apos;admin&apos;);（授权）
+
+修改mongod.conf文件
+
+security:
+authorization: enabled//启用授权
+
+重启MongoDB服务器
+
+service mongod restart
+
+创建数据库读写权限用户
+
+use admin
+db.auth(&quot;admin&quot;,&quot;password&quot;);
+use ballmatch
+db.createUser({
+    user: &quot;baidu&quot;,
+    pwd: &quot;password&quot;,
+    roles: [{role: &quot;readWrite&quot;,db: &quot;baidu&quot;}]
+})
+</code></pre><h2 id="Java程序连接MongoDB"><a href="#Java程序连接MongoDB" class="headerlink" title="Java程序连接MongoDB"></a>Java程序连接MongoDB</h2><pre><code>MongoCredential credential = MongoCredential.createCredential(&quot;username&quot;, &quot;dbName&quot;, &quot;password&quot;.toCharArray());
+ServerAddress serverAddress = new ServerAddress(&quot;192.168.10.242&quot;, 27017);
+MongoClient mongoClient = new MongoClient(serverAddress, Arrays.asList(credential));
+DB db = mongoClient.getDB(&quot;dbName&quot;);
+returndb;
+
+//方式二
+String sURI = String.format(&quot;mongodb://%s:%s@%s:%d/%s&quot;, &quot;username&quot;, &quot;password&quot;, &quot;192.168.10.242&quot;, 27017, &quot;dbName&quot;); 
+MongoClientURI uri = new MongoClientURI(sURI); 
+MongoClient mongoClient = new MongoClient(uri); 
+DB db = mongoClient.getDB(&quot;dbName&quot;);
+</code></pre><h2 id="命令介绍"><a href="#命令介绍" class="headerlink" title="命令介绍"></a>命令介绍</h2><pre><code>修改用户密码
+db.updateUser( &quot;admin&quot;,{pwd:&quot;password&quot;});
+
+密码认证
+db.auth(&quot;admin&quot;,&quot;password&quot;);
+
+MongoDB连接信息查询
+db.serverStatus().connections;
+
+关闭MongoDB服务
+use admin;
+db.shutdownServer();
+
+删除用户
+删除用户(需要root权限，会将所有数据库中的football用户删除)
+db.system.users.remove({user:&quot;baidu&quot;});
+
+删除用户(权限要求没有那么高，只删除本数据中的football用户)
+db.dropUser(&quot;baidu&quot;);
+</code></pre><h1 id="mongoTemplate使用示例"><a href="#mongoTemplate使用示例" class="headerlink" title="mongoTemplate使用示例"></a>mongoTemplate使用示例</h1><h2 id="对匹配到的数据进行更新-inc"><a href="#对匹配到的数据进行更新-inc" class="headerlink" title="对匹配到的数据进行更新(inc)"></a>对匹配到的数据进行更新(inc)</h2><pre><code>Query query = new Query();
 query.addCriteria(Criteria.where(&quot;accountName&quot;).is(username));
 if (null != password){
      query.addCriteria(Criteria.where(&quot;accountPwd&quot;).is(password));
@@ -772,7 +842,7 @@ AggregationResults&lt;SearchKeyWords&gt; ar = mongoTemplate.aggregate(aggregatio
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是MongoDB"><span class="nav-number">1.</span> <span class="nav-text">什么是MongoDB ?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主要特点"><span class="nav-number">2.</span> <span class="nav-text">主要特点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mongoTemplate使用示例"><span class="nav-number">3.</span> <span class="nav-text">mongoTemplate使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对匹配到的数据进行更新-inc"><span class="nav-number">3.1.</span> <span class="nav-text">对匹配到的数据进行更新(inc)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询一条记录和保存（findOne-save）"><span class="nav-number">3.2.</span> <span class="nav-text">查询一条记录和保存（findOne/save）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（并的关系）"><span class="nav-number">3.3.</span> <span class="nav-text">多条件匹配（并的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（或的关系）"><span class="nav-number">3.4.</span> <span class="nav-text">多条件匹配（或的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据id查找并删除"><span class="nav-number">3.5.</span> <span class="nav-text">根据id查找并删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数"><span class="nav-number">3.6.</span> <span class="nav-text">计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊匹配并排序"><span class="nav-number">3.7.</span> <span class="nav-text">模糊匹配并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distinct查询"><span class="nav-number">3.8.</span> <span class="nav-text">distinct查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找并所有排序"><span class="nav-number">3.9.</span> <span class="nav-text">查找并所有排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in查询"><span class="nav-number">3.10.</span> <span class="nav-text">in查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置唯一字段"><span class="nav-number">3.11.</span> <span class="nav-text">设置唯一字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入多条数据"><span class="nav-number">3.12.</span> <span class="nav-text">插入多条数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聚合操作"><span class="nav-number">5.</span> <span class="nav-text">聚合操作</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是MongoDB"><span class="nav-number">1.</span> <span class="nav-text">什么是MongoDB ?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主要特点"><span class="nav-number">2.</span> <span class="nav-text">主要特点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MongoDB用户角色配置"><span class="nav-number">3.</span> <span class="nav-text">MongoDB用户角色配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本知识介绍"><span class="nav-number">3.1.</span> <span class="nav-text">基本知识介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接到MongoDB服务器"><span class="nav-number">3.2.</span> <span class="nav-text">连接到MongoDB服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java程序连接MongoDB"><span class="nav-number">3.3.</span> <span class="nav-text">Java程序连接MongoDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令介绍"><span class="nav-number">3.4.</span> <span class="nav-text">命令介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mongoTemplate使用示例"><span class="nav-number">4.</span> <span class="nav-text">mongoTemplate使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对匹配到的数据进行更新-inc"><span class="nav-number">4.1.</span> <span class="nav-text">对匹配到的数据进行更新(inc)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询一条记录和保存（findOne-save）"><span class="nav-number">4.2.</span> <span class="nav-text">查询一条记录和保存（findOne/save）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（并的关系）"><span class="nav-number">4.3.</span> <span class="nav-text">多条件匹配（并的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（或的关系）"><span class="nav-number">4.4.</span> <span class="nav-text">多条件匹配（或的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据id查找并删除"><span class="nav-number">4.5.</span> <span class="nav-text">根据id查找并删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数"><span class="nav-number">4.6.</span> <span class="nav-text">计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊匹配并排序"><span class="nav-number">4.7.</span> <span class="nav-text">模糊匹配并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distinct查询"><span class="nav-number">4.8.</span> <span class="nav-text">distinct查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找并所有排序"><span class="nav-number">4.9.</span> <span class="nav-text">查找并所有排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in查询"><span class="nav-number">4.10.</span> <span class="nav-text">in查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置唯一字段"><span class="nav-number">4.11.</span> <span class="nav-text">设置唯一字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入多条数据"><span class="nav-number">4.12.</span> <span class="nav-text">插入多条数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">5.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聚合操作"><span class="nav-number">6.</span> <span class="nav-text">聚合操作</span></a></li></ol></div>
             
 
           </div>
