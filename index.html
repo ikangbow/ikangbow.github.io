@@ -846,9 +846,15 @@ upsert-表明update的upsert参数为true.此参数的功能是如果update的�
 }
 
 MongoDB 查询优化
-</code></pre><p>　　如果nscanned(扫描的记录数)远大于nreturned(返回结果的记录数)的话，那么我们就要考虑通过加索引来优化记录定位了。</p>
-<p>　　reslen 如果过大，那么说明我们返回的结果集太大了，这时请查看find函数的第二个参数是否只写上了你需要的属性名。(类似 于MySQL中不要总是select *)</p>
-<p>　　对于创建索引的建议是：如果很少读，那么尽量不要添加索引，因为索引越多，写操作会越慢。如果读量很大，那么创建索引还是比较划算的。</p>
+</code></pre><p>　</p>
+<ol>
+<li>　如果发现 millis 值比较大，那么就需要作优化。</li>
+<li>　如果docsExamined数很大，或者接近记录总数（文档数），那么可能没有用到索引查询，而是全表扫描。</li>
+<li>　如果keysExamined数为0，也可能是没用索引。</li>
+<li>　结合 planSummary 中的显示，上例中是  “COLLSCAN, COLLSCAN” 确认是全表扫描</li>
+<li>　如果 keysExamined 值高于 nreturned 的值，说明数据库为了找到目标文档扫描了很多文档。这时可以考虑创建索引来提高效率。</li>
+<li>　索引的键值选择可以根据 query 中的输出参考，上例中 filter:包含了 jzrq和jglxfldm 并且按照RsId排序，所以 我们的索引索引可以这么建: db.f10_2_8_3_jgcc.ensureindex({jzrq:1,jglxfldm:1,RsId:1})</li>
+</ol>
 <h1 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h1><pre><code>Criteria criteria = new Criteria();
 criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件
 Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.group(&quot;content&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC,&quot;count&quot;));
