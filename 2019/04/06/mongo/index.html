@@ -103,7 +103,7 @@
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/06/mongo/aggregation.png">
-<meta property="og:updated_time" content="2019-05-05T13:31:30.301Z">
+<meta property="og:updated_time" content="2019-05-06T13:34:38.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -692,9 +692,7 @@ upsert-表明update的upsert参数为true.此参数的功能是如果update的�
 ], 
 &quot;user&quot; : &quot;&quot;
 }
-
-MongoDB 查询优化
-</code></pre><p>　</p>
+</code></pre><p>MongoDB 查询优化</p>
 <ol>
 <li>　如果发现 millis 值比较大，那么就需要作优化。</li>
 <li>　如果docsExamined数很大，或者接近记录总数（文档数），那么可能没有用到索引查询，而是全表扫描。</li>
@@ -703,7 +701,8 @@ MongoDB 查询优化
 <li>　如果 keysExamined 值高于 nreturned 的值，说明数据库为了找到目标文档扫描了很多文档。这时可以考虑创建索引来提高效率。</li>
 <li>　索引的键值选择可以根据 query 中的输出参考，上例中 filter:包含了 jzrq和jglxfldm 并且按照RsId排序，所以 我们的索引索引可以这么建: db.f10_2_8_3_jgcc.ensureindex({jzrq:1,jglxfldm:1,RsId:1})</li>
 </ol>
-<h1 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h1><pre><code>Criteria criteria = new Criteria();
+<h1 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h1><pre><code>示例一
+Criteria criteria = new Criteria();
 criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件
 Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.group(&quot;content&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC,&quot;count&quot;));
 AggregationResults&lt;SearchKeyWords&gt; ar = mongoTemplate.aggregate(aggregation,
@@ -722,7 +721,78 @@ public class SearchKeyWords {
     }
 }
 </code></pre><p><img src="/2019/04/06/mongo/aggregation.png" alt=""></p>
+<pre><code>示例二
+//分组group、排序sort统计每个分类下商品个数
+Criteria criteria = new Criteria();
+Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),
+        Aggregation.group(&quot;categoryId&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC,&quot;count&quot;));
 
+AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(aggregation,
+        Goods.class, BasicDBObject.class);
+for (BasicDBObject basicDBObject : ar) {
+    logger.info(JsonUtils.toJson(basicDBObject));
+}
+//输出结果
+2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;6430379335205566832&quot;,&quot;count&quot;:1}//分类id和当前分类下商品个数
+2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;8732390723817262538&quot;,&quot;count&quot;:2}
+2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;4479460853249390323&quot;,&quot;count&quot;:2}
+2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;6571438787886532072&quot;,&quot;count&quot;:16}
+
+
+示例三
+//两个集合关联查询 Aggregation.lookup
+//若 A集合关联B集合
+//参数： from B集合名
+//localField A集合存外键的字段
+//foreignField B集合与A集合关联的字段
+//as 重新组合成C集合名称
+语法
+db.collection.aggregate([{
+   $lookup:
+     {
+       from: &lt;collection to join&gt;,
+       localField: &lt;field from the input documents&gt;,
+       foreignField: &lt;field from the documents of the &quot;from&quot; collection&gt;,
+       as: &lt;output array field&gt;
+     }
+}])
+
+Criteria criteria = new Criteria();
+criteria.andOperator(Criteria.where(&quot;_id&quot;).is(&quot;6118446118773213048&quot;));
+Aggregation aggregation = Aggregation.newAggregation(
+        Aggregation.match(criteria),
+        Aggregation.lookup(&quot;goodsCategory&quot;, &quot;categoryId&quot;, &quot;_id&quot;, &quot;goodsCategory&quot;),
+        Aggregation.unwind(&quot;goodsCategory&quot;),
+        Aggregation.project(&quot;title&quot;,&quot;goodsCategory.name&quot;)
+        );
+
+AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(
+        aggregation, Goods.class, BasicDBObject.class);
+for (BasicDBObject basicDBObject : ar) {
+    logger.info(JsonUtils.toJson(basicDBObject));
+}
+//输出结果
+2019-05-06 21:17:26 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;6118446118773213048&quot;,&quot;title&quot;:&quot;小学生必备国学常识&amp;小学生必读国学经典&quot;,&quot;name&quot;:&quot;小学生&quot;}
+
+示例五(未曾验证)
+Circle circle = new Circle(4.2341111,63.00001,0.01);
+List&lt;PositionCol&gt; positionCols = mongoTemplate.find(new Query(Criteria.where(&quot;location&quot;).within(circle)),PositionCol.class);
+if(positionCols!=null){
+    for(PositionCol positionCol:positionCols){
+        logger.info(JSON.toJSONString(positionCol))
+    }
+}
+
+示例六(未曾验证)
+Point location = new Point(116.425253,39.925338);
+NearQuery query = NearQuery.near(location).maxDistance(new Distance(10,Metrice.KILOMETERS));
+GeoResults&lt;PositionCol&gt; positions = mongoTemplate.geoNear(query,PositionCol.class);
+if(positionCols!=null){
+    for(GeoResults&lt;PositionCol&gt;geoResult :positions){
+        logger.info(geoResult.getContent().getBuissName()+&quot;-&quot;+geoResult.getDistance().getValue());
+    }
+}
+</code></pre>
       
     </div>
     
