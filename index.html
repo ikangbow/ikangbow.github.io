@@ -940,6 +940,7 @@ if(lfs!=null){
 }
 
 示例五(未曾验证)
+//得到范围内数据：以Circle构造函数，第一第二个参数为坐标，第三个参数为距离半径查找符合条件的
 Circle circle = new Circle(4.2341111,63.00001,0.01);
 List&lt;PositionCol&gt; positionCols = mongoTemplate.find(new Query(Criteria.where(&quot;location&quot;).within(circle)),PositionCol.class);
 if(positionCols!=null){
@@ -949,6 +950,7 @@ if(positionCols!=null){
 }
 
 示例六(未曾验证)
+//查找坐标周围10KM内的所有商店
 Point location = new Point(116.425253,39.925338);
 NearQuery query = NearQuery.near(location).maxDistance(new Distance(10,Metrice.KILOMETERS));
 GeoResults&lt;PositionCol&gt; positions = mongoTemplate.geoNear(query,PositionCol.class);

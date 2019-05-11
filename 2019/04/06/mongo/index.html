@@ -103,7 +103,7 @@
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/06/mongo/aggregation.png">
-<meta property="og:updated_time" content="2019-05-11T01:23:11.971Z">
+<meta property="og:updated_time" content="2019-05-11T01:29:56.762Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -788,6 +788,7 @@ if(lfs!=null){
 }
 
 示例五(未曾验证)
+//得到范围内数据：以Circle构造函数，第一第二个参数为坐标，第三个参数为距离半径查找符合条件的
 Circle circle = new Circle(4.2341111,63.00001,0.01);
 List&lt;PositionCol&gt; positionCols = mongoTemplate.find(new Query(Criteria.where(&quot;location&quot;).within(circle)),PositionCol.class);
 if(positionCols!=null){
@@ -797,6 +798,7 @@ if(positionCols!=null){
 }
 
 示例六(未曾验证)
+//查找坐标周围10KM内的所有商店
 Point location = new Point(116.425253,39.925338);
 NearQuery query = NearQuery.near(location).maxDistance(new Distance(10,Metrice.KILOMETERS));
 GeoResults&lt;PositionCol&gt; positions = mongoTemplate.geoNear(query,PositionCol.class);
