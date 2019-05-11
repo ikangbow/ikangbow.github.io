@@ -915,7 +915,7 @@ Aggregation aggregation = Aggregation.newAggregation(
         Aggregation.match(criteria),
         Aggregation.lookup(&quot;goodsCategory&quot;, &quot;categoryId&quot;, &quot;_id&quot;, &quot;goodsCategory&quot;),
         Aggregation.unwind(&quot;goodsCategory&quot;),
-        Aggregation.project(&quot;title&quot;,&quot;goodsCategory.name&quot;)
+        Aggregation.project(&quot;title&quot;,&quot;price&quot;).and(&quot;goodsCategory.name&quot;).as(&quot;categoryName&quot;).and(&quot;goodsCategory.order&quot;).as(&quot;categoryOrder&quot;)
         );
 
 AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(
@@ -924,7 +924,20 @@ for (BasicDBObject basicDBObject : ar) {
     logger.info(JsonUtils.toJson(basicDBObject));
 }
 //输出结果
-2019-05-06 21:17:26 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;6118446118773213048&quot;,&quot;title&quot;:&quot;小学生必备国学常识&amp;小学生必读国学经典&quot;,&quot;name&quot;:&quot;小学生&quot;}
+2019-05-06 21:17:26 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;6118446118773213048&quot;,&quot;title&quot;:&quot;小学生必备国学常识&amp;小学生必读国学经典&quot;,&quot;price&quot;:&quot;10.0&quot;,&quot;categoryName&quot;:&quot;小学生&quot;,&quot;categoryOrder&quot;:&quot;1&quot;}
+
+示例四(未曾验证)
+//全文搜索查询
+//设置索引：db.logInfo.ensureIndex(msg:&quot;text&quot;)
+Query query = TextQuery.query(new TextCriteria().matching(&quot;coffee&quot;).matching(&quot;-cake&quot;));
+//-cake表示不匹配不包含cake与notMatching类似
+//Query query = TextQuery.searching((new TextCriteria().matching(&quot;coffee&quot;).notMatching(&quot;-cake&quot;))
+List&lt;LogInfoCol&gt; lfs = mongoTemplate.find(query,LogInfoCol.class);
+if(lfs!=null){
+    for(LogInfoCol logInfoCol:lfs){
+        logger.info(JSON.toString(logInfoCol));
+    }
+}
 
 示例五(未曾验证)
 Circle circle = new Circle(4.2341111,63.00001,0.01);

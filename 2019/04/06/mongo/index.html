@@ -103,7 +103,7 @@
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/06/mongo/aggregation.png">
-<meta property="og:updated_time" content="2019-05-06T13:34:38.149Z">
+<meta property="og:updated_time" content="2019-05-11T01:23:11.971Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -763,7 +763,7 @@ Aggregation aggregation = Aggregation.newAggregation(
         Aggregation.match(criteria),
         Aggregation.lookup(&quot;goodsCategory&quot;, &quot;categoryId&quot;, &quot;_id&quot;, &quot;goodsCategory&quot;),
         Aggregation.unwind(&quot;goodsCategory&quot;),
-        Aggregation.project(&quot;title&quot;,&quot;goodsCategory.name&quot;)
+        Aggregation.project(&quot;title&quot;,&quot;price&quot;).and(&quot;goodsCategory.name&quot;).as(&quot;categoryName&quot;).and(&quot;goodsCategory.order&quot;).as(&quot;categoryOrder&quot;)
         );
 
 AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(
@@ -772,7 +772,20 @@ for (BasicDBObject basicDBObject : ar) {
     logger.info(JsonUtils.toJson(basicDBObject));
 }
 //输出结果
-2019-05-06 21:17:26 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;6118446118773213048&quot;,&quot;title&quot;:&quot;小学生必备国学常识&amp;小学生必读国学经典&quot;,&quot;name&quot;:&quot;小学生&quot;}
+2019-05-06 21:17:26 [com.badou.service.basic.goods.GoodsService]-[INFO] {&quot;_id&quot;:&quot;6118446118773213048&quot;,&quot;title&quot;:&quot;小学生必备国学常识&amp;小学生必读国学经典&quot;,&quot;price&quot;:&quot;10.0&quot;,&quot;categoryName&quot;:&quot;小学生&quot;,&quot;categoryOrder&quot;:&quot;1&quot;}
+
+示例四(未曾验证)
+//全文搜索查询
+//设置索引：db.logInfo.ensureIndex(msg:&quot;text&quot;)
+Query query = TextQuery.query(new TextCriteria().matching(&quot;coffee&quot;).matching(&quot;-cake&quot;));
+//-cake表示不匹配不包含cake与notMatching类似
+//Query query = TextQuery.searching((new TextCriteria().matching(&quot;coffee&quot;).notMatching(&quot;-cake&quot;))
+List&lt;LogInfoCol&gt; lfs = mongoTemplate.find(query,LogInfoCol.class);
+if(lfs!=null){
+    for(LogInfoCol logInfoCol:lfs){
+        logger.info(JSON.toString(logInfoCol));
+    }
+}
 
 示例五(未曾验证)
 Circle circle = new Circle(4.2341111,63.00001,0.01);
