@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[集成小程序]]></title>
+    <url>%2F2019%2F05%2F18%2F%E9%9B%86%E6%88%90%E5%B0%8F%E7%A8%8B%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[web.xml&lt;servlet&gt; &lt;servlet-name&gt;WeixinMiniServiceServlet&lt;/servlet-name&gt; &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt; &lt;init-param&gt; &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt; &lt;param-value&gt;classpath:spring/weixinmini-context.xml&lt;/param-value&gt; &lt;/init-param&gt; &lt;load-on-startup&gt;1&lt;/load-on-startup&gt; &lt;async-supported&gt;true&lt;/async-supported&gt; &lt;/servlet&gt; &lt;servlet-mapping&gt; &lt;servlet-name&gt;WeixinMiniServiceServlet&lt;/servlet-name&gt; &lt;url-pattern&gt;/wm/*&lt;/url-pattern&gt; &lt;/servlet-mapping&gt; src/main/resources增加weixinmimi-context.xml配置，添加对modulewxmini包的扫描 &lt;context:component-scan base-package=&quot;com.material.modulewxmini&quot;&gt; &lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.web.bind.annotation.ControllerAdvice&quot; /&gt; &lt;/context:component-scan&gt; 添加过滤器WeixinMiniInterceptor weixin包里增加WxMiniVoucherService及WxMinigetInfo WeMiniVoucher类]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>系统集成</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[常用命令]]></title>
     <url>%2F2019%2F05%2F04%2F%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
     <content type="text"><![CDATA[项目拷贝1.项目右键 –&gt; properties –&gt; Web Project Settings –&gt; 修改Context root 2.pom.xml 3.工作空间中找到当前项目下.project文件 4.工作空间中找到当前项目，打开.settings文件夹，找到org.eclipse.wst.common.component文件 5..component hexo 记录1.hexo new ‘页面名称’ 2.hexo clean 清除 3.hexo g 4.hexo d]]></content>
