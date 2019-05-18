@@ -1471,7 +1471,8 @@ db.createUser({user:&quot;用户名&quot;,pwd:&quot;密码&quot;,roles:[{role:&q
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>Linux执行.sh文件，提示No such file or directory的问题的解决方法：</p>
 <p>原因：在windows中写好shell脚本测试正常，但是上传到 Linux 上以脚本方式运行命令时提示No such file or directory错误，那么一般是文件格式是dos格式的缘故，改成unix 格式即可。一般有如下几种修改办法。</p>
 <p>用vim打开该sh文件，输入：<br>:set ff<br>回车，显示fileformat=dos，重新设置下文件格式：<br>:set ff=unix<br>保存退出:<br>:wq<br>再执行</p>
-
+<h1 id="免费ssh证书申请及配置"><a href="#免费ssh证书申请及配置" class="headerlink" title="免费ssh证书申请及配置"></a>免费ssh证书申请及配置</h1><pre><code>参考https://help.aliyun.com/knowledge_detail/95496.html?spm=a2c4g.11186623.2.11.53674c07M5nwXN
+</code></pre>
           
         
       
