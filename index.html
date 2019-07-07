@@ -2046,6 +2046,11 @@ docker rmi &lt;image id&gt;
 docker images 查看所有镜像
 docker rmi 镜像id 删除镜像
 docker images 查看镜像 发现已经删除 
+</code></pre><h1 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h1><pre><code>docker stop application//停止应用
+docker rm application//删除镜像
+docker run -i -t -d -p 88:8080 -v /badou/badou/badou1.war:/usr/local/tomcat/webapps/badou.war -v /badou/conf/apiclient_cert.p12:/usr/local/tomcat/apiclient_cert.p12 -v /badou/badou/index.html:/usr/local/tomcat/webapps/ROOT/index.html --name=badou1 andylaun/tomcat:v5
+
+-v  挂载文件目录
 </code></pre>
           
         
