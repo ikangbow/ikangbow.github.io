@@ -754,9 +754,14 @@ dbpath=/airthink/mongodb-linux-x86_64-3.6.3/data
 auth=true
 </code></pre></li>
 <li><p>启动./mongodb-linux-x86_64-3.6.3/bin/mongo</p>
-</li>
+<pre><code>var schema = db.system.version.findOne({_id:&quot;authSchema&quot;});//驱动版本5--SCRAM-SHA-1需要修改成：3--Mongodb-CR
+schema. currentVersion = 3;
+db.system.version.save(schema);
+
+db.createUser({user:&quot;admin&quot;,pwd:&quot;mypass&quot;,roles:[&quot;readWriteAnyDatabase&quot;, &quot;userAdminAnyDatabase&quot;, &quot;dbAdminAnyDatabase&quot;]});
+</code></pre><h1 id="MongoDB用户角色配置"><a href="#MongoDB用户角色配置" class="headerlink" title="MongoDB用户角色配置"></a>MongoDB用户角色配置</h1></li>
 </ol>
-<h1 id="MongoDB用户角色配置"><a href="#MongoDB用户角色配置" class="headerlink" title="MongoDB用户角色配置"></a>MongoDB用户角色配置</h1><h2 id="基本知识介绍"><a href="#基本知识介绍" class="headerlink" title="基本知识介绍"></a>基本知识介绍</h2><p>MongoDB基本的角色</p>
+<h2 id="基本知识介绍"><a href="#基本知识介绍" class="headerlink" title="基本知识介绍"></a>基本知识介绍</h2><p>MongoDB基本的角色</p>
 <ol>
 <li>数据库用户角色：read、readWrite;</li>
 <li>数据库管理角色：dbAdmin、dbOwner、userAdmin；</li>
