@@ -419,9 +419,9 @@
 <p>9、微信小程序支付</p>
 <h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="构造pay对象"><a href="#构造pay对象" class="headerlink" title="构造pay对象"></a>构造pay对象</h2><p>pay对象包含属性有：用户id、订单id(List)、支付金额、支付状态、支付类型（aliqr、aliurl、aliwap、aliapp）、支付订单的类型（具体由业务定义）、支付标题，即支付时显示的商品名称、商品信息、服务器异步通知页面路径（回调地址）、页面跳转同步通知页面路径</p>
 <p>若是微信公众号支付，需加上openid，ip(微信支付所需的客户端ip),prepayId（用于发送模板消息）</p>
-<h1 id="入参支付"><a href="#入参支付" class="headerlink" title="入参支付"></a>入参支付</h1><p>将pay对象传入，组装业务参数，调取第三方sdk进行支付。</p>
-<h1 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h1><p>回调结果，支付成功，pay对象写入支付状态1并返回。</p>
-<h1 id="业务数据更新"><a href="#业务数据更新" class="headerlink" title="业务数据更新"></a>业务数据更新</h1><p>根据回调结果以及是否返回pay对象，验证支付成功，进行业务数据更新。<br>主要是订单的记录,创建order并保存。业务数据更新成功后，pay对象写入支付状态2</p>
+<h2 id="入参支付"><a href="#入参支付" class="headerlink" title="入参支付"></a>入参支付</h2><p>将pay对象传入，组装业务参数，调取第三方sdk进行支付。</p>
+<h2 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h2><p>回调结果，支付成功，pay对象写入支付状态1并返回。</p>
+<h2 id="业务数据更新"><a href="#业务数据更新" class="headerlink" title="业务数据更新"></a>业务数据更新</h2><p>根据回调结果以及是否返回pay对象，验证支付成功，进行业务数据更新。<br>主要是订单的记录,创建order并保存。业务数据更新成功后，pay对象写入支付状态2</p>
 
           
         

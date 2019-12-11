@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="支付宝和微信1、支付宝app支付 2、支付宝二维码支付 3、跳转支付地址支付 4、支付宝WAP支付（H5） 5、微信app支付 6、微信二维码支付 7、微信公众号JSAPI支付 8、微信WAP支付（H5） 9、微信小程序支付 实现构造pay对象pay对象包含属性有：用户id、订单id(List)、支付金额、支付状态、支付类型（aliqr、aliurl、aliwap、aliapp）、支付订单的类型（">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-11T12:27:14.300Z">
+<meta property="og:updated_time" content="2019-12-11T12:30:37.142Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="支付模块梳理">
 <meta name="twitter:description" content="支付宝和微信1、支付宝app支付 2、支付宝二维码支付 3、跳转支付地址支付 4、支付宝WAP支付（H5） 5、微信app支付 6、微信二维码支付 7、微信公众号JSAPI支付 8、微信WAP支付（H5） 9、微信小程序支付 实现构造pay对象pay对象包含属性有：用户id、订单id(List)、支付金额、支付状态、支付类型（aliqr、aliurl、aliwap、aliapp）、支付订单的类型（">
@@ -415,9 +415,9 @@
 <p>9、微信小程序支付</p>
 <h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="构造pay对象"><a href="#构造pay对象" class="headerlink" title="构造pay对象"></a>构造pay对象</h2><p>pay对象包含属性有：用户id、订单id(List)、支付金额、支付状态、支付类型（aliqr、aliurl、aliwap、aliapp）、支付订单的类型（具体由业务定义）、支付标题，即支付时显示的商品名称、商品信息、服务器异步通知页面路径（回调地址）、页面跳转同步通知页面路径</p>
 <p>若是微信公众号支付，需加上openid，ip(微信支付所需的客户端ip),prepayId（用于发送模板消息）</p>
-<h1 id="入参支付"><a href="#入参支付" class="headerlink" title="入参支付"></a>入参支付</h1><p>将pay对象传入，组装业务参数，调取第三方sdk进行支付。</p>
-<h1 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h1><p>回调结果，支付成功，pay对象写入支付状态1并返回。</p>
-<h1 id="业务数据更新"><a href="#业务数据更新" class="headerlink" title="业务数据更新"></a>业务数据更新</h1><p>根据回调结果以及是否返回pay对象，验证支付成功，进行业务数据更新。<br>主要是订单的记录,创建order并保存。业务数据更新成功后，pay对象写入支付状态2</p>
+<h2 id="入参支付"><a href="#入参支付" class="headerlink" title="入参支付"></a>入参支付</h2><p>将pay对象传入，组装业务参数，调取第三方sdk进行支付。</p>
+<h2 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h2><p>回调结果，支付成功，pay对象写入支付状态1并返回。</p>
+<h2 id="业务数据更新"><a href="#业务数据更新" class="headerlink" title="业务数据更新"></a>业务数据更新</h2><p>根据回调结果以及是否返回pay对象，验证支付成功，进行业务数据更新。<br>主要是订单的记录,创建order并保存。业务数据更新成功后，pay对象写入支付状态2</p>
 
       
     </div>
@@ -601,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#支付宝和微信"><span class="nav-number">1.</span> <span class="nav-text">支付宝和微信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造pay对象"><span class="nav-number">2.1.</span> <span class="nav-text">构造pay对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#入参支付"><span class="nav-number">3.</span> <span class="nav-text">入参支付</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#回调"><span class="nav-number">4.</span> <span class="nav-text">回调</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#业务数据更新"><span class="nav-number">5.</span> <span class="nav-text">业务数据更新</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#支付宝和微信"><span class="nav-number">1.</span> <span class="nav-text">支付宝和微信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造pay对象"><span class="nav-number">2.1.</span> <span class="nav-text">构造pay对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入参支付"><span class="nav-number">2.2.</span> <span class="nav-text">入参支付</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回调"><span class="nav-number">2.3.</span> <span class="nav-text">回调</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务数据更新"><span class="nav-number">2.4.</span> <span class="nav-text">业务数据更新</span></a></li></ol></li></ol></div>
             
 
           </div>
