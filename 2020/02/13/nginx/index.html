@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="nginx介绍Nginx(“engine x”)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。 在高连接并发的情况下，Nginx是Apache服务器不错的替代品。 Nginx 安装下载nginx下载地址：http://nginx.org/download/nginx-1.6.2.tar.gz [ro">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-13T09:22:24.009Z">
+<meta property="og:updated_time" content="2020-02-13T10:21:42.519Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx">
 <meta name="twitter:description" content="nginx介绍Nginx(“engine x”)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。 在高连接并发的情况下，Nginx是Apache服务器不错的替代品。 Nginx 安装下载nginx下载地址：http://nginx.org/download/nginx-1.6.2.tar.gz [ro">
@@ -497,6 +497,176 @@ http
 </code></pre><h1 id="Nginx-其他命令"><a href="#Nginx-其他命令" class="headerlink" title="Nginx 其他命令"></a>Nginx 其他命令</h1><pre><code>/usr/local/webserver/nginx/sbin/nginx -s reload            # 重新载入配置文件
 /usr/local/webserver/nginx/sbin/nginx -s reopen            # 重启 Nginx
 /usr/local/webserver/nginx/sbin/nginx -s stop              # 停止 Nginx
+</code></pre><h1 id="详细配置"><a href="#详细配置" class="headerlink" title="详细配置"></a>详细配置</h1><pre><code>#user  nobody; #配置用户或者组，默认为nobody nobody。
+worker_processes  auto; #number | auto;默认为1，最好配置成auto,自动匹配进程数
+
+ #制定日志路径，级别。这个设置可以放入全局块，http块，server块，级别以此为：debug|info|notice|warn|error|crit|alert|emerg
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid; #指定nginx进程运行文件存放地址
+
+
+events {
+    worker_connections  1024; #最大连接数，默认为512
+}
+
+
+http {
+    include       mime.types; #文件扩展名与文件类型映射表
+    default_type  application/octet-stream;  #默认文件类型，默认为text/plain
+
+    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;
+    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;
+    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on; #允许sendfile方式传输文件，默认为off
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65; #连接超时时间，默认为75s
+
+    #gzip  on; #启用Gizp压缩
+
+    #include /usr/local/nginx/conf/vhost/*;
+
+    server {
+            listen       80;
+            server_name  #监听地址;
+
+            #charset koi8-r;
+
+            #access_log  logs/host.access.log  main;
+
+            location / { #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
+               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
+               #设置禁止浏览器缓存，每次都从服务器请求
+               add_header Cache-Control no-cache;
+               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
+            deny 127.0.0.1;  #拒绝的ip
+               allow 172.18.5.54; #允许的ip
+            }
+
+            location /material/ {
+               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
+               #设置禁止浏览器缓存，每次都从服务器请求
+               add_header Cache-Control no-cache;
+               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
+            }
+     }
+
+     server {
+            listen       80;
+            server_name  #监听地址;
+
+            #charset koi8-r;
+
+            #access_log  logs/host.access.log  main;
+
+            location / { #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
+               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
+               #设置禁止浏览器缓存，每次都从服务器请求
+               add_header Cache-Control no-cache;
+               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
+            deny 127.0.0.1;  #拒绝的ip
+               allow 172.18.5.54; #允许的ip
+            }
+
+            location /material/ {
+               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
+               #设置禁止浏览器缓存，每次都从服务器请求
+               add_header Cache-Control no-cache;
+               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
+            }
+     }
+
+
+    #server {
+    #    listen       80;
+    #    server_name  xxx.com;
+    #
+    #    #charset koi8-r;
+    #
+    #    #access_log  logs/host.access.log  main;
+    #
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #
+    #    #error_page  404              /404.html;
+    #
+    #    # redirect server error pages to the static page /50x.html
+    #    #
+    #    error_page   500 502 503 504  /50x.html;
+    #    location = /50x.html {
+    #        root   html;
+    #    }
+    #
+    #    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #    #
+    #    #location ~ \.php$ {
+    #    #    proxy_pass   http://127.0.0.1;
+    #    #}
+    #
+    #    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #    #
+    #    #location ~ \.php$ {
+    #    #    root           html;
+    #    #    fastcgi_pass   127.0.0.1:9000;
+    #    #    fastcgi_index  index.php;
+    #    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    #    include        fastcgi_params;
+    #    #}
+    #
+    #    # deny access to .htaccess files, if Apache&apos;s document root
+    #    # concurs with nginx&apos;s one
+    #    #
+    #    #location ~ /\.ht {
+    #    #    deny  all;
+    #    #}
+    #}
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+    #
+    #server {
+    #    listen       443 ssl;
+    #    server_name  localhost;
+
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+}
 </code></pre>
       
     </div>
@@ -680,7 +850,7 @@ http
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx介绍"><span class="nav-number">1.</span> <span class="nav-text">nginx介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-安装"><span class="nav-number">2.</span> <span class="nav-text">Nginx 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载nginx"><span class="nav-number">2.1.</span> <span class="nav-text">下载nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压安装包"><span class="nav-number">2.2.</span> <span class="nav-text">解压安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译安装"><span class="nav-number">2.3.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看nginx版本"><span class="nav-number">2.4.</span> <span class="nav-text">查看nginx版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-配置"><span class="nav-number">3.</span> <span class="nav-text">Nginx 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-Nginx-运行使用的用户-www"><span class="nav-number">3.1.</span> <span class="nav-text">创建 Nginx 运行使用的用户 www</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容"><span class="nav-number">3.2.</span> <span class="nav-text">配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查配置文件nginx-conf的正确性命令"><span class="nav-number">3.3.</span> <span class="nav-text">检查配置文件nginx.conf的正确性命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动-Nginx"><span class="nav-number">4.</span> <span class="nav-text">启动 Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-其他命令"><span class="nav-number">5.</span> <span class="nav-text">Nginx 其他命令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx介绍"><span class="nav-number">1.</span> <span class="nav-text">nginx介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-安装"><span class="nav-number">2.</span> <span class="nav-text">Nginx 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载nginx"><span class="nav-number">2.1.</span> <span class="nav-text">下载nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压安装包"><span class="nav-number">2.2.</span> <span class="nav-text">解压安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译安装"><span class="nav-number">2.3.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看nginx版本"><span class="nav-number">2.4.</span> <span class="nav-text">查看nginx版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-配置"><span class="nav-number">3.</span> <span class="nav-text">Nginx 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-Nginx-运行使用的用户-www"><span class="nav-number">3.1.</span> <span class="nav-text">创建 Nginx 运行使用的用户 www</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容"><span class="nav-number">3.2.</span> <span class="nav-text">配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查配置文件nginx-conf的正确性命令"><span class="nav-number">3.3.</span> <span class="nav-text">检查配置文件nginx.conf的正确性命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动-Nginx"><span class="nav-number">4.</span> <span class="nav-text">启动 Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-其他命令"><span class="nav-number">5.</span> <span class="nav-text">Nginx 其他命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详细配置"><span class="nav-number">6.</span> <span class="nav-text">详细配置</span></a></li></ol></div>
             
 
           </div>
