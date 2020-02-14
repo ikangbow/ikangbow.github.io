@@ -102,10 +102,18 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="nginx介绍Nginx(“engine x”)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。 在高连接并发的情况下，Nginx是Apache服务器不错的替代品。 Nginx 安装下载nginx下载地址：http://nginx.org/download/nginx-1.6.2.tar.gz [ro">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-13T10:21:42.519Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/13/nginx/nginx01.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/13/nginx/nginx02.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/13/nginx/nginx03.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/13/nginx/nginx04.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/13/nginx/nginx05.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/13/nginx/nginx06.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/13/nginx/nginx07.png">
+<meta property="og:updated_time" content="2020-02-14T03:30:43.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx">
 <meta name="twitter:description" content="nginx介绍Nginx(“engine x”)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。 在高连接并发的情况下，Nginx是Apache服务器不错的替代品。 Nginx 安装下载nginx下载地址：http://nginx.org/download/nginx-1.6.2.tar.gz [ro">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/13/nginx/nginx01.png">
 
 
 
@@ -667,7 +675,40 @@ http {
     #}
 
 }
-</code></pre>
+</code></pre><h1 id="NGINX之反向代理与负载均衡"><a href="#NGINX之反向代理与负载均衡" class="headerlink" title="NGINX之反向代理与负载均衡"></a>NGINX之反向代理与负载均衡</h1><p>反向代理：</p>
+<p><img src="/2020/02/13/nginx/nginx01.png" alt=""></p>
+<p>从图中，我们可以知道，对于浏览器来说，他会发一个<a href="http://www.a.com/uri请求到Nginx服务器，对于他来说，他认为数据就是从http://www.a.com/uri域中返回的，事实上，当http://www.a.com/uri到达Nginx服务器后，Nginx服务器会将其转发给http://www.b.com/uri,从http://www.b.com/uri域中取得数据并将其返回给浏览器，这个步骤浏览器是不知道的，也就是说，浏览器并不知道http://www.b.com/uri该域的存在，同理，http://www.b.com/uri所在的域（图中的Tomcat）也并不知道浏览器的存在，他也只对Nginx负责。Nginx的这么一个过程便称为反向代理。" target="_blank" rel="noopener">http://www.a.com/uri请求到Nginx服务器，对于他来说，他认为数据就是从http://www.a.com/uri域中返回的，事实上，当http://www.a.com/uri到达Nginx服务器后，Nginx服务器会将其转发给http://www.b.com/uri,从http://www.b.com/uri域中取得数据并将其返回给浏览器，这个步骤浏览器是不知道的，也就是说，浏览器并不知道http://www.b.com/uri该域的存在，同理，http://www.b.com/uri所在的域（图中的Tomcat）也并不知道浏览器的存在，他也只对Nginx负责。Nginx的这么一个过程便称为反向代理。</a></p>
+<p>那么，Nginx服务器是如何实现这一步的呢，事实上也很简单，只需要在location中做一下简单的配置即可，命令大概如下图所示：（配置完命令记得reload重新加载才能生效）</p>
+<p><img src="/2020/02/13/nginx/nginx02.png" alt=""></p>
+<p>重点在于location处，这样的配置代表的是，所有来自浏览器的请求，在Nginx收到之后，都会代理到<a href="http://192.168.1.62:8080所在的地方" target="_blank" rel="noopener">http://192.168.1.62:8080所在的地方</a></p>
+<p>比如，我浏览器上发起<a href="http://192.168.1.61/a/index.html；Nginx收到之后，将会发出http://" target="_blank" rel="noopener">http://192.168.1.61/a/index.html；Nginx收到之后，将会发出http://</a> 192.168.1.62:8080/a/index.html这么一个请求到所连接的服务器上，如上图的Tomcat。</p>
+<p>接下来我们做这样一个假设，假如后端连接着几台。几十台服务器呢，这个时候Nginx也是做同样的代理吗，答案是肯定的。图示如下：那么，在这么多台服务器上，Nginx的转发又是基于怎样的策略呢？这个时候就涉及在负载均衡了，说白了就是，应该怎样的分发，才能做到资源的最大限度的利用？</p>
+<p><img src="/2020/02/13/nginx/nginx03.png" alt=""></p>
+<p>负载均衡策略</p>
+<pre><code>（
+
+我们这里假设三台服务器的IP地址分别为
+
+http:// 192.168.1.62:8080
+
+http:// 192.168.1.63:8080
+
+http:// 192.168.1.64:8080
+
+）
+</code></pre><p><img src="/2020/02/13/nginx/nginx04.png" alt=""></p>
+<p>这里我们把后台所有的服务器放入upstream中，并在代理中进行引用。</p>
+<p><img src="/2020/02/13/nginx/nginx05.png" alt=""></p>
+<p><img src="/2020/02/13/nginx/nginx06.png" alt=""></p>
+<p><img src="/2020/02/13/nginx/nginx07.png" alt=""></p>
+<p>其他的配置<br>备份与停机状态：<br>server 192.168.1.64 backup;//备份，不参与转发，只有当所有服务器都挂掉时才参与转发；</p>
+<p>server 192.168.1.65 down;//临时停机维护，不参与任何转发，是关闭状态，</p>
+<p>down存在的意义在于，有时我们需要对服务器做临时停机更新维护，假如我们直接关闭服务器的话，那么对于Nginx来说，他还是会把请求发到该服务器上的，因为他并不知道服务器已关，而设置down后，Nginx则不会再发到该服务器上了，避免造成无用的请求浪费。</p>
+<p>max_fails:        达到指定次数后认为服务器挂掉</p>
+<p> fail_timeout：挂掉多久后再次测试是否已经挂掉</p>
+<p>配置命令</p>
+<p>server 192.168.1.66 max_fails=2 fail_timeout=60s;</p>
+
       
     </div>
     
@@ -850,7 +891,7 @@ http {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx介绍"><span class="nav-number">1.</span> <span class="nav-text">nginx介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-安装"><span class="nav-number">2.</span> <span class="nav-text">Nginx 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载nginx"><span class="nav-number">2.1.</span> <span class="nav-text">下载nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压安装包"><span class="nav-number">2.2.</span> <span class="nav-text">解压安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译安装"><span class="nav-number">2.3.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看nginx版本"><span class="nav-number">2.4.</span> <span class="nav-text">查看nginx版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-配置"><span class="nav-number">3.</span> <span class="nav-text">Nginx 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-Nginx-运行使用的用户-www"><span class="nav-number">3.1.</span> <span class="nav-text">创建 Nginx 运行使用的用户 www</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容"><span class="nav-number">3.2.</span> <span class="nav-text">配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查配置文件nginx-conf的正确性命令"><span class="nav-number">3.3.</span> <span class="nav-text">检查配置文件nginx.conf的正确性命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动-Nginx"><span class="nav-number">4.</span> <span class="nav-text">启动 Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-其他命令"><span class="nav-number">5.</span> <span class="nav-text">Nginx 其他命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详细配置"><span class="nav-number">6.</span> <span class="nav-text">详细配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nginx介绍"><span class="nav-number">1.</span> <span class="nav-text">nginx介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-安装"><span class="nav-number">2.</span> <span class="nav-text">Nginx 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载nginx"><span class="nav-number">2.1.</span> <span class="nav-text">下载nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压安装包"><span class="nav-number">2.2.</span> <span class="nav-text">解压安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译安装"><span class="nav-number">2.3.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看nginx版本"><span class="nav-number">2.4.</span> <span class="nav-text">查看nginx版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-配置"><span class="nav-number">3.</span> <span class="nav-text">Nginx 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-Nginx-运行使用的用户-www"><span class="nav-number">3.1.</span> <span class="nav-text">创建 Nginx 运行使用的用户 www</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容"><span class="nav-number">3.2.</span> <span class="nav-text">配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查配置文件nginx-conf的正确性命令"><span class="nav-number">3.3.</span> <span class="nav-text">检查配置文件nginx.conf的正确性命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动-Nginx"><span class="nav-number">4.</span> <span class="nav-text">启动 Nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-其他命令"><span class="nav-number">5.</span> <span class="nav-text">Nginx 其他命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详细配置"><span class="nav-number">6.</span> <span class="nav-text">详细配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NGINX之反向代理与负载均衡"><span class="nav-number">7.</span> <span class="nav-text">NGINX之反向代理与负载均衡</span></a></li></ol></div>
             
 
           </div>
