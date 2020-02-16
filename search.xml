@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[win10学linux]]></title>
     <url>%2F2020%2F02%2F16%2Fwin10%E5%AD%A6linux%2F</url>
-    <content type="text"><![CDATA[Linux环境win10家庭版自带虚拟机Hyper-V的设置一般win10家庭版并不带Hyper-V虚拟机，解决方法： 新建Hyper-V.bat文件，内容为 pushd &quot;%~dp0&quot; dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &gt;hyper-v.txt for /f %%i in (&apos;findstr /i . hyper-v.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;%SystemRoot%\servicing\Packages\%%i&quot; del hyper-v.txt Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL 右键-以管理员身份运行，这时就会自动的安装虚拟机功能。]]></content>
+    <content type="text"><![CDATA[Linux环境win10家庭版自带虚拟机Hyper-V的设置一般win10家庭版并不带Hyper-V虚拟机，解决方法： 新建Hyper-V.bat文件，内容为 pushd &quot;%~dp0&quot; dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &gt;hyper-v.txt for /f %%i in (&apos;findstr /i . hyper-v.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;%SystemRoot%\servicing\Packages\%%i&quot; del hyper-v.txt Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL 右键-以管理员身份运行，这时就会自动的安装虚拟机功能。 下载linux镜像下载linux镜像，运行Hyper-V管理器，并加载linux镜像]]></content>
       <categories>
         <category>java</category>
       </categories>

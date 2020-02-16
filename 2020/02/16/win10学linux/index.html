@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="Linux环境win10家庭版自带虚拟机Hyper-V的设置一般win10家庭版并不带Hyper-V虚拟机，解决方法： 新建Hyper-V.bat文件，内容为 pushd &amp;quot;%~dp0&amp;quot;  dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &amp;gt;hyper-v.txt  for /f %%i in (&amp;apos;find">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-02-16T02:43:44.265Z">
+<meta property="og:updated_time" content="2020-02-16T02:58:59.792Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="win10学linux">
 <meta name="twitter:description" content="Linux环境win10家庭版自带虚拟机Hyper-V的设置一般win10家庭版并不带Hyper-V虚拟机，解决方法： 新建Hyper-V.bat文件，内容为 pushd &amp;quot;%~dp0&amp;quot;  dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &amp;gt;hyper-v.txt  for /f %%i in (&amp;apos;find">
@@ -416,6 +416,7 @@ del hyper-v.txt
 
 Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL
 </code></pre><p>右键-以管理员身份运行，这时就会自动的安装虚拟机功能。</p>
+<h2 id="下载linux镜像"><a href="#下载linux镜像" class="headerlink" title="下载linux镜像"></a>下载linux镜像</h2><p>下载linux镜像，运行Hyper-V管理器，并加载linux镜像</p>
 
       
     </div>
@@ -599,7 +600,7 @@ Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /AL
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux环境"><span class="nav-number">1.</span> <span class="nav-text">Linux环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#win10家庭版自带虚拟机Hyper-V的设置"><span class="nav-number">1.1.</span> <span class="nav-text">win10家庭版自带虚拟机Hyper-V的设置</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux环境"><span class="nav-number">1.</span> <span class="nav-text">Linux环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#win10家庭版自带虚拟机Hyper-V的设置"><span class="nav-number">1.1.</span> <span class="nav-text">win10家庭版自带虚拟机Hyper-V的设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载linux镜像"><span class="nav-number">1.2.</span> <span class="nav-text">下载linux镜像</span></a></li></ol></li></ol></div>
             
 
           </div>
