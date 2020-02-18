@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="uni-app,">
 
 
 
@@ -94,16 +94,21 @@
 
 
 
-<meta name="description" content="The Pursuit of Happyness">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Airthink">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="####uni-app的基本使用 课程介绍： 基础部分：  环境搭建 页面外观配置 数据绑定 uni-app的生命周期 组件的使用 uni-app中样式学习 在uni-app中使用字体图标和开启scss 条件注释跨端兼容 uni中的事件 导航跳转 组件创建和通讯，及组件的生命周期 uni-app中使用uni-ui库  项目：黑马商城项目 uni-app介绍 官方网页uni-app 是一个使用 Vu">
+<meta name="keywords" content="uni-app">
+<meta property="og:type" content="article">
+<meta property="og:title" content="uni-app">
+<meta property="og:url" content="http://yoursite.com/2020/02/18/uni-app/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="The Pursuit of Happyness">
+<meta property="og:description" content="####uni-app的基本使用 课程介绍： 基础部分：  环境搭建 页面外观配置 数据绑定 uni-app的生命周期 组件的使用 uni-app中样式学习 在uni-app中使用字体图标和开启scss 条件注释跨端兼容 uni中的事件 导航跳转 组件创建和通讯，及组件的生命周期 uni-app中使用uni-ui库  项目：黑马商城项目 uni-app介绍 官方网页uni-app 是一个使用 Vu">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/02/18/uni-app/images/create.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/02/18/uni-app/images/2view.png">
+<meta property="og:updated_time" content="2020-02-18T06:50:59.941Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Airthink">
-<meta name="twitter:description" content="The Pursuit of Happyness">
+<meta name="twitter:title" content="uni-app">
+<meta name="twitter:description" content="####uni-app的基本使用 课程介绍： 基础部分：  环境搭建 页面外观配置 数据绑定 uni-app的生命周期 组件的使用 uni-app中样式学习 在uni-app中使用字体图标和开启scss 条件注释跨端兼容 uni中的事件 导航跳转 组件创建和通讯，及组件的生命周期 uni-app中使用uni-ui库  项目：黑马商城项目 uni-app介绍 官方网页uni-app 是一个使用 Vu">
+<meta name="twitter:image" content="http://yoursite.com/2020/02/18/uni-app/images/create.jpg">
 
 
 
@@ -132,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/18/uni-app/">
 
 
 
 
 
-  <title>Airthink</title>
+  <title>uni-app | Airthink</title>
   
 
 
@@ -163,9 +168,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-   page-home 
- ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -300,9 +303,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -332,9 +335,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/18/uni-app/" itemprop="url">uni-app</a></h1>
+          <h1 class="post-title" itemprop="name headline">uni-app</h1>
         
 
         <div class="post-meta">
@@ -406,9 +407,7 @@
       
 
       
-        
-          
-            <p>####uni-app的基本使用</p>
+        <p>####uni-app的基本使用</p>
 <p>课程介绍：</p>
 <p>基础部分：</p>
 <ul>
@@ -1134,8 +1133,6 @@
 <p>5、使用组件</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uni-grid</span> <span class="attr">:column</span>=<span class="string">"3"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">uni-grid-item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"text"</span>&gt;</span>文本<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">uni-grid-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">uni-grid-item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"text"</span>&gt;</span>文本<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">uni-grid-item</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">uni-grid-item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"text"</span>&gt;</span>文本<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">uni-grid-item</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">uni-grid</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-          
-        
       
     </div>
     
@@ -1150,605 +1147,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/win10学linux/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/16/win10学linux/" itemprop="url">win10学linux</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-16T10:36:20+08:00">
-                2020-02-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/uni-app/" rel="tag"># uni-app</a>
           
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Linux环境"><a href="#Linux环境" class="headerlink" title="Linux环境"></a>Linux环境</h1><h2 id="win10家庭版自带虚拟机Hyper-V的设置"><a href="#win10家庭版自带虚拟机Hyper-V的设置" class="headerlink" title="win10家庭版自带虚拟机Hyper-V的设置"></a>win10家庭版自带虚拟机Hyper-V的设置</h2><p>一般win10家庭版并不带Hyper-V虚拟机，解决方法：</p>
-<p>新建Hyper-V.bat文件，内容为</p>
-<pre><code>pushd &quot;%~dp0&quot;
-
-dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &gt;hyper-v.txt
-
-for /f %%i in (&apos;findstr /i . hyper-v.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;%SystemRoot%\servicing\Packages\%%i&quot;
-
-del hyper-v.txt
-
-Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL
-</code></pre><p>右键-以管理员身份运行，这时就会自动的安装虚拟机功能。</p>
-<h2 id="下载linux镜像"><a href="#下载linux镜像" class="headerlink" title="下载linux镜像"></a>下载linux镜像</h2><p>下载linux镜像，运行Hyper-V管理器，并加载linux镜像</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
       
 
       
       
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
       
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/13/nginx/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/13/nginx/" itemprop="url">nginx</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-13T17:05:42+08:00">
-                2020-02-13
-              </time>
+              <a href="/2020/02/16/win10学linux/" rel="next" title="win10学linux">
+                <i class="fa fa-chevron-left"></i> win10学linux
+              </a>
             
+          </div>
 
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">nginx</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          
-            <h1 id="nginx介绍"><a href="#nginx介绍" class="headerlink" title="nginx介绍"></a>nginx介绍</h1><p>Nginx(“engine x”)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。</p>
-<p>在高连接并发的情况下，Nginx是Apache服务器不错的替代品。</p>
-<h1 id="Nginx-安装"><a href="#Nginx-安装" class="headerlink" title="Nginx 安装"></a>Nginx 安装</h1><h2 id="下载nginx"><a href="#下载nginx" class="headerlink" title="下载nginx"></a>下载nginx</h2><pre><code>下载地址：http://nginx.org/download/nginx-1.6.2.tar.gz
-[root@bogon src]# cd /usr/local/src/
-[root@bogon src]# wget http://nginx.org/download/nginx-1.6.2.tar.gz
-</code></pre><h2 id="解压安装包"><a href="#解压安装包" class="headerlink" title="解压安装包"></a>解压安装包</h2><pre><code>[root@bogon src]# tar zxvf nginx-1.6.2.tar.gz
-</code></pre><h2 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h2><pre><code>[root@bogon nginx-1.6.2]# ./configure --prefix=/usr/local/webserver/nginx --with-http_stub_status_module --with-http_ssl_module --with-pcre=/usr/local/src/pcre-8.35
-[root@bogon nginx-1.6.2]# make
-[root@bogon nginx-1.6.2]# make install
-</code></pre><h2 id="查看nginx版本"><a href="#查看nginx版本" class="headerlink" title="查看nginx版本"></a>查看nginx版本</h2><pre><code>[root@bogon nginx-1.6.2]# /usr/local/webserver/nginx/sbin/nginx -v
-</code></pre><h1 id="Nginx-配置"><a href="#Nginx-配置" class="headerlink" title="Nginx 配置"></a>Nginx 配置</h1><h2 id="创建-Nginx-运行使用的用户-www"><a href="#创建-Nginx-运行使用的用户-www" class="headerlink" title="创建 Nginx 运行使用的用户 www"></a>创建 Nginx 运行使用的用户 www</h2><pre><code>[root@bogon conf]# /usr/sbin/groupadd www 
-[root@bogon conf]# /usr/sbin/useradd -g www www
-</code></pre><h2 id="配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容"><a href="#配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容" class="headerlink" title="配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容"></a>配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容</h2><pre><code>[root@bogon conf]#  cat /usr/local/webserver/nginx/conf/nginx.conf
-
-user www www;
-worker_processes 2; #设置值和CPU核心数一致
-error_log /usr/local/webserver/nginx/logs/nginx_error.log crit; #日志位置和日志级别
-pid /usr/local/webserver/nginx/nginx.pid;
-#Specifies the value for maximum file descriptors that can be opened by this process.
-worker_rlimit_nofile 65535;
-events
-{
-  use epoll;
-  worker_connections 65535;
-}
-http
-{
-  include mime.types;
-  default_type application/octet-stream;
-  log_format main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;
-               &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;
-               &apos;&quot;$http_user_agent&quot; $http_x_forwarded_for&apos;;
-
-#charset gb2312;
-
-  server_names_hash_bucket_size 128;
-  client_header_buffer_size 32k;
-  large_client_header_buffers 4 32k;
-  client_max_body_size 8m;
-
-  sendfile on;
-  tcp_nopush on;
-  keepalive_timeout 60;
-  tcp_nodelay on;
-  fastcgi_connect_timeout 300;
-  fastcgi_send_timeout 300;
-  fastcgi_read_timeout 300;
-  fastcgi_buffer_size 64k;
-  fastcgi_buffers 4 64k;
-  fastcgi_busy_buffers_size 128k;
-  fastcgi_temp_file_write_size 128k;
-  gzip on; 
-  gzip_min_length 1k;
-  gzip_buffers 4 16k;
-  gzip_http_version 1.0;
-  gzip_comp_level 2;
-  gzip_types text/plain application/x-javascript text/css application/xml;
-  gzip_vary on;
-
-  #limit_zone crawler $binary_remote_addr 10m;
- #下面是server虚拟主机的配置
- server
-  {
-    listen 80;#监听端口
-    server_name localhost;#域名
-    index index.html index.htm index.php;
-    root /usr/local/webserver/nginx/html;#站点目录
-      location ~ .*\.(php|php5)?$
-    {
-      #fastcgi_pass unix:/tmp/php-cgi.sock;
-      fastcgi_pass 127.0.0.1:9000;
-      fastcgi_index index.php;
-      include fastcgi.conf;
-    }
-    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|ico)$
-    {
-      expires 30d;
-  # access_log off;
-    }
-    location ~ .*\.(js|css)?$
-    {
-      expires 15d;
-   # access_log off;
-    }
-    access_log off;
-  }
-
-}
-</code></pre><h2 id="检查配置文件nginx-conf的正确性命令"><a href="#检查配置文件nginx-conf的正确性命令" class="headerlink" title="检查配置文件nginx.conf的正确性命令"></a>检查配置文件nginx.conf的正确性命令</h2><pre><code>[root@bogon conf]# /usr/local/webserver/nginx/sbin/nginx -t
-</code></pre><h1 id="启动-Nginx"><a href="#启动-Nginx" class="headerlink" title="启动 Nginx"></a>启动 Nginx</h1><pre><code>[root@bogon conf]# /usr/local/webserver/nginx/sbin/nginx
-</code></pre><h1 id="Nginx-其他命令"><a href="#Nginx-其他命令" class="headerlink" title="Nginx 其他命令"></a>Nginx 其他命令</h1><pre><code>/usr/local/webserver/nginx/sbin/nginx -s reload            # 重新载入配置文件
-/usr/local/webserver/nginx/sbin/nginx -s reopen            # 重启 Nginx
-/usr/local/webserver/nginx/sbin/nginx -s stop              # 停止 Nginx
-</code></pre><h1 id="详细配置"><a href="#详细配置" class="headerlink" title="详细配置"></a>详细配置</h1><pre><code>#user  nobody; #配置用户或者组，默认为nobody nobody。
-worker_processes  auto; #number | auto;默认为1，最好配置成auto,自动匹配进程数
-
- #制定日志路径，级别。这个设置可以放入全局块，http块，server块，级别以此为：debug|info|notice|warn|error|crit|alert|emerg
-#error_log  logs/error.log;
-#error_log  logs/error.log  notice;
-#error_log  logs/error.log  info;
-
-#pid        logs/nginx.pid; #指定nginx进程运行文件存放地址
-
-
-events {
-    worker_connections  1024; #最大连接数，默认为512
-}
-
-
-http {
-    include       mime.types; #文件扩展名与文件类型映射表
-    default_type  application/octet-stream;  #默认文件类型，默认为text/plain
-
-    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;
-    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;
-    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;
-
-    #access_log  logs/access.log  main;
-
-    sendfile        on; #允许sendfile方式传输文件，默认为off
-    #tcp_nopush     on;
-
-    #keepalive_timeout  0;
-    keepalive_timeout  65; #连接超时时间，默认为75s
-
-    #gzip  on; #启用Gizp压缩
-
-    #include /usr/local/nginx/conf/vhost/*;
-
-    server {
-            listen       80;
-            server_name  #监听地址;
-
-            #charset koi8-r;
-
-            #access_log  logs/host.access.log  main;
-
-            location / { #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            deny 127.0.0.1;  #拒绝的ip
-               allow 172.18.5.54; #允许的ip
-            }
-
-            location /material/ {
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            }
-     }
-
-     server {
-            listen       80;
-            server_name  #监听地址;
-
-            #charset koi8-r;
-
-            #access_log  logs/host.access.log  main;
-
-            location / { #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            deny 127.0.0.1;  #拒绝的ip
-               allow 172.18.5.54; #允许的ip
-            }
-
-            location /material/ {
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            }
-     }
-
-
-    #server {
-    #    listen       80;
-    #    server_name  xxx.com;
-    #
-    #    #charset koi8-r;
-    #
-    #    #access_log  logs/host.access.log  main;
-    #
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #
-    #    #error_page  404              /404.html;
-    #
-    #    # redirect server error pages to the static page /50x.html
-    #    #
-    #    error_page   500 502 503 504  /50x.html;
-    #    location = /50x.html {
-    #        root   html;
-    #    }
-    #
-    #    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-    #    #
-    #    #location ~ \.php$ {
-    #    #    proxy_pass   http://127.0.0.1;
-    #    #}
-    #
-    #    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-    #    #
-    #    #location ~ \.php$ {
-    #    #    root           html;
-    #    #    fastcgi_pass   127.0.0.1:9000;
-    #    #    fastcgi_index  index.php;
-    #    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-    #    #    include        fastcgi_params;
-    #    #}
-    #
-    #    # deny access to .htaccess files, if Apache&apos;s document root
-    #    # concurs with nginx&apos;s one
-    #    #
-    #    #location ~ /\.ht {
-    #    #    deny  all;
-    #    #}
-    #}
-
-
-    # another virtual host using mix of IP-, name-, and port-based configuration
-    #
-    #server {
-    #    listen       8000;
-    #    listen       somename:8080;
-    #    server_name  somename  alias  another.alias;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
-
-    # HTTPS server
-    #
-    #server {
-    #    listen       443 ssl;
-    #    server_name  localhost;
-
-    #    ssl_certificate      cert.pem;
-    #    ssl_certificate_key  cert.key;
-
-    #    ssl_session_cache    shared:SSL:1m;
-    #    ssl_session_timeout  5m;
-
-    #    ssl_ciphers  HIGH:!aNULL:!MD5;
-    #    ssl_prefer_server_ciphers  on;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
-}
-</code></pre><h1 id="NGINX之反向代理与负载均衡"><a href="#NGINX之反向代理与负载均衡" class="headerlink" title="NGINX之反向代理与负载均衡"></a>NGINX之反向代理与负载均衡</h1><p>反向代理：</p>
-<p><img src="/2020/02/13/nginx/nginx01.png" alt=""></p>
-<p>从图中，我们可以知道，对于浏览器来说，他会发一个<a href="http://www.a.com/uri请求到Nginx服务器，对于他来说，他认为数据就是从http://www.a.com/uri域中返回的，事实上，当http://www.a.com/uri到达Nginx服务器后，Nginx服务器会将其转发给http://www.b.com/uri,从http://www.b.com/uri域中取得数据并将其返回给浏览器，这个步骤浏览器是不知道的，也就是说，浏览器并不知道http://www.b.com/uri该域的存在，同理，http://www.b.com/uri所在的域（图中的Tomcat）也并不知道浏览器的存在，他也只对Nginx负责。Nginx的这么一个过程便称为反向代理。" target="_blank" rel="noopener">http://www.a.com/uri请求到Nginx服务器，对于他来说，他认为数据就是从http://www.a.com/uri域中返回的，事实上，当http://www.a.com/uri到达Nginx服务器后，Nginx服务器会将其转发给http://www.b.com/uri,从http://www.b.com/uri域中取得数据并将其返回给浏览器，这个步骤浏览器是不知道的，也就是说，浏览器并不知道http://www.b.com/uri该域的存在，同理，http://www.b.com/uri所在的域（图中的Tomcat）也并不知道浏览器的存在，他也只对Nginx负责。Nginx的这么一个过程便称为反向代理。</a></p>
-<p>那么，Nginx服务器是如何实现这一步的呢，事实上也很简单，只需要在location中做一下简单的配置即可，命令大概如下图所示：（配置完命令记得reload重新加载才能生效）</p>
-<p><img src="/2020/02/13/nginx/nginx02.png" alt=""></p>
-<p>重点在于location处，这样的配置代表的是，所有来自浏览器的请求，在Nginx收到之后，都会代理到<a href="http://192.168.1.62:8080所在的地方" target="_blank" rel="noopener">http://192.168.1.62:8080所在的地方</a></p>
-<p>比如，我浏览器上发起<a href="http://192.168.1.61/a/index.html；Nginx收到之后，将会发出http://" target="_blank" rel="noopener">http://192.168.1.61/a/index.html；Nginx收到之后，将会发出http://</a> 192.168.1.62:8080/a/index.html这么一个请求到所连接的服务器上，如上图的Tomcat。</p>
-<p>接下来我们做这样一个假设，假如后端连接着几台。几十台服务器呢，这个时候Nginx也是做同样的代理吗，答案是肯定的。图示如下：那么，在这么多台服务器上，Nginx的转发又是基于怎样的策略呢？这个时候就涉及在负载均衡了，说白了就是，应该怎样的分发，才能做到资源的最大限度的利用？</p>
-<p><img src="/2020/02/13/nginx/nginx03.png" alt=""></p>
-<p>负载均衡策略</p>
-<pre><code>（
-
-我们这里假设三台服务器的IP地址分别为
-
-http:// 192.168.1.62:8080
-
-http:// 192.168.1.63:8080
-
-http:// 192.168.1.64:8080
-
-）
-</code></pre><p><img src="/2020/02/13/nginx/nginx04.png" alt=""></p>
-<p>这里我们把后台所有的服务器放入upstream中，并在代理中进行引用。</p>
-<p><img src="/2020/02/13/nginx/nginx05.png" alt=""></p>
-<p><img src="/2020/02/13/nginx/nginx06.png" alt=""></p>
-<p><img src="/2020/02/13/nginx/nginx07.png" alt=""></p>
-<p>其他的配置<br>备份与停机状态：<br>server 192.168.1.64 backup;//备份，不参与转发，只有当所有服务器都挂掉时才参与转发；</p>
-<p>server 192.168.1.65 down;//临时停机维护，不参与任何转发，是关闭状态，</p>
-<p>down存在的意义在于，有时我们需要对服务器做临时停机更新维护，假如我们直接关闭服务器的话，那么对于Nginx来说，他还是会把请求发到该服务器上的，因为他并不知道服务器已关，而设置down后，Nginx则不会再发到该服务器上了，避免造成无用的请求浪费。</p>
-<p>max_fails:        达到指定次数后认为服务器挂掉</p>
-<p> fail_timeout：挂掉多久后再次测试是否已经挂掉</p>
-<p>配置命令</p>
-<p>server 192.168.1.66 max_fails=2 fail_timeout=60s;</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -1758,1079 +1186,11 @@ http:// 192.168.1.64:8080
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/奇迹男孩/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/11/奇迹男孩/" itemprop="url">奇迹男孩</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-11T08:59:40+08:00">
-                2020-02-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/电影台词/" itemprop="url" rel="index">
-                    <span itemprop="name">电影台词</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="零"><a href="#零" class="headerlink" title="零"></a>零</h1><p>My mom always said…”if you don’t like where you are…just picture where you wanna be.”（by Auggie）</p>
-<p>我妈妈常说，“如果你不喜欢这里，就想象一个你想去的地方。”(奥吉)</p>
-<h1 id="壹"><a href="#壹" class="headerlink" title="壹"></a>壹</h1><p>“When given the choice between being right or being kind , choose kind.”(Mr Brown’s September Precet)</p>
-<p>“如果要从正确和善良中，做出选择，请选择善良。”（布朗老师的九月箴言）</p>
-<h1 id="叁"><a href="#叁" class="headerlink" title="叁"></a>叁</h1><p>Because I’m your mom , it counts the most because I know you the most.(By Isabel)</p>
-<p>正因为我是你妈妈说话才算数，因为我最了解你。（伊莎贝尔）</p>
-<h1 id="肆"><a href="#肆" class="headerlink" title="肆"></a>肆</h1><p>Because school sucks. And people change.So if you wanna be a normal kid,Auggie,the those are the rules.(By Via)</p>
-<p>上学就是这么糟糕。人也是会变的。如果你想当普通小孩奥吉，这就是规则。（维娅）</p>
-<h1 id="伍"><a href="#伍" class="headerlink" title="伍"></a>伍</h1><p>While nothing justifies striking another student…I know goos friends are worth defending.(By Mr. Tushman)</p>
-<p>虽然殴打同学的行为不能通融，但我知道友情是值得捍卫的。（图始曼先生）</p>
-<h1 id="六"><a href="#六" class="headerlink" title="六"></a>六</h1><p>Maybe if we knew what other people were thinking, we’d know that no one’s ordinary.And we all deserve a standing ovation at least once in our lives.(By Auggie)</p>
-<p>如果我们了解别人的想法，就会知道，没有人是普通的。每个人都值得大家站起来为他鼓掌一次。</p>
-<h1 id="柒"><a href="#柒" class="headerlink" title="柒"></a>柒</h1><p>Be kind,for everyone is fighting a hard battle.And if you really wanna see what people  are… all you have to do ..is look.(By Auggie)</p>
-<p>善良一点，因为每个人都在与人生苦战。如果你想真正了解他人，你只需要用心…去看。（奥吉）</p>
-
-          
-        
+    <div class="post-spread">
       
     </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
   </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/14/圣经解惑/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/14/圣经解惑/" itemprop="url">圣经解惑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-14T13:43:40+08:00">
-                2019-12-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/信仰/" itemprop="url" rel="index">
-                    <span itemprop="name">信仰</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="约拿的神迹"><a href="#约拿的神迹" class="headerlink" title="约拿的神迹"></a>约拿的神迹</h1><p>路加福音11章29节中讲道“这世代是一个邪恶的世代。他们求看神迹，除了约拿的神迹外，再没有神迹给他们看了。约拿怎样为尼尼微人成了神迹，人子也要照这样为这世代的人成为神迹。”</p>
-<p>约拿的神迹是什么？约拿的神迹就是悔改的神迹。尼尼微人因为悔改，而是神改变了要毁灭他们的计划。照样耶稣来世界上就是要让人悔改归向上帝，而脱离灭亡。尼尼微城的最终毁灭，是在约拿之后的几百年后，照样上帝也在宽容和等待世人的悔改。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/12/财务自由体系/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/12/财务自由体系/" itemprop="url">财务自由体系-三元策略</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-12T20:35:03+08:00">
-                2019-12-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/财务/" itemprop="url" rel="index">
-                    <span itemprop="name">财务</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="现金流"><a href="#现金流" class="headerlink" title="现金流"></a>现金流</h1><p>现金流指通过薪资，实业，租金等获取长期的稳定的收入。</p>
-<h1 id="低风险投资"><a href="#低风险投资" class="headerlink" title="低风险投资"></a>低风险投资</h1><p>低风险套利：将现金流进行低风险的证券，债券套利；</p>
-<h1 id="优质增值资产（房地产等）"><a href="#优质增值资产（房地产等）" class="headerlink" title="优质增值资产（房地产等）"></a>优质增值资产（房地产等）</h1>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/11/天道/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/11/天道/" itemprop="url">《天道》</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-11T20:33:41+08:00">
-                2019-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/书摘/" itemprop="url" rel="index">
-                    <span itemprop="name">书摘</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="壹"><a href="#壹" class="headerlink" title="壹"></a>壹</h1><p>“悟，悟道休言天命；修行勿取真经。一悲一喜一枯荣，哪个前生注定。袈裟本无清净，红尘不染性空，幽幽古刹千年钟，都是痴人说梦。”</p>
-<h1 id="贰"><a href="#贰" class="headerlink" title="贰"></a>贰</h1><p>“你是一块玉，但我不是匠人，我不过是一个略懂投机之道的混子。充其量挣几个打发凡夫俗子的铜板，你要求的是一种雄性文化的魂，我不能因为你没有说出来而假装不知道，接受你就接受了一种高度，我没有这个自信。”</p>
-<h1 id="叁"><a href="#叁" class="headerlink" title="叁"></a>叁</h1><p>“透视社会依次有三个层面，技术、制度、文化。小到一个人，大到一个国家一个民族任何一种命运归根到底都是那种文化属性的产物。强势文化造就强者，弱势文化造就弱者，这是规律。也可以理解为天道，不以人的意志为转移。”</p>
-<h1 id="肆"><a href="#肆" class="headerlink" title="肆"></a>肆</h1><p>“天下之道论到极致，百姓的柴米油盐，人生冷暖论到极致，男人女人的一个情字。”</p>
-<h1 id="伍"><a href="#伍" class="headerlink" title="伍"></a>伍</h1><p>“所谓真经，就是能够达到寂空涅槃的究竟法门。可悟不可修。修为成佛，在求。悟为明性，在知。修行以行制性。悟道以性施行。觉着由心生律；修者以律制心，不落恶果者有信无证，住因住果，住念住心，如是生灭。不昧因果者无住而住。无欲不欲。无戒无不戒。如是涅槃。”</p>
-<h1 id="陆"><a href="#陆" class="headerlink" title="陆"></a>陆</h1><p>但知行好事，莫要问前程。</p>
-<h1 id="柒"><a href="#柒" class="headerlink" title="柒"></a>柒</h1><p>“强盗的本质是破格获取，破格获取和直接获取是两个不同的概念。你们没有自信与强者在同一个规则下竞争，这只能说明你是弱者，因为弱势文化所追求的最高价值就是破格获取。所以，强盗的逻辑从本质上讲是懦弱的生存哲学，所以你不算好汉。”</p>
-<h1 id="捌"><a href="#捌" class="headerlink" title="捌"></a>捌</h1><p>神就是道，道就是规律，规律如来，容不得你思议，按规律办事的人就是神。</p>
-<h1 id="玖"><a href="#玖" class="headerlink" title="玖"></a>玖</h1><p>要想做点事，别把自己太当人，别把别人不当人。</p>
-<h1 id="拾"><a href="#拾" class="headerlink" title="拾"></a>拾</h1><p>“如果一个民族的文化从骨子里就是弱势文化属性，怎么可能去承载强势文化的政治、经济衡量一种文化属性不是看他的积淀的时间长短二十看他与客观规律的距离。五千年的文化是光辉，是灿烂。这个没有问题。但是，传统和习俗得过过客观规律的筛子。”</p>
-<h1 id="十一"><a href="#十一" class="headerlink" title="十一"></a>十一</h1><p>“女人是形式逻辑的典范，是辩证逻辑的障碍，我无意摧残女人，也不想被女人摧残。”</p>
-<h1 id="十二"><a href="#十二" class="headerlink" title="十二"></a>十二</h1><p>过于沉静的外表，恰恰诠释着他内心的沉重。</p>
-<h1 id="十三"><a href="#十三" class="headerlink" title="十三"></a>十三</h1><p>“强势文化就是遵循事物规律的文化，弱势文化就是依赖强者得道的期望破格获取的文化，也是期望救主的文化。强势文化在武学上被称为秘笈， 而弱势文化由于易学、 易懂、易用、成了流行品种。”</p>
-<h1 id="十四"><a href="#十四" class="headerlink" title="十四"></a>十四</h1><p>“你的生存状态不是病态，用佛教得话说是自性，无所挂碍，是自在。自在是什么？就是解脱。”</p>
-<h1 id="十五"><a href="#十五" class="headerlink" title="十五"></a>十五</h1><p>“红颜知己自古有之，这还得看男人是不是一杯好酒，自古又有几个男人能把自己酿到淡而又淡得名贵，这不是为之而可为的事，能混就混吧。”</p>
-<h1 id="十六"><a href="#十六" class="headerlink" title="十六"></a>十六</h1><p>“这就是圆融世故，不显山不露水，各得其所。可品行这个东西今天缺个角，明天裂个缝，也就离坍陷不远了。”</p>
-<h1 id="十七"><a href="#十七" class="headerlink" title="十七"></a>十七</h1><p>“这世上原来就没有什么神话。所谓的神话，不过是常人的思维所不易理解的平常事。”</p>
-<h1 id="十八"><a href="#十八" class="headerlink" title="十八"></a>十八</h1><p>“中国的传统文化是皇恩浩荡的文化，他的实用是以皇天在上为先决条件，中国为什么穷，穷就穷在幼稚的思维，穷在期望救主，期望救恩的文化上，这是一个渗透到民族骨子里的价值判断体系。太可怕了！”</p>
-<h1 id="十九"><a href="#十九" class="headerlink" title="十九"></a>十九</h1><p>“马克思主义得道理归根到底一句话，客观规律不以人的意志为转移，什么是客观规律，归根到底也是一句话：一切以时间，地点和条件为转移。”</p>
-<h1 id="二十"><a href="#二十" class="headerlink" title="二十"></a>二十</h1><p>“我们这个民族总是以有文化自居，却忘了问一句，是有什么文化，是真理真相的文化，还是弱势文化，是符合事物规律的文化还是违背事物规律的文化，归根到底都是那种文化属性的产物，不以人的意志为转移。”</p>
-<h1 id="二十壹"><a href="#二十壹" class="headerlink" title="二十壹"></a>二十壹</h1><p>女人与男人的对话方式只有两个，要么躺着，要么站着。所以，我总愿意把你想象成一个流浪街头的醉汉，想收留你，却不敢想象收留你的门槛有多高。你说过，给你扔块馒头就行，可你要的这块馒头太大了，我这个穷家养不活你。</p>
-<h1 id="二十贰"><a href="#二十贰" class="headerlink" title="二十贰"></a>二十贰</h1><p>“佛说，看山是山，看水是水。我只是依佛法如实观照，看摩登女郎实摩登女郎，看红颜知己实红颜知己。”</p>
-<h1 id="二十叁"><a href="#二十叁" class="headerlink" title="二十叁"></a>二十叁</h1><p>“当有人笑话耶稣是傻子的时候，其实谁都不傻，仅仅是两种价值观不兼容。”</p>
-<h1 id="二十肆"><a href="#二十肆" class="headerlink" title="二十肆"></a>二十肆</h1><p>“比如说文化产业。文学、影视是扒拉灵魂的艺术。如果文学影视的创作能破解更高思维空间的文化密码，那么他的功效就是启迪人的觉悟，震撼人的灵魂，这是众生所需，就是功德、市场、 名利、精神拯救的暴利与毒品麻醉完全等值。而且不必像贩毒那样耍花招没有心理成本和法律风险。”</p>
-<h1 id="二十伍"><a href="#二十伍" class="headerlink" title="二十伍"></a>二十伍</h1><p>“股票的暴利并不产生上产经营，而是产生于股票市场本身的投机性。他的运作动力是把你口袋里的钱装到我的口袋里去，他的规律是把大多数的肉填到极少数狼的嘴里。私募基金是从狼嘴里夹肉。这就要求你得比狼更黑更狠，但是心理成本也更高，而且又多了一重股市之外的风险。 所以，得适可而止。”</p>
-<h1 id="二十六"><a href="#二十六" class="headerlink" title="二十六"></a>二十六</h1><p>“灵魂归宿感， 这是人性本能的需要，是人性你帮他找块干净的地方归宿灵魂。”</p>
-<h1 id="二十七"><a href="#二十七" class="headerlink" title="二十七"></a>二十七</h1><p>有道无术，术尚可求，有术无道，止于术。神即道，道法自然,如来!</p>
-<h1 id="二十八"><a href="#二十八" class="headerlink" title="二十八"></a>二十八</h1><p>从心理学角度分析，越是头脑简 单的人越需要点缀和填充，而头脑复杂的 人，则对简洁有着特殊的心理需求。</p>
-<h1 id="二十九"><a href="#二十九" class="headerlink" title="二十九"></a>二十九</h1><p>更高的哲人独处着，不是他们享受孤独，而是在他们身边找不到同类！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/11/支付模块梳理/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/11/支付模块梳理/" itemprop="url">支付模块梳理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-11T20:21:50+08:00">
-                2019-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="支付宝和微信"><a href="#支付宝和微信" class="headerlink" title="支付宝和微信"></a>支付宝和微信</h1><p>1、支付宝app支付</p>
-<p>2、支付宝二维码支付</p>
-<p>3、跳转支付地址支付</p>
-<p>4、支付宝WAP支付（H5）</p>
-<p>5、微信app支付</p>
-<p>6、微信二维码支付</p>
-<p>7、微信公众号JSAPI支付</p>
-<p>8、微信WAP支付（H5）</p>
-<p>9、微信小程序支付</p>
-<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="构造pay对象"><a href="#构造pay对象" class="headerlink" title="构造pay对象"></a>构造pay对象</h2><p>pay对象包含属性有：用户id、订单id(List)、支付金额、支付状态、支付类型（aliqr、aliurl、aliwap、aliapp）、支付订单的类型（具体由业务定义）、支付标题，即支付时显示的商品名称、商品信息、服务器异步通知页面路径（回调地址）、页面跳转同步通知页面路径</p>
-<p>若是微信公众号支付，需加上openid，ip(微信支付所需的客户端ip),prepayId（用于发送模板消息）</p>
-<h2 id="入参支付"><a href="#入参支付" class="headerlink" title="入参支付"></a>入参支付</h2><p>将pay对象传入，组装业务参数，调取第三方sdk进行支付。</p>
-<h2 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h2><p>回调结果，支付成功，pay对象写入支付状态1并返回。</p>
-<h2 id="业务数据更新"><a href="#业务数据更新" class="headerlink" title="业务数据更新"></a>业务数据更新</h2><p>根据回调结果以及是否返回pay对象，验证支付成功，进行业务数据更新。<br>主要是订单的记录,创建order并保存。业务数据更新成功后，pay对象写入支付状态2</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/08/我喜欢辽阔的地方/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/08/我喜欢辽阔的地方/" itemprop="url">《我喜欢辽阔的地方》-毕淑敏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-08T10:31:22+08:00">
-                2019-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/书摘/" itemprop="url" rel="index">
-                    <span itemprop="name">书摘</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="零"><a href="#零" class="headerlink" title="零"></a>零</h1><p>我们那时只有十六七岁，虽说也感到轻微的不适，但都像否认有偷窃行为一样否认有高原反应。那还是一个以为否认就能挽救一切的年纪。</p>
-<h1 id="壹"><a href="#壹" class="headerlink" title="壹"></a>壹</h1><p>她会长大，跨过岁月的栅栏，向远方跑去。我知道她会跌很多跤，瘀很多伤，淌很多泪和汗，有时候也会滴血。。。她将欲火沐风九蒸九焙，从一颗娇嫩的青豆磨练成珍珠。她的目光将不复天真，但依然保持真诚。她的面庞光洁不再，但笑容依旧。她能一直不倦地跑下去，因为她17岁的时候，就已经坚守岗位和职责，就已经懂得了奉献和光荣。</p>
-<h1 id="叁"><a href="#叁" class="headerlink" title="叁"></a>叁</h1><p>病使我们血气方刚，不再原谅，不再敦厚，不再费厄泼赖。</p>
-<h1 id="肆"><a href="#肆" class="headerlink" title="肆"></a>肆</h1><p>也许是离死亡近了，看爱情就更纯正永恒。大的爱也如大的死一般，是宽广和柔软的，云雾似的包容天地。</p>
-<h1 id="伍"><a href="#伍" class="headerlink" title="伍"></a>伍</h1><p>我们不必像小的时候，总要把整碗面都吃光，才知道碗底下并没有卧个鸡蛋。我们以为是碗欺骗了我们，其实是缺少经验。</p>
-<h1 id="陆"><a href="#陆" class="headerlink" title="陆"></a>陆</h1><p>读书是精神的一次牙牙学语。</p>
-<h1 id="柒"><a href="#柒" class="headerlink" title="柒"></a>柒</h1><p>面对苍凉旷远的高原，俯冲而下乜视的鹰眼，散乱在山之巅的病态脏器和牧羊人颜面表皮层永恒的笑容，在那一瞬间，我明白了什么叫作生命。</p>
-<h1 id="捌"><a href="#捌" class="headerlink" title="捌"></a>捌</h1><p>身后，是熟悉的一切，尽管它有令人不悦不满以致腐朽发臭的地方，但我们曾长久地浸泡其中，习惯成自然了。即使是令人痛苦的体验，我们也已经承受并忍耐，熬过了。向前，一切是陌生和昏暗暧昧的。。。</p>
-<h1 id="玖"><a href="#玖" class="headerlink" title="玖"></a>玖</h1><p>回头是土，向前是金。</p>
-<h1 id="拾"><a href="#拾" class="headerlink" title="拾"></a>拾</h1><p>文化这个东西，像胃一样，换不掉的。</p>
-<h1 id="十一"><a href="#十一" class="headerlink" title="十一"></a>十一</h1><p>旅途就是这样，我们会在某个地方以出乎意料的方式遇到某个人，彼此一点儿都不了解，却说了太多的话。</p>
-<h1 id="十二"><a href="#十二" class="headerlink" title="十二"></a>十二</h1><p>日子是一天天地走，书要一页页地读。清风朗月水滴石穿，一年几年一辈子地读下去。书就像微波，从内向外震荡着我们的心，徐徐地加热，精神分子的结构就改变了，成熟了，书的效力最终凸显出来。</p>
-<h1 id="十三"><a href="#十三" class="headerlink" title="十三"></a>十三</h1><p>年龄是生命的坐标，懂得渐渐消失并欣然迎接老迈是一种成熟的光荣。</p>
-<p>真实有时候简陋的可怕。</p>
-<p>黑色如荒草蔓延滋生。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/08/时间简史/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/08/时间简史/" itemprop="url">《时间简史》</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-08T09:53:40+08:00">
-                2019-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/书摘/" itemprop="url" rel="index">
-                    <span itemprop="name">书摘</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="零"><a href="#零" class="headerlink" title="零"></a>零</h1><p>我们看到的宇宙之所以如此，乃是因为我们的存在–人存原理</p>
-<h1 id="壹"><a href="#壹" class="headerlink" title="壹"></a>壹</h1><p>为何宇宙是我们看到的这种样子？答案很简单：如果它不是这样样子，我们就不会在这里。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
 
 
           </div>
@@ -2838,6 +1198,10 @@ http:// 192.168.1.64:8080
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -2858,8 +1222,17 @@ http:// 192.168.1.64:8080
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Airthink">
           <p class="site-author-name" itemprop="name">Airthink</p>
@@ -2932,6 +1305,22 @@ http:// 192.168.1.64:8080
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#uni-app介绍-官方网页"><span class="nav-number">1.</span> <span class="nav-text">uni-app介绍 官方网页</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用HbuilderX初始化项目"><span class="nav-number">3.</span> <span class="nav-text">利用HbuilderX初始化项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#运行项目"><span class="nav-number">4.</span> <span class="nav-text">运行项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#介绍项目目录和文件作用"><span class="nav-number">5.</span> <span class="nav-text">介绍项目目录和文件作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过pages来配置页面"><span class="nav-number">6.</span> <span class="nav-text">通过pages来配置页面</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#配置tabbar"><span class="nav-number">7.</span> <span class="nav-text">配置tabbar</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#condition启动模式配置"><span class="nav-number">8.</span> <span class="nav-text">condition启动模式配置</span></a></li></ol><li class="nav-item nav-level-4"><a class="nav-link" href="#组件的基本使用"><span class="nav-number"></span> <span class="nav-text">组件的基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#text文本组件的用法"><span class="nav-number">1.</span> <span class="nav-text">text文本组件的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#001-text-组件的属性"><span class="nav-number">1.1.</span> <span class="nav-text">001 - text 组件的属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#002-代码案例"><span class="nav-number">1.2.</span> <span class="nav-text">002 - 代码案例</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#view视图容器组件的用法"><span class="nav-number">2.</span> <span class="nav-text">view视图容器组件的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#001-组件的属性"><span class="nav-number">2.1.</span> <span class="nav-text">001 - 组件的属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#002-代码案例-1"><span class="nav-number">2.2.</span> <span class="nav-text">002 - 代码案例</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#button按钮组件的用法"><span class="nav-number">3.</span> <span class="nav-text">button按钮组件的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#001-组件的属性-1"><span class="nav-number">3.1.</span> <span class="nav-text">001 - 组件的属性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#002-案例代码"><span class="nav-number">3.2.</span> <span class="nav-text">002 - 案例代码</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#image组件的使用"><span class="nav-number">4.</span> <span class="nav-text">image组件的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#image"><span class="nav-number">4.1.</span> <span class="nav-text">image</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#uni-app中的样式"><span class="nav-number"></span> <span class="nav-text">uni-app中的样式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#uni-app中的数据绑定"><span class="nav-number"></span> <span class="nav-text">uni-app中的数据绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#插值表达式的使用"><span class="nav-number">1.</span> <span class="nav-text">插值表达式的使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#v-bind动态绑定属性"><span class="nav-number">2.</span> <span class="nav-text">v-bind动态绑定属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#v-for的使用"><span class="nav-number">3.</span> <span class="nav-text">v-for的使用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#uni中的事件"><span class="nav-number"></span> <span class="nav-text">uni中的事件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事件绑定"><span class="nav-number">1.</span> <span class="nav-text">事件绑定</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事件传参"><span class="nav-number">2.</span> <span class="nav-text">事件传参</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#uni的生命周期"><span class="nav-number"></span> <span class="nav-text">uni的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#应用的生命周期"><span class="nav-number">1.</span> <span class="nav-text">应用的生命周期</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#页面的生命周期"><span class="nav-number">2.</span> <span class="nav-text">页面的生命周期</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下拉刷新"><span class="nav-number"></span> <span class="nav-text">下拉刷新</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开启下拉刷新"><span class="nav-number">1.</span> <span class="nav-text">开启下拉刷新</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#通过配置文件开启"><span class="nav-number">1.1.</span> <span class="nav-text">通过配置文件开启</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#通过API开启"><span class="nav-number">1.2.</span> <span class="nav-text">通过API开启</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#监听下拉刷新"><span class="nav-number">2.</span> <span class="nav-text">监听下拉刷新</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关闭下拉刷新"><span class="nav-number">3.</span> <span class="nav-text">关闭下拉刷新</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上拉加载"><span class="nav-number"></span> <span class="nav-text">上拉加载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络请求"><span class="nav-number"></span> <span class="nav-text">网络请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据缓存"><span class="nav-number"></span> <span class="nav-text">数据缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#uni-setStorage"><span class="nav-number">1.</span> <span class="nav-text">uni.setStorage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uni-setStorageSync"><span class="nav-number">2.</span> <span class="nav-text">uni.setStorageSync</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uni-getStorage"><span class="nav-number">3.</span> <span class="nav-text">uni.getStorage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uni-getStorageSync"><span class="nav-number">4.</span> <span class="nav-text">uni.getStorageSync</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uni-removeStorage"><span class="nav-number">5.</span> <span class="nav-text">uni.removeStorage</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#uni-removeStorageSync"><span class="nav-number">6.</span> <span class="nav-text">uni.removeStorageSync</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上传图片、预览图片"><span class="nav-number"></span> <span class="nav-text">上传图片、预览图片</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#上传图片"><span class="nav-number">1.</span> <span class="nav-text">上传图片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#预览图片"><span class="nav-number">2.</span> <span class="nav-text">预览图片</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#条件注释实现跨段兼容"><span class="nav-number"></span> <span class="nav-text">条件注释实现跨段兼容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#组件的条件注释"><span class="nav-number">1.</span> <span class="nav-text">组件的条件注释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#api的条件注释"><span class="nav-number">2.</span> <span class="nav-text">api的条件注释</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#uni中的导航跳转"><span class="nav-number"></span> <span class="nav-text">uni中的导航跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#利用navigator进行跳转"><span class="nav-number">1.</span> <span class="nav-text">利用navigator进行跳转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#利用编程式导航进行跳转"><span class="nav-number">2.</span> <span class="nav-text">利用编程式导航进行跳转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导航跳转传递参数"><span class="nav-number">3.</span> <span class="nav-text">导航跳转传递参数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#uni-app中组件的创建"><span class="nav-number"></span> <span class="nav-text">uni-app中组件的创建</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#组件的生命周期函数"><span class="nav-number">1.</span> <span class="nav-text">组件的生命周期函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组件的通讯"><span class="nav-number"></span> <span class="nav-text">组件的通讯</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#父组件给子组件传值"><span class="nav-number">1.</span> <span class="nav-text">父组件给子组件传值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#子组件给父组件传值"><span class="nav-number">2.</span> <span class="nav-text">子组件给父组件传值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#兄弟组件通讯"><span class="nav-number">3.</span> <span class="nav-text">兄弟组件通讯</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#uni-ui的使用"><span class="nav-number"></span> <span class="nav-text">uni-ui的使用</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -3034,10 +1423,10 @@ http:// 192.168.1.64:8080
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
