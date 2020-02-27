@@ -1201,7 +1201,8 @@ bschool.setProvinces(provinces);
 </code></pre></li>
 <li><p>将匹配到的值全部更新</p>
 <pre><code>db.getCollection(&quot;bschool&quot;).update({&quot;state&quot;:0},{$set:{&quot;state&quot;:&quot;1&quot;}},{&apos;multi&apos;:true}) 
-</code></pre></li>
+</code></pre><p> db.getCollection(“pdfChapterItem”).update({}, {$rename : {“remark” : “abbr”}}, false, true)//更新所有字段名</p>
+</li>
 <li><p>建立索引</p>
 <pre><code>db.bschoolScorelineDetail.ensureIndex({&quot;schoolId&quot;:1,&quot;type&quot;:1,&quot;batch&quot;:1,&quot;province&quot;:1},{&quot;name&quot;：&quot;schoolScorelineDetail&quot;})
 </code></pre><p>mongo中建立索引用ensureIndex({“字段1”:1,”字段2”:”-1”},{“name”:”索引名”})   1和-1代表正序和倒序</p>
