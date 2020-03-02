@@ -105,7 +105,10 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm0.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm1.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm.png">
-<meta property="og:updated_time" content="2020-03-02T07:43:57.985Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm4.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/gc0.png">
+<meta property="og:updated_time" content="2020-03-02T08:42:50.219Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="Java内存区域前提本文讲的基本都是以Sun HotSpot虚拟机为基础的，Oracle收购了Sun后目前得到了两个【Sun的HotSpot和JRockit(以后可能合并这两个),还有一个是IBM的IBMJVM】  Java内存模型Java程序内存的分配是在JVM虚拟机内存分配机制下完成。 Java内存模型（Java Memory Model,JMM）就是一种符合内存模型规范的，屏蔽了各种硬件和操">
@@ -429,6 +432,7 @@
 <p>reference类型：与基本类型不同的是它不等同本身，即使是String，内部也是char数组组成，它可能是只想一个对象起始位置指针，也可能指向一个代表对象的句柄或其他与该对象有关的位置。</p>
 <p>returnAddress:指一条字节码指令的地址。</p>
 <p><img src="/2020/02/27/JVM/jvm.png" alt=""></p>
+<p><img src="/2020/02/27/JVM/jvm3.png" alt=""></p>
 <p>需要注意的是，局部变量表所需要的内存空间在编译期完成分配，当进入一个方法时，这个方法在栈中需要分配多大的局部变量空间时完全确定的，在方法运行期间不会改变局部变量表大小。</p>
 <p>java虚拟机栈可能出现的两种类型的异常：</p>
 <pre><code>1、线程请求的栈深度大于虚拟机允许的栈深度，将抛出StackOverflowError
@@ -445,6 +449,54 @@
 <p>是方法区的一部分，class文件除了有类的字段、接口、方法等描述信息之外，还有常量池用于存放编译期间生成的各种字面量和符号引用。</p>
 <p>在老版jdk，方法区也被称为永久代【因为没有强制要求方法区必须实现垃圾回收，HotSpot虚拟机以永久代来实现方法区，从而JVM的垃圾收集器可以像管理堆区一样管理这部分区域，从而不需要专门为这部分设计垃圾回收机制。不过自从JDK7之后，Hotspot虚拟机便将运行时常量池从永久代移除了。】</p>
 <p>jdk8真正开始废弃永久代，而使用元空间(Metaspace)</p>
+<p><img src="/2020/02/27/JVM/jvm4.png" alt=""></p>
+<h1 id="GC"><a href="#GC" class="headerlink" title="GC"></a>GC</h1><h2 id="GC简介"><a href="#GC简介" class="headerlink" title="GC简介"></a>GC简介</h2><p>GC(Garbage Collection)：即垃圾回收器，诞生于1960年MIT的Lisp语言，主要是用来回收，释放垃圾占用的空间。</p>
+<p>java GC泛指java的垃圾回收机制，该机制是java与C/C++的主要区别之一，我们在日常写java代码的时候，一般都不需要编写内存回收或者垃圾清理的代码，也不需要像C/C++那样做类似delete/free的操作。</p>
+<h2 id="为什么需要学习GC"><a href="#为什么需要学习GC" class="headerlink" title="为什么需要学习GC"></a>为什么需要学习GC</h2><p>对象的内存分配在java虚拟机的自动内存分配机制下，一般不容易出现内存泄漏问题。但是写代码难免会遇到一些特殊情况，比如OOM神马的。。尽管虚拟机内存的动态分配与内存回收技术很成熟，可万一出现了这样那样的内存溢出问题，那么将难以定位错误的原因所在。</p>
+<h3 id="哪些内存要回收"><a href="#哪些内存要回收" class="headerlink" title="哪些内存要回收"></a>哪些内存要回收</h3><p>java内存模型中分为五大区域已经有所了解。我们知道程序计数器、虚拟机栈、本地方法栈，由线程而生，随线程而灭，其中栈中的栈帧随着方法的进入顺序的执行的入栈和出栈的操作，一个栈帧需要分配多少内存取决于具体的虚拟机实现并且在编译期间即确定下来【忽略JIT编译器做的优化，基本当成编译期间可知】，当方法或线程执行完毕后，内存就随着回收，因此无需关心。</p>
+<p>而Java堆、方法区则不一样。方法区存放着类加载信息，但是一个接口中多个实现类需要的内存可能不太一样，一个方法中多个分支需要的内存也可能不一样【只有在运行期间才可知道这个方法创建了哪些对象没需要多少内存】，这部分内存的分配和回收都是动态的，gc关注的也正是这部分的内存。</p>
+<p>Java堆是GC回收的“重点区域”。堆中基本存放着所有对象实例，gc进行回收前，第一件事就是确认哪些对象存活，哪些死去[即不可能再被引用]</p>
+<h3 id="堆的回收区域"><a href="#堆的回收区域" class="headerlink" title="堆的回收区域"></a>堆的回收区域</h3><pre><code>为了高效的回收，jvm将堆分为三个区域
+1.新生代（Young Generation）NewSize和MaxNewSize分别可以控制年轻代的初始大小和最大的大小
+2.老年代（Old Generation）
+3.永久代（Permanent Generation）【1.8以后采用元空间，就不在堆中了】
+</code></pre><h2 id="判断对象是否存活算法"><a href="#判断对象是否存活算法" class="headerlink" title="判断对象是否存活算法"></a>判断对象是否存活算法</h2><p>1.引用计数算法<br>早期判断对象是否存活大多都是以这种算法，这种算法判断很简单，简单来说就是给对象添加一个引用计数器，每当对象被引用一次就加1，引用失效时就减1。当为0的时候就判断对象不会再被引用。<br>优点:实现简单效率高，被广泛使用与如python何游戏脚本语言上。<br>缺点:难以解决循环引用的问题，就是假如两个对象互相引用已经不会再被其它其它引用，导致一直不会为0就无法进行回收。</p>
+<p>2.可达性分析算法<br>目前主流的商用语言[如java、c#]采用的是可达性分析算法判断对象是否存活。这个算法有效解决了循环利用的弊端。<br>它的基本思路是通过一个称为“GC Roots”的对象为起始点，搜索所经过的路径称为引用链，当一个对象到GC Roots没有任何引用跟它连接则证明对象是不可用的。</p>
+<p><img src="/2020/02/27/JVM/gc0.png" alt=""></p>
+<p>可作为GC Roots的对象有四种</p>
+<p>①虚拟机栈(栈桢中的本地变量表)中的引用的对象，就是平时所指的java对象，存放在堆中</p>
+<p>②方法区中的类静态属性引用的对象，一般指被static修饰引用的对象，加载类的时候就加载到内存中</p>
+<p>③方法区中的常量引用的对象</p>
+<p>④本地方法栈中JNI（native方法)引用的对象</p>
+<p>要真正宣告对象死亡需经过两个过程。</p>
+<p>1.可达性分析后没有发现引用链</p>
+<p>2.查看对象是否有finalize方法，如果有重写且在方法内完成自救[比如再建立引用]，还是可以抢救一下，注意这边一个类的finalize只执行一次，这就会出现一样的代码第一次自救成功第二次失败的情况。[如果类重写finalize且还没调用过，会将这个对象放到一个叫做F-Queue的序列里，这边finalize不承诺一定会执行，这么做是因为如果里面死循环的话可能会时F-Queue队列处于等待，严重会导致内存崩溃，这是我们不希望看到的。]</p>
+<h2 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h2><p>1.标记/清除算法【最基础】</p>
+<p>2.复制算法</p>
+<p>3.标记/整理算法</p>
+<p>jvm采用<code>分代收集算法</code>对不同区域采用不同的回收算法。</p>
+<h3 id="新生代采用复制算法"><a href="#新生代采用复制算法" class="headerlink" title="新生代采用复制算法"></a>新生代采用复制算法</h3><p>新生代中因为对象都是”朝生夕死的”，【深入理解JVM虚拟机上说98%的对象,不知道是不是这么多，总之就是存活率很低】，适用于复制算法【复制算法比较适合用于存活率低的内存区域】。它优化了标记/清除算法的效率和内存碎片问题，且JVM不以5:5分配内存【由于存活率低，不需要复制保留那么大的区域造成空间上的浪费，因此不需要按1:1【原有区域:保留空间】划分内存区域，而是将内存分为一块Eden空间和From Survivor、To Survivor【保留空间】，三者默认比例为8:1:1，优先使用Eden区，若Eden区满，则将对象复制到第二块内存区上。但是不能保证每次回收都只有不多于10%的对象存货，所以Survivor区不够的话，则会依赖老年代年存进行分配】。</p>
+<p>GC开始时，对象只会存于Eden和From Survivor区域，To Survivor【保留空间】为空。</p>
+<p>GC进行时，Eden区所有存活的对象都被复制到To Survivor区，而From Survivor区中，仍存活的对象会根据它们的年龄值决定去向，年龄值达到年龄阈值(默认15是因为对象头中年龄战4bit，新生代每熬过一次垃圾回收，年龄+1)，则移到老年代，没有达到则复制到To Survivor。</p>
+<h3 id="老年代采用标记-清除算法或标记-整理算法"><a href="#老年代采用标记-清除算法或标记-整理算法" class="headerlink" title="老年代采用标记/清除算法或标记/整理算法"></a>老年代采用标记/清除算法或标记/整理算法</h3><p>由于老年代存活率高，没有额外空间给他做担保，必须使用这两种算法。</p>
+<h2 id="枚举根节点算法"><a href="#枚举根节点算法" class="headerlink" title="枚举根节点算法"></a>枚举根节点算法</h2><p>GC Roots 被虚拟机用来判断对象是否存活</p>
+<p>可达性分析算法需考虑</p>
+<p>1.如果方法区几百兆，一个个检查里面的引用，将耗费大量资源。</p>
+<p>2.在分析时，需保证这个对象引用关系不再变化，否则结果将不准确。【因此GC进行时需停掉其它所有java执行线程(Sun把这种行为称为‘Stop the World’)，即使是号称几乎不会停顿的CMS收集器，枚举根节点时也需停掉线程】</p>
+<p>解决办法:实际上当系统停下来后JVM不需要一个个检查引用，而是通过OopMap数据结构【HotSpot的叫法】来标记对象引用。</p>
+<p>虚拟机先得知哪些地方存放对象的引用，在类加载完时。HotSpot把对象内什么偏移量什么类型的数据算出来，在jit编译过程中，也会在特定位置记录下栈和寄存器哪些位置是引用，这样GC在扫描时就可以知道这些信息。【目前主流JVM使用准确式GC】</p>
+<p>OopMap可以帮助HotSpot快速且准确完成GC Roots枚举以及确定相关信息。但是也存在一个问题，可能导致引用关系变化。</p>
+<p>这个时候有个safepoint(安全点)的概念。</p>
+<p>HotSpot中GC不是在任意位置都可以进入，而只能在safepoint处进入。 GC时对一个Java线程来说，它要么处在safepoint,要么不在safepoint。</p>
+<p>safepoint不能太少，否则GC等待的时间会很久</p>
+<p>safepoint不能太多，否则将增加运行GC的负担</p>
+<p>安全点主要存放的位置</p>
+<p>1:循环的末尾 </p>
+<p>2:方法临返回前/调用方法的call指令后 </p>
+<p>3:可能抛异常的位置</p>
+<h2 id="Minor-GC、Major-GC、FULL-GC"><a href="#Minor-GC、Major-GC、FULL-GC" class="headerlink" title="Minor GC、Major GC、FULL GC"></a>Minor GC、Major GC、FULL GC</h2><p>Minor GC:在年轻代Young space(包括Eden区和Survivor区)中的垃圾回收称之为 Minor GC,Minor GC只会清理年轻代.</p>
+<p>Major GC:Major GC清理老年代(old GC)，但是通常也可以指和Full GC是等价，因为收集老年代的时候往往也会伴随着升级年轻代，收集整个Java堆。所以有人问的时候需问清楚它指的是full GC还是old GC。</p>
+<p>Full GC:full gc是对新生代、老年代、永久代【jdk1.8后没有这个概念了】统一的回收。</p>
 
       
     </div>
@@ -628,7 +680,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java内存区域"><span class="nav-number">1.</span> <span class="nav-text">Java内存区域</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">1.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.2.</span> <span class="nav-text">Java内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五大内存区域详解"><span class="nav-number">1.3.</span> <span class="nav-text">五大内存区域详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.3.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java栈（虚拟机栈）"><span class="nav-number">1.3.2.</span> <span class="nav-text">Java栈（虚拟机栈）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆"><span class="nav-number">1.3.4.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">1.3.5.</span> <span class="nav-text">方法区</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java内存区域"><span class="nav-number">1.</span> <span class="nav-text">Java内存区域</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提"><span class="nav-number">1.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.2.</span> <span class="nav-text">Java内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五大内存区域详解"><span class="nav-number">1.3.</span> <span class="nav-text">五大内存区域详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.3.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java栈（虚拟机栈）"><span class="nav-number">1.3.2.</span> <span class="nav-text">Java栈（虚拟机栈）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆"><span class="nav-number">1.3.4.</span> <span class="nav-text">堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">1.3.5.</span> <span class="nav-text">方法区</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GC"><span class="nav-number">2.</span> <span class="nav-text">GC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GC简介"><span class="nav-number">2.1.</span> <span class="nav-text">GC简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么需要学习GC"><span class="nav-number">2.2.</span> <span class="nav-text">为什么需要学习GC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#哪些内存要回收"><span class="nav-number">2.2.1.</span> <span class="nav-text">哪些内存要回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆的回收区域"><span class="nav-number">2.2.2.</span> <span class="nav-text">堆的回收区域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判断对象是否存活算法"><span class="nav-number">2.3.</span> <span class="nav-text">判断对象是否存活算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#垃圾收集算法"><span class="nav-number">2.4.</span> <span class="nav-text">垃圾收集算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新生代采用复制算法"><span class="nav-number">2.4.1.</span> <span class="nav-text">新生代采用复制算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#老年代采用标记-清除算法或标记-整理算法"><span class="nav-number">2.4.2.</span> <span class="nav-text">老年代采用标记/清除算法或标记/整理算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举根节点算法"><span class="nav-number">2.5.</span> <span class="nav-text">枚举根节点算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Minor-GC、Major-GC、FULL-GC"><span class="nav-number">2.6.</span> <span class="nav-text">Minor GC、Major GC、FULL GC</span></a></li></ol></li></ol></div>
             
 
           </div>
