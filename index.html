@@ -593,6 +593,22 @@ tenured generation: #老年代
    used     = 26392512 (25.16986083984375MB)
    free     = 6621248 (6.31451416015625MB)
    79.94397487593052% used
+</code></pre><h2 id="linux服务器或tomcat项目启动，进行jvm参数调优设置"><a href="#linux服务器或tomcat项目启动，进行jvm参数调优设置" class="headerlink" title="linux服务器或tomcat项目启动，进行jvm参数调优设置"></a>linux服务器或tomcat项目启动，进行jvm参数调优设置</h2><p>首先执行命令：free -h，查询当前的内存占用情况</p>
+<pre><code>[root@airthink ~]# free -h
+              total        used        free      shared  buff/cache   available
+Mem:           1.8G        1.1G        111M        680K        553M        498M
+Swap:            0B          0B          0B
+</code></pre><p>开始进行优化，执行命令：top，查看各个应用的内存占用情况，选取内存占用过高的pid进程；</p>
+<p><img src="/2020/02/27/JVM/jvm9.png" alt=""></p>
+<p>然后获取pid号31692，根据pid查询对应的进程以及项目路径，执行命令：<br>    ps -aux |grep -v grep|grep 31692</p>
+<pre><code>[root@airthink ~]# ps -aux |grep -v grep|grep 31692
+root     31692  0.1 17.2 2575436 324396 ?      Sl   Feb24  16:53 /usr/local/jdk1.8.0_162/jre/bin/java -Djava.util.logging.config.file=/airthink/apache-tomcat-8.0.50/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dignore.endorsed.dirs= -classpath /airthink/apache-tomcat-8.0.50/bin/bootstrap.jar:/airthink/apache-tomcat-8.0.50/bin/tomcat-juli.jar -Dcatalina.base=/airthink/apache-tomcat-8.0.50 -Dcatalina.home=/airthink/apache-tomcat-8.0.50 -Djava.io.tmpdir=/airthink/apache-tomcat-8.0.50/temp org.apache.catalina.startup.Bootstrap start
+</code></pre><p>定位到项目跟路径之后，开始设置项目启动jvm内存占用，不同项目可分配不同的内存</p>
+<pre><code>如果是springboot项目jar启动，则在启动的时候指定jvm的内存分配：
+java -Xms128m -Xmx256m -jar xxx.jar --server.port =8080
+
+如果是tomcat项目启动，则在bin目录下，执行命令：vim catalina.sh，然后在顶部加上：
+JAVA_OPTS=&quot;-Xms128m -Xmx256m&quot;
 </code></pre>
           
         
