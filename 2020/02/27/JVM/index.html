@@ -106,6 +106,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm1.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm3.png">
+<meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm10.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm4.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/gc0.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm5.png">
@@ -113,7 +114,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm7.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm8.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm9.png">
-<meta property="og:updated_time" content="2020-03-03T07:05:20.992Z">
+<meta property="og:updated_time" content="2020-03-03T13:16:35.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="Java内存区域前提本文讲的基本都是以Sun HotSpot虚拟机为基础的，Oracle收购了Sun后目前得到了两个【Sun的HotSpot和JRockit(以后可能合并这两个),还有一个是IBM的IBMJVM】  Java内存模型Java程序内存的分配是在JVM虚拟机内存分配机制下完成。 Java内存模型（Java Memory Model,JMM）就是一种符合内存模型规范的，屏蔽了各种硬件和操">
@@ -448,6 +449,7 @@
 <p>注意:它是所有线程共享的，它的目的是存放对象实例。同时它也是GC所管理的主要区域，因此常被称为GC堆，又由于现在收集器常使用分代算法，Java堆中还可以细分为新生代和老年代，再细致点还有Eden(伊甸园)空间之类的不做深究。</p>
 <p>根据虚拟机规范，Java堆可以存在物理上不连续的内存空间，就像磁盘空间只要逻辑是连续的即可。它的内存大小可以设为固定大小，也可以扩展。</p>
 <p>当前主流的虚拟机如HotPot都能按扩展实现(通过设置 -Xmx和-Xms)，如果堆中没有内存完成实例分配，而且堆无法扩展将报OOM错误(OutOfMemoryError)</p>
+<p><img src="/2020/02/27/JVM/jvm10.png" alt=""></p>
 <h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>方法区同堆一样，是所有线程共享的内存区域，为了区分堆，又被称为非堆。</p>
 <p>用于存储已被虚拟机加载的类信息、常量、静态变量，如static修饰的变量加载类的时候就被加载到方法区中。</p>
 <p>运行时常量池</p>
