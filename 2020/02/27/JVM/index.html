@@ -112,7 +112,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm6.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm7.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/27/JVM/jvm8.png">
-<meta property="og:updated_time" content="2020-03-03T04:03:57.609Z">
+<meta property="og:updated_time" content="2020-03-03T06:32:20.921Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="Java内存区域前提本文讲的基本都是以Sun HotSpot虚拟机为基础的，Oracle收购了Sun后目前得到了两个【Sun的HotSpot和JRockit(以后可能合并这两个),还有一个是IBM的IBMJVM】  Java内存模型Java程序内存的分配是在JVM虚拟机内存分配机制下完成。 Java内存模型（Java Memory Model,JMM）就是一种符合内存模型规范的，屏蔽了各种硬件和操">
@@ -501,8 +501,45 @@
 <h2 id="Minor-GC、Major-GC、FULL-GC"><a href="#Minor-GC、Major-GC、FULL-GC" class="headerlink" title="Minor GC、Major GC、FULL GC"></a>Minor GC、Major GC、FULL GC</h2><p>Minor GC:在年轻代Young space(包括Eden区和Survivor区)中的垃圾回收称之为 Minor GC,Minor GC只会清理年轻代.</p>
 <p>Major GC:Major GC清理老年代(old GC)，但是通常也可以指和Full GC是等价，因为收集老年代的时候往往也会伴随着升级年轻代，收集整个Java堆。所以有人问的时候需问清楚它指的是full GC还是old GC。</p>
 <p>Full GC:full gc是对新生代、老年代、永久代【jdk1.8后没有这个概念了】统一的回收。</p>
-<h1 id="Linux查看某个服务JVM的GC和堆内存使用情况"><a href="#Linux查看某个服务JVM的GC和堆内存使用情况" class="headerlink" title="Linux查看某个服务JVM的GC和堆内存使用情况"></a>Linux查看某个服务JVM的GC和堆内存使用情况</h1><h2 id="使用-jps-命令查看配置了JVM的服务"><a href="#使用-jps-命令查看配置了JVM的服务" class="headerlink" title="使用 jps 命令查看配置了JVM的服务"></a>使用 jps 命令查看配置了JVM的服务</h2><p><img src="/2020/02/27/JVM/jvm5.png" alt=""></p>
-<h2 id="查看某个进程JVM的GC使用情况"><a href="#查看某个进程JVM的GC使用情况" class="headerlink" title="查看某个进程JVM的GC使用情况"></a>查看某个进程JVM的GC使用情况</h2><pre><code>jstat -gc 71614 5000
+<h1 id="Linux查看某个服务JVM的GC和堆内存使用情况"><a href="#Linux查看某个服务JVM的GC和堆内存使用情况" class="headerlink" title="Linux查看某个服务JVM的GC和堆内存使用情况"></a>Linux查看某个服务JVM的GC和堆内存使用情况</h1><h2 id="使用-jps-命令查看配置了JVM的服务"><a href="#使用-jps-命令查看配置了JVM的服务" class="headerlink" title="使用 jps 命令查看配置了JVM的服务"></a>使用 jps 命令查看配置了JVM的服务</h2><p>Jps(Java Virtual Machine Process Status Tool)是JDK 1.5提供的一个显示当前所有java进程pid的命令，简单实用，非常适合在linux/unix平台上简单察看当前java JVM进程的一些简单情况。</p>
+<pre><code>jps
+列出pid和java主类名
+</code></pre><p><img src="/2020/02/27/JVM/jvm5.png" alt=""></p>
+<pre><code>jps -l
+列出pid和java主类全称
+[root@airthink ~]# jps
+23393 jar
+5401 jenkins.war
+29675 Bootstrap
+31692 Bootstrap
+
+
+[root@airthink ~]# jps -l
+23393 bubu-0.0.1-SNAPSHOT.jar
+5401 /usr/lib/jenkins/jenkins.war
+24746 sun.tools.jps.Jps
+29675 org.apache.catalina.startup.Bootstrap
+31692 org.apache.catalina.startup.Bootstrap
+
+jps -lm
+列出皮带、主类全称和应用程序参数
+[root@airthink ~]# jps -lm
+23393 bubu-0.0.1-SNAPSHOT.jar --server.port=7070
+5401 /usr/lib/jenkins/jenkins.war --logfile=/var/log/jenkins/jenkins.log --webroot=/var/cache/jenkins/war --daemon --httpPort=9090 --debug=5 --handlerCountMax=100 --handlerCountMaxIdle=20
+29675 org.apache.catalina.startup.Bootstrap start
+24908 sun.tools.jps.Jps -lm
+31692 org.apache.catalina.startup.Bootstrap start
+
+jps -v
+列出pid和JVM参数
+
+[root@airthink ~]# jps -v
+23393 jar
+24964 Jps -Denv.class.path=.:/usr/local/jdk1.8.0_162/lib:/usr/local/jdk1.8.0_162/jre/lib: -Dapplication.home=/usr/local/jdk1.8.0_162 -Xms8m
+5401 jenkins.war -Dcom.sun.akuma.Daemon=daemonized -Djava.awt.headless=true -DJENKINS_HOME=/var/lib/jenkins
+29675 Bootstrap -Djava.util.logging.config.file=/airthink/oauth-apache-tomcat-8.5.46/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -Dcatalina.base=/airthink/oauth-apache-tomcat-8.5.46 -Dcatalina.home=/airthink/oauth-apache-tomcat-8.5.46 -Djava.io.tmpdir=/airthink/oauth-apache-tomcat-8.5.46/temp
+31692 Bootstrap -Djava.util.logging.config.file=/airthink/apache-tomcat-8.0.50/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dignore.endorsed.dirs= -Dcatalina.base=/airthink/apache-tomcat-8.0.50 -Dcatalina.home=/airthink/apache-tomcat-8.0.50 -Djava.io.tmpdir=/airthink/apache-tomcat-8.0.50/temp
+</code></pre><h2 id="查看某个进程JVM的GC使用情况"><a href="#查看某个进程JVM的GC使用情况" class="headerlink" title="查看某个进程JVM的GC使用情况"></a>查看某个进程JVM的GC使用情况</h2><pre><code>jstat -gc 71614 5000
 
 jstat -gc 进程号 刷新时间
 </code></pre><p><img src="/2020/02/27/JVM/jvm6.png" alt=""></p>
