@@ -1659,7 +1659,7 @@ bschool.setProvinces(provinces);
 </li>
 <li><p>建立索引</p>
 <pre><code>db.bschoolScorelineDetail.ensureIndex({&quot;schoolId&quot;:1,&quot;type&quot;:1,&quot;batch&quot;:1,&quot;province&quot;:1},{&quot;name&quot;：&quot;schoolScorelineDetail&quot;})
-</code></pre><p>mongo中建立索引用ensureIndex({“字段1”:1,”字段2”:”-1”},{“name”:”索引名”})   1和-1代表正序和倒序</p>
+</code></pre><p> mongo中建立索引用ensureIndex({“字段1”:1,”字段2”:”-1”},{“name”:”索引名”})   1和-1代表正序和倒序</p>
 </li>
 <li><p>mongo数据库备份操作(在mongo的安装目录的bin下执行如下命令)</p>
 <pre><code>不带验证的数据库备份：
@@ -1899,7 +1899,7 @@ fpi.getParams().put(&quot;lte:serialNum&quot;, end);
 //日期查询
 Date currentDate = DateUtil.currentDate();
 String d = DateUtil.format(currentDate,&quot;yyyy-MM-dd HH:mm:ss&quot;);
-fpi.getParams().put(&quot;gte:endDate|datetime&quot;, d);
+fpi.getParams().put(&quot;gte:endDate|datetime&quot;, d);  大于当前日期的翻页查询
 
 聚合查询
 1、Criteria idcardCriteria = new Criteria();
@@ -1914,12 +1914,8 @@ Criteria criteria = new Criteria();
 criteria.andOperator(Criteria.where(&quot;shakyId&quot;).in(gshakyIds), Criteria.where(&quot;userId&quot;).in(userIds));//筛选条件（限定数据范围）
 Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),
         Aggregation.group(&quot;userId&quot;, &quot;shakyId&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC, &quot;count&quot;));//分组  单个字段分组，直接取count;两个字段key 确定唯一一条记录,后续需要手动统计
-
-
-AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(aggregation,
-        Ugclock.class, BasicDBObject.class);
-
-for (BasicDBObject basicDBObject : ar) {
+</code></pre><p>​<br>    AggregationResults<basicdbobject> ar = mongoTemplate.aggregate(aggregation,<br>            Ugclock.class, BasicDBObject.class);</basicdbobject></p>
+<pre><code>for (BasicDBObject basicDBObject : ar) {
     String id = basicDBObject.getString(&quot;shakyId&quot;);
     int count = 1;
     if (shakyCount.containsKey(id)) {
@@ -1946,7 +1942,8 @@ Aggregation agg = Aggregation.newAggregation(
 Aggregation agg = Aggregation.newAggregation(
                 Aggregation.group(new String[] {&quot;_id&quot;}).avg(&quot;num&quot;).as(&quot;num&quot;)
                 );
-</code></pre>
+</code></pre><p>​        </p>
+
           
         
       

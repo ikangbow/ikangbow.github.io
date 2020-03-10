@@ -103,7 +103,7 @@
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/04/06/mongo/aggregation.png">
-<meta property="og:updated_time" content="2020-03-10T10:01:22.664Z">
+<meta property="og:updated_time" content="2020-03-10T15:26:54.874Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -587,7 +587,7 @@ bschool.setProvinces(provinces);
 </li>
 <li><p>建立索引</p>
 <pre><code>db.bschoolScorelineDetail.ensureIndex({&quot;schoolId&quot;:1,&quot;type&quot;:1,&quot;batch&quot;:1,&quot;province&quot;:1},{&quot;name&quot;：&quot;schoolScorelineDetail&quot;})
-</code></pre><p>mongo中建立索引用ensureIndex({“字段1”:1,”字段2”:”-1”},{“name”:”索引名”})   1和-1代表正序和倒序</p>
+</code></pre><p> mongo中建立索引用ensureIndex({“字段1”:1,”字段2”:”-1”},{“name”:”索引名”})   1和-1代表正序和倒序</p>
 </li>
 <li><p>mongo数据库备份操作(在mongo的安装目录的bin下执行如下命令)</p>
 <pre><code>不带验证的数据库备份：
@@ -827,7 +827,7 @@ fpi.getParams().put(&quot;lte:serialNum&quot;, end);
 //日期查询
 Date currentDate = DateUtil.currentDate();
 String d = DateUtil.format(currentDate,&quot;yyyy-MM-dd HH:mm:ss&quot;);
-fpi.getParams().put(&quot;gte:endDate|datetime&quot;, d);
+fpi.getParams().put(&quot;gte:endDate|datetime&quot;, d);  大于当前日期的翻页查询
 
 聚合查询
 1、Criteria idcardCriteria = new Criteria();
@@ -842,12 +842,8 @@ Criteria criteria = new Criteria();
 criteria.andOperator(Criteria.where(&quot;shakyId&quot;).in(gshakyIds), Criteria.where(&quot;userId&quot;).in(userIds));//筛选条件（限定数据范围）
 Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),
         Aggregation.group(&quot;userId&quot;, &quot;shakyId&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC, &quot;count&quot;));//分组  单个字段分组，直接取count;两个字段key 确定唯一一条记录,后续需要手动统计
-
-
-AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(aggregation,
-        Ugclock.class, BasicDBObject.class);
-
-for (BasicDBObject basicDBObject : ar) {
+</code></pre><p>​<br>    AggregationResults<basicdbobject> ar = mongoTemplate.aggregate(aggregation,<br>            Ugclock.class, BasicDBObject.class);</basicdbobject></p>
+<pre><code>for (BasicDBObject basicDBObject : ar) {
     String id = basicDBObject.getString(&quot;shakyId&quot;);
     int count = 1;
     if (shakyCount.containsKey(id)) {
@@ -874,7 +870,8 @@ Aggregation agg = Aggregation.newAggregation(
 Aggregation agg = Aggregation.newAggregation(
                 Aggregation.group(new String[] {&quot;_id&quot;}).avg(&quot;num&quot;).as(&quot;num&quot;)
                 );
-</code></pre>
+</code></pre><p>​        </p>
+
       
     </div>
     
