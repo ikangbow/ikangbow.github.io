@@ -109,7 +109,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/03/10/分布式环境下redis的使用优化/redis4.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/10/分布式环境下redis的使用优化/redis5.png">
 <meta property="og:image" content="http://yoursite.com/2020/03/10/分布式环境下redis的使用优化/redis6.png">
-<meta property="og:updated_time" content="2020-03-10T02:31:09.714Z">
+<meta property="og:updated_time" content="2020-03-10T02:49:03.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式环境下redis的使用优化">
 <meta name="twitter:description" content="分布式与集群单机处理到达瓶颈的时候，你就把单机复制几份，这样就构成了一个“集群”。集群中每台服务器就叫做这个集群的一个“节点”，所有节点构成了一个集群。每个节点都提供相同的服务，那么这样系统的处理能力就相当于提升了好几倍（有几个节点就相当于提升了这么多倍）。但问题是用户的请求究竟由哪个节点来处理呢？最好能够让此时此刻负载较小的节点来处理，这样使得每个节点的压力都比较平均。要实现这个功能，就需要在所">
@@ -430,6 +430,24 @@
         &lt;artifactId&gt;redisson&lt;/artifactId&gt;
         &lt;version&gt;3.6.5&lt;/version&gt;
     &lt;/dependency&gt;
+
+
+  @Bean
+    @ConditionalOnProperty(name=&quot;redisson.address&quot;)
+    RedissonClient redissonSingle() {
+        Config config = new Config();
+        SingleServerConfig serverConfig = config.useSingleServer()
+                .setAddress(redssionProperties.getAddress())
+                .setTimeout(redssionProperties.getTimeout())
+                .setConnectionPoolSize(redssionProperties.getConnectionPoolSize())
+                .setConnectionMinimumIdleSize(redssionProperties.getConnectionMinimumIdleSize());
+
+        if(StringUtils.isNotBlank(redssionProperties.getPassword())) {
+            serverConfig.setPassword(redssionProperties.getPassword());
+        }
+
+        return Redisson.create(config);
+    }
 </code></pre>
       
     </div>

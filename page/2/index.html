@@ -1887,6 +1887,65 @@ if(positionCols!=null){
         logger.info(geoResult.getContent().getBuissName()+&quot;-&quot;+geoResult.getDistance().getValue());
     }
 }
+示例七
+mongo支持的查询参数实例
+fpi.getParams().put(&quot;state|integer&quot;, &quot;1&quot;);           相当于is       一对一
+fpi.getParams().put(&quot;ne:state|integer&quot;, &quot;1&quot;);           相当于not is       一对一
+fpi.getParams().put(&quot;all:keywords&quot;, keyword);        keywords为list 多对一
+fpi.getParams().put(&quot;in:_id|array&quot;, &quot;0,1&quot;);          包含    一对多
+fpi.getParams().put(&quot;nin:_id|array&quot;, &quot;0,1&quot;);         排除id  一对多
+fpi.getParams().put(&quot;gte:serialNum&quot;, start);        
+fpi.getParams().put(&quot;lte:serialNum&quot;, end); 
+//日期查询
+Date currentDate = DateUtil.currentDate();
+String d = DateUtil.format(currentDate,&quot;yyyy-MM-dd HH:mm:ss&quot;);
+fpi.getParams().put(&quot;gte:endDate|datetime&quot;, d);
+
+聚合查询
+1、Criteria idcardCriteria = new Criteria();
+                idcardCriteria.orOperator(Criteria.where(&quot;idcard&quot;).regex(studentIdcard.toLowerCase()),
+                        Criteria.where(&quot;idcard&quot;).regex(studentIdcard.toUpperCase()));
+                criteria.andOperator(idcardCriteria);
+
+Mongodb: Sort operation used more than the maximum 33554432 bytes of RAM
+mongo中所有排序字段加上索引比较好
+
+Criteria criteria = new Criteria();
+criteria.andOperator(Criteria.where(&quot;shakyId&quot;).in(gshakyIds), Criteria.where(&quot;userId&quot;).in(userIds));//筛选条件（限定数据范围）
+Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),
+        Aggregation.group(&quot;userId&quot;, &quot;shakyId&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC, &quot;count&quot;));//分组  单个字段分组，直接取count;两个字段key 确定唯一一条记录,后续需要手动统计
+
+
+AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(aggregation,
+        Ugclock.class, BasicDBObject.class);
+
+for (BasicDBObject basicDBObject : ar) {
+    String id = basicDBObject.getString(&quot;shakyId&quot;);
+    int count = 1;
+    if (shakyCount.containsKey(id)) {
+        count = shakyCount.get(id);
+        count++;
+        shakyCount.put(id, count);
+    } else {
+        shakyCount.put(id, count);
+    }
+}
+
+2、以id为group by计算num的总值sum（）
+Aggregation agg = Aggregation.newAggregation(
+                Aggregation.group(new String[] {&quot;_id&quot;}).sum(&quot;num&quot;).as(&quot;num&quot;)
+                );
+3、以id为group by找出num的最大值max()                
+Aggregation agg = Aggregation.newAggregation(
+                Aggregation.group(new String[] {&quot;_id&quot;}).max(&quot;num&quot;).as(&quot;num&quot;)
+                );                
+Aggregation agg = Aggregation.newAggregation(
+                Aggregation.group(new String[] {&quot;_id&quot;}).min(&quot;num&quot;).as(&quot;num&quot;)
+                );
+4、以id为group by计算num的平均值avg(）
+Aggregation agg = Aggregation.newAggregation(
+                Aggregation.group(new String[] {&quot;_id&quot;}).avg(&quot;num&quot;).as(&quot;num&quot;)
+                );
 </code></pre>
           
         

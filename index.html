@@ -426,6 +426,24 @@
         &lt;artifactId&gt;redisson&lt;/artifactId&gt;
         &lt;version&gt;3.6.5&lt;/version&gt;
     &lt;/dependency&gt;
+
+
+  @Bean
+    @ConditionalOnProperty(name=&quot;redisson.address&quot;)
+    RedissonClient redissonSingle() {
+        Config config = new Config();
+        SingleServerConfig serverConfig = config.useSingleServer()
+                .setAddress(redssionProperties.getAddress())
+                .setTimeout(redssionProperties.getTimeout())
+                .setConnectionPoolSize(redssionProperties.getConnectionPoolSize())
+                .setConnectionMinimumIdleSize(redssionProperties.getConnectionMinimumIdleSize());
+
+        if(StringUtils.isNotBlank(redssionProperties.getPassword())) {
+            serverConfig.setPassword(redssionProperties.getPassword());
+        }
+
+        return Redisson.create(config);
+    }
 </code></pre>
           
         
