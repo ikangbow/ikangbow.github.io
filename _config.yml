@@ -85,8 +85,8 @@ backup:
     type: git
     message: Back up my airthink
     repository:
-       github: git@github.com:ikangbow/ikangbow.github.io.git,backUp
-       coding: git@github.com:ikangbow/ikangbow.github.io.git,backUp
+       github: git@github.com:ikangbow/ikangbow.github.io.git,hexo
+       coding: git@github.com:ikangbow/ikangbow.github.io.git,hexo
 # search
 search:
     path: search.xml
