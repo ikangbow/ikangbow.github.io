@@ -3,7 +3,10 @@
   <entry>
     <title><![CDATA[SpringBoot]]></title>
     <url>%2F2020%2F05%2F23%2FSpringBoot%2F</url>
-    <content type="text"></content>
+    <content type="text"><![CDATA[Spring Boot简介简化Spring应用开发的一个框架 整个Spring技术栈的一个大整合 J2EE开发的一站式解决方案 微服务微服务：架构风格 一个应用应该是一组小型服务；可以通过HTTP的方式进行互通； 每一个功能元素最终都是一个可独立替换和独立升级的软件单元； 环境约束-jdk1.8 -maven 3.x -springboot1.5.9RELEASE MAVEN设置123456789101112&lt;profile&gt;&lt;id&gt;jdk-1.8&lt;/id&gt;&lt;activation&gt;&lt;activeByDefault&gt;true&lt;/activeByDefault&gt;&lt;jdk&gt;1.8&lt;/jdk&gt;&lt;/activation&gt;&lt;properties&gt;&lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;&lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;&lt;maven.compiler.compilerVersion&gt;1.8&lt;/maven.compiler.compilerVersion&gt;&lt;/properties&gt;&lt;/profile&gt; Spring Boot HelloWorld浏览器发送hello请求，服务器接受请求并处理，响应HelloWorld字符串； 创建一个maven工程（jar) 导入springBoot 依赖 123456789101112131415161718192021222324252627&lt;parent&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt; &lt;version&gt;1.5.9.RELEASE&lt;/version&gt; &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;&lt;/parent&gt;&lt;dependencies&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt; &lt;scope&gt;test&lt;/scope&gt; &lt;exclusions&gt; &lt;exclusion&gt; &lt;groupId&gt;org.junit.vintage&lt;/groupId&gt; &lt;artifactId&gt;junit-vintage-engine&lt;/artifactId&gt; &lt;/exclusion&gt; &lt;/exclusions&gt; &lt;/dependency&gt; &lt;dependency&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-starter-logging&lt;/artifactId&gt; &lt;/dependency&gt;&lt;/dependencies&gt; 3.编写主程序，启动Spring Boot应用 1234567891011/** * @Date2020/5/23 12:53 * SpringBootApplication来标注一个主程序 **/@SpringBootApplicationpublic class HelloWorldMainApplication &#123; public static void main(String[] args) &#123; //spring应用启动起来 SpringApplication.run(HelloWorldMainApplication.class,args); &#125;&#125; 运行主程序测试简化部署123456789&lt;!--可以将应用打包成一个可执行的jar宝--&gt; &lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt; &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt; 将这个应用打成jar包，直接用java -jar的命令进行执行；]]></content>
+      <tags>
+        <tag>springboot</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[mongo]]></title>
@@ -203,7 +206,7 @@
   <entry>
     <title><![CDATA[常用命令]]></title>
     <url>%2F2019%2F05%2F04%2F%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%2F</url>
-    <content type="text"><![CDATA[项目拷贝1.项目右键 –&gt; properties –&gt; Web Project Settings –&gt; 修改Context root 2.pom.xml 3.工作空间中找到当前项目下.project文件 4.工作空间中找到当前项目，打开.settings文件夹，找到org.eclipse.wst.common.component文件 5..component hexo 记录1.hexo new ‘页面名称’ 2.hexo clean 清除 3.hexo g 4.hexo d]]></content>
+    <content type="text"><![CDATA[项目拷贝1.项目右键 –&gt; properties –&gt; Web Project Settings –&gt; 修改Context root 2.pom.xml 3.工作空间中找到当前项目下.project文件 4.工作空间中找到当前项目，打开.settings文件夹，找到org.eclipse.wst.common.component文件 5..component hexo 记录1.hexo new ‘页面名称’ 2.hexo clean 清除 3.hexo g 4.hexo d 5.hexo b备份]]></content>
       <categories>
         <category>java</category>
       </categories>
