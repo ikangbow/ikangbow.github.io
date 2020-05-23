@@ -425,8 +425,11 @@
 <p>​    给容器中导入组件</p>
 <p>​    EnableAutoConfigurationImportSelector：导入那些组件的选择器；</p>
 <p>​    将所有需要导入的组件以全类名的方式返回；</p>
-<p>​    会给容器中导入非常多的自动配置类（xxxAutoConfiguration）;就是给容器中导入这个场景需要的所有组件，并配置好这些组件；免去了我们手动编写配置注入功能组件。</p>
+<p>​    会给容器中导入非常多的自动配置类（xxxAutoConfiguration）;就是给容器中导入这个场景需要的所有组件，并配置好这些组件；免去了我们手动编写配置注入功能组件的工作。</p>
 <p><img src="/2020/05/23/SpringBoot/H:/hexo\ikangbow.github.io\source\_posts\SpringBoot\批注 2020-05-23 145433.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SpringFactoriesLoader.loadFactoryNames(</span><br><span class="line">      getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());</span><br></pre></td></tr></table></figure>
+<p>Spring Boot在启动的时候从类路径下的”META-INF/spring.factories”中获取EnableAutoConfiguration指定的值，将这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作。</p>
+<p>J2EE的整体整合解决方案和自动配置都在m2\repository\org\springframework\boot\spring-boot-autoconfigure\1.5.9.RELEASE\spring-boot-autoconfigure-1.5.9.RELEASE.jar</p>
 
           
         
