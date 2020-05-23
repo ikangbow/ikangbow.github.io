@@ -8,7 +8,7 @@
   <entry>
     <title><![CDATA[SpringBoot]]></title>
     <url>%2F2020%2F05%2F23%2Fmongo%2F</url>
-    <content type="text"><![CDATA[环境约束-jdk1.8:SpringBoot 1.7及以上；java version “1.8.0_181”-maven3.x:maven 3.3以上版本；Apache Maven 3.5.3-idea-SpringBoot 1.5.9.RELEASE:1.5.9;MAVEN设置给maven的settings.xml配置文件的profiles标签添加 &lt;profile&gt; &lt;id&gt;jdk-1.8&lt;/id&gt; &lt;activation&gt; &lt;activeByDefault&gt;&lt;/activeByDefault&gt; &lt;jdk&gt;1.8&lt;/jdk&gt; &lt;/activation&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt; &lt;maven.compiler.compilerVersion&gt;1.8&lt;/maven.compiler.compilerVersion&gt; &lt;/properties&gt; &lt;/profile&gt;]]></content>
+    <content type="text"><![CDATA[环境约束-jdk1.8:SpringBoot 1.7及以上；java version “1.8.0_181”-maven3.x:maven 3.3以上版本；Apache Maven 3.5.3-idea-SpringBoot 1.5.9.RELEASE:1.5.9;MAVEN设置给maven的settings.xml配置文件的profiles标签添加 123456789101112`&lt;profile&gt; &lt;id&gt;jdk-1.8&lt;/id&gt; &lt;activation&gt; &lt;activeByDefault&gt;&lt;/activeByDefault&gt; &lt;jdk&gt;1.8&lt;/jdk&gt; &lt;/activation&gt; &lt;properties&gt; &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt; &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt; &lt;maven.compiler.compilerVersion&gt;1.8&lt;/maven.compiler.compilerVersion&gt; &lt;/properties&gt; &lt;/profile&gt;`]]></content>
       <tags>
         <tag>springBoot</tag>
       </tags>
