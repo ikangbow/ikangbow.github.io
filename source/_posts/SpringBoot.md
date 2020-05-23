@@ -2,6 +2,7 @@
 title: SpringBoot
 date: 2020-05-23 08:51:04
 tags: springboot
+category: java
 ---
 
 ## 一、Spring Boot入门
