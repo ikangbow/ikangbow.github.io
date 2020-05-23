@@ -470,7 +470,7 @@ public class SearchKeyWords {
 }
 ```
 
-![aggregation.png](H:\hexo\ikangbow.github.io\source\_posts\mongo\aggregation.png)
+![](aggregation.png)
 
 ```
 示例二

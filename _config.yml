@@ -83,6 +83,7 @@ deploy:
   branch: master
 backup:
     type: git
+    message: Back up my airthink
     repository:
        github: git@github.com:ikangbow/ikangbow.github.io.git,backUp
        coding: git@github.com:ikangbow/ikangbow.github.io.git,backUp

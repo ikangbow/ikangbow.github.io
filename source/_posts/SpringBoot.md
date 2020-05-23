@@ -4,8 +4,6 @@ date: 2020-05-23 08:51:04
 tags: springboot
 ---
 
-## Spring Boot入门
-
 ## 一、Spring Boot入门
 
 ### 1、Spring Boot简介
@@ -248,7 +246,7 @@ SpringFactoriesLoader.loadFactoryNames(
       getSpringFactoriesLoaderFactoryClass(), getBeanClassLoader());
 ```
 
-![批注 2020-05-23 145433.jpg]()
+![](批注 2020-05-23 145433.jpg)
 
 Spring Boot在启动的时候从类路径下的"META-INF/spring.factories"中获取EnableAutoConfiguration指定的值，将这些值作为自动配置类导入到容器中，自动配置类就生效，帮我们进行自动配置工作。
 
@@ -271,3 +269,140 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
    templates:保存所有的页面模板；（Spring Boot默认jar包使用嵌入式的Tomcat,默认不支持JSP页面）；可以使用模板引擎（freemarker、thymeleaf）;
 
    application.properties:Spring Boot 的配置文件，可以修改一些默认设置；
+
+## 二、配置文件
+
+### 1、SpringBoot使用一个全局的配置文件，配置文件名是固定的；
+
+application.properties
+
+application.yml
+
+配置文件的作用：修改SpringBoot自动配置的默认值
+
+SpringBoot在底层都给我们自动配置好；
+
+YAML是一个标记语言：以前的配置大都使用xxx.xml文件，而yaml以数据为中心，比json,xml更适合作配置文件
+
+### 2、YAML语法
+
+#### 1、k: v :标识一对键值对（空格必须有）
+
+以空格的缩进来控制层级关系，只要左对齐的一列数据，都是一个层级的，属性和值也是大小写敏感；
+
+#### 2、值的写法
+
+字面量：普通的值（数字、字符串、布尔）
+
+​	字面量直接来写，字符串默认不用加上单引号或者双引号
+
+​	"":双引号，不会转义字符串里面的特殊字符，特殊字符会作为本身想表示的意思
+
+​		name: "zhangsan \n lisi" 输出zhangsan 换行 lisi
+
+​	'':单引号，会转义特殊字符，输出zhangsan \n lisi
+
+对象、map（属性和值）（键值对）
+
+​	k:v :对象还是k:v的形式
+
+```yml
+friends:
+	lastName: zhangsan
+		age: 18
+```
+
+​	行内写法
+
+```yml
+friends{lastName:zhangsan,age:18}
+```
+
+数组（list、set）
+
+```yml
+pets:
+ - cat
+ - dog
+ - pig
+```
+
+​	行内写法
+
+```yml
+pets:{cat,dog,pig}
+```
+
+#### 3、配置文件的注入和校验
+
+```yml
+person:
+  name: zhangsan
+  age: 18
+  boss: false
+  birth: 2020/12/12
+  map: {k1: v1,k2: 12}
+  objectList:
+    - lisi
+    - wangwu
+  dog:
+    name: mumu
+    age: 2
+```
+
+javaBean
+
+```java
+/**
+ * @ClassNamePerson
+ * @Description 将配置文件中的每一个属性的值映射到这个组件中
+ * @Author
+ * @Date2020/5/23 16:08
+ * @ConfigurationProperties告诉SpringBoot将本类中的所有属性和配置文件中相关的配置进行绑定
+ * prefix = "person":配置文件中哪个下面的所有属性进行一一映射
+ * 只有这个组件是容器中的组件，才能用容器提供的@ConfigurationProperties功能,需要加上@Component
+ * @ConfigurationProperties(prefix = "person")默认从全局配置文件中获取值
+ **/
+@Component
+@ConfigurationProperties(prefix = "person")
+public class Person {
+    private String name;
+    private Integer age;
+    private boolean boss;
+    private Date birth;
+    private Map<String,Object> map;
+    private List<Object> objectList;
+    private Dog dog;
+```
+
+我们可以导入配置文件处理器，以后编写配置就有提示了
+
+```xml
+ <!--导入配置文件处理器，配置文件进行绑定就会有提示-->
+ <dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-configuration-processor</artifactId>
+     <optional>true</optional>
+ </dependency>
+```
+
+|                | @ConfigurationProperties   | @Value     |
+| -------------- | -------------------------- | ---------- |
+| 功能           | 批量注入文件的属性         | 一个个指定 |
+| 松散绑定       | 支持（lastName,last-name） | 不支持     |
+| SpEL           | 不支持                     | 支持       |
+| JSR303数据校验 | 支持                       | 不支持     |
+| 复杂类型封装   | 支持                       | 不支持     |
+
+配置文件yml还是properties都可获取到值
+
+如果只需要获取简单属性值可用@Value
+
+#### 4、@PropertySource&ImportResource
+
+@PropertySource:加载指定的配置文件
+
+
+
+
+
