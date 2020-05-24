@@ -849,3 +849,325 @@ Did not match:
 - @ConditionalOnClass did not find required class 'javax.jms.ConnectionFactory' (OnClassCondition)
 ```
 
+## 三、Spring Boot与日志
+
+#### 1、日志门面SLF4J  日志实现Logback;
+
+SpringBoot:底层是Spring框架，Spring框架默认用JCL;
+
+SpringBoot选用SLF4J(日志的抽象层)和logback;
+
+以后开发的时候，日志记录方法的调用，不应该来直接调用日志的实现类，而是调用日志抽象曾里面的方法。
+
+应该给系统导入slf4j的jar和logback的实现jar
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class HelloWorld {
+  public static void main(String[] args) {
+    Logger logger = LoggerFactory.getLogger(HelloWorld.class);
+    logger.info("Hello World");
+  }
+}
+```
+
+![](批注 2020-05-24 123704.png)
+
+每一个日志的实现框架都有自己的配置文件。使用slf4j后，*配置文件还是做成日志实现框架自己本身的配置文件*；
+
+#### 2、遗留问题
+
+不同系统有不同的日志框架，需要做到统一日志记录，即使别的框架和我一起使用slf4j进行输出
+
+![](legacy.png)![legacy](H:\hexo\ikangbow.github.io\source\_posts\SpringBoot\legacy.png)
+
+如何让系统中所有日志都统一到slf4j
+
+将系统中其他日志框架排除，用中间包替换原有的日志框架，再导入slf4d其他的实现
+
+```
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter</artifactId>
+	<version>2.3.0.RELEASE</version>
+	<scope>compile</scope>
+</dependency>
+```
+
+SpringBoot 使用它来做日志
+
+```
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-logging</artifactId>
+	<version>2.3.0.RELEASE</version>
+	<scope>compile</scope>
+</dependency>
+```
+
+```
+<dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-to-slf4j</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+```
+
+![](批注 2020-05-24 125540.png)
+
+总结：1、SpringBoot底层也是使用slf4j+logback的方式进行日志记录
+
+​			2、SpringBoot也把其他的日志都替换成了slf4j
+
+​			3、中间替换包
+
+​			4、如果要引入其他框架，一定要把这个框架的默认日志移除掉
+
+​					Spring框架用的commons-logging;
+
+```xml
+<dependency>
+    <groupId>org.apache.activemq</groupId>
+    <artifactId>activemq-console</artifactId>
+    <version>${activemq.version}</version>
+        <exclusions>
+            <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            </exclusion>
+        </exclusions>
+</dependency>
+```
+
+*SpringBoot能自动适配所有的日志，而且底层使用slf4j+logback的方式记录日志，引入其他框架的时候，只需要把这个框架依赖的日志框架排除掉。*
+
+```java
+private static Logger logger = LoggerFactory.getLogger(HelloApplication.class);
+public static void main(String[] args) {
+    SpringApplication.run(HelloApplication.class, args);
+    //日志级别由低到高
+    //可以调整输出的日志级别
+    logger.trace("trace");
+    logger.debug("debug");
+    logger.info("HelloApplication is Success");
+    logger.warn("warn");
+    logger.error("error");
+}
+```
+
+```
+logging.pattern.console=%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n
+
+%d表示日期时间
+%thread表示线程名
+%-5level:级别从左显示5个字符的宽度
+%logger{50}表示logger名字最长50个字符，否则按照句点分割
+%msg:日志消息
+%n换行符
+```
+
+SpringBoot修改默认日志配置
+
+```
+logging.level.com.think=trace
+#当前项目下生成springboot.log日志，可以指定完整的路径D:/springboot.log
+#logging.file.name=springboot.log
+#在当前磁盘的根路径下创建spring文件夹和里面的log文件夹；使用spring.log做为默认文件
+logging.file.path=/spring/log
+#在控制台输出的日志的格式
+logging.pattern.console=%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n
+#指定文件中日志的输出格式
+logging.pattern.file=%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n
+```
+
+```
+<!-- 日志记录器，日期滚动记录 -->
+<appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+<!-- 正在记录的日志文件的路径及文件名 -->
+<file>${LOG_PATH}/log_error.log</file>
+
+<!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+
+<!-- 归档的日志文件的路径，%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+<fileNamePattern>${LOG_PATH}/error/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+
+<!-- 除按日志记录之外，还配置了日志文件不能超过2M，若超过2M，日志文件会以索引0开始，
+命名日志文件，例如log-error-2013-12-21.0.log -->
+<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+<maxFileSize>10MB</maxFileSize>
+</timeBasedFileNamingAndTriggeringPolicy>
+</rollingPolicy>
+
+<!-- 追加方式记录日志 -->
+<append>true</append>
+
+<!-- 日志文件的格式 -->
+<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+<pattern>${FILE_LOG_PATTERN}</pattern>
+<charset>utf-8</charset>
+</encoder>
+
+<!-- 此日志文件只记录error级别的 -->
+<filter class="ch.qos.logback.classic.filter.LevelFilter">
+<level>error</level>
+<onMatch>ACCEPT</onMatch>
+<onMismatch>DENY</onMismatch>
+</filter>
+</appender>
+```
+
+可以按照slfj的日志适配图，进行相关的切换
+
+## 四、Spring Boot 与Web开发
+
+### 1、使用SpringBoot
+
+#### 1、创建SpringBoot应用，选中我们需要的模块；
+
+#### 2、SpringBoot已经默认将这些场景配置好了，只需要在配置文件中指定少量配置就可以运行起来；
+
+#### 3、自己编写业务逻辑代码；
+
+### 2、自动配置原理
+
+这个场景SpringBoot帮我们配置了什么，能不能修改，能修改哪些配置，能不能扩展
+
+xxxAutoConfiguration:帮我们给容器中自动配置组件
+
+xxxProperties：配置类来封装配置文件中的内容
+
+### 3、SpringBoot对静态资源的映射规则
+
+ResourceProperties可以设置静态资源有关的参数，缓存时间等
+
+```java
+@ConfigurationProperties(prefix = "spring.resources", ignoreUnknownFields = false)
+public class ResourceProperties {
+
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
+			"classpath:/resources/", "classpath:/static/", "classpath:/public/" };
+
+	/**
+	 * Locations of static resources. Defaults to classpath:[/META-INF/resources/,
+	 * /resources/, /static/, /public/].
+```
+
+
+
+```java
+@Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    if (!this.resourceProperties.isAddMappings()) {
+        logger.debug("Default resource handling disabled");
+        return;
+    }
+    Duration cachePeriod = this.resourceProperties.getCache().getPeriod();
+    CacheControl cacheControl = this.resourceProperties.getCache().getCachecontrol().toHttpCacheControl();
+    if (!registry.hasMappingForPattern("/webjars/**")) {
+        customizeResourceHandlerRegistration(registry.addResourceHandler("/webjars/**")
+        .addResourceLocations("classpath:/META-INF/resources/webjars/")
+        .setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));
+    }
+    String staticPathPattern = this.mvcProperties.getStaticPathPattern();
+    if (!registry.hasMappingForPattern(staticPathPattern)) {
+    customizeResourceHandlerRegistration(registry.addResourceHandler(staticPathPattern)
+    .addResourceLocations(getResourceLocations(this.resourceProperties.getStaticLocations()))
+    .setCachePeriod(getSeconds(cachePeriod)).setCacheControl(cacheControl));
+    }
+}
+```
+
+所有/webjars/**都去classpath:/META-INF/resources/webjars/找资源
+
+webjars:以jar包的方式引入静态资源；
+
+https://www.webjars.org/
+
+![](批注 2020-05-24 160548.png)
+
+http://localhost:8080/webjars/jquery/3.5.1/jquery.js
+
+```
+<!--引入jquery-webjar-->
+<dependency>
+    <groupId>org.webjars</groupId>
+    <artifactId>jquery</artifactId>
+    <version>3.5.1</version>
+</dependency>
+```
+
+/**访问当前项目的任何资源（静态资源文件夹）
+
+```
+”/“：当前项目的根路径
+“classpath:/META-INF/resources/",
+"classpath:/resources/", 
+"classpath:/static/", 
+"classpath:/public/
+```
+
+```
+#以什么样的路径访问静态资源
+spring.mvc.static-path-pattern=/static/**
+Spring Boot 2.3要在配置文件配置静态资源访问路径
+```
+
+
+
+欢迎页，静态资源文件夹下所有的index.html页面；被”/**“映射
+
+所有的**/favicon.ico都是在静态资源文件下找
+
+### 4、模板引擎
+
+Thymeleaf
+
+语法更简单，功能更强大
+
+#### 1、引入Thymeleaf
+
+```xml
+<!--模板引擎-->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+```java
+@ConfigurationProperties(prefix = "spring.thymeleaf")
+public class ThymeleafProperties {
+
+	private static final Charset DEFAULT_ENCODING = StandardCharsets.UTF_8;
+	//只要我们把html页面放在classpath:/templates/，thymeleaf就能自动渲染
+	public static final String DEFAULT_PREFIX = "classpath:/templates/";
+
+	public static final String DEFAULT_SUFFIX = ".html";
+
+	/**
+	 * Whether to check that the template exists before rendering it.
+	 */
+	private boolean checkTemplate = true;
+```
+
+```
+导入thymeleaf的名称空间
+<html xmlns:th="http://www.thymeleaf.org">
+```
+
