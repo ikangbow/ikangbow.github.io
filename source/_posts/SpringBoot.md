@@ -8,7 +8,7 @@ category: java
 
 ## Spring Boot入门
 
-### 1、Spring Boot简介
+### Spring Boot简介
 
 简化Spring应用开发的一个框架
 
@@ -16,7 +16,7 @@ category: java
 
 J2EE开发的一站式解决方案
 
-### 2、微服务
+### 微服务
 
 微服务：架构风格
 
@@ -24,9 +24,9 @@ J2EE开发的一站式解决方案
 
 每一个功能元素最终都是一个可独立替换和独立升级的软件单元；
 
-### 3、环境准备
+### 环境准备
 
-#### 1、环境约束
+#### 环境约束
 
 -jdk1.8
 
@@ -34,7 +34,7 @@ J2EE开发的一站式解决方案
 
 -springboot1.5.9RELEASE
 
-#### 2、MAVEN设置
+#### MAVEN设置
 
 ```xml
 <profile>
@@ -51,13 +51,13 @@ J2EE开发的一站式解决方案
 </profile>
 ```
 
-### 4、Spring Boot HelloWorld
+### Spring Boot HelloWorld
 
 浏览器发送hello请求，服务器接受请求并处理，响应HelloWorld字符串；
 
-#### 1、创建一个maven工程（jar）
+#### 创建一个maven工程（jar）
 
-#### 2、导入springBoot 依赖
+#### 导入springBoot 依赖
 
 ```xml
 <parent>
@@ -89,7 +89,7 @@ J2EE开发的一站式解决方案
 </dependencies>
 ```
 
-#### 3、编写主程序，启动Spring Boot应用
+#### 编写主程序，启动Spring Boot应用
 
 ```java
 /**
@@ -105,11 +105,11 @@ public class HelloWorldMainApplication {
 }
 ```
 
-#### 4、编写相关的Controller、Service
+#### 编写相关的Controller、Service
 
-#### 5、运行主程序测试
+#### 运行主程序测试
 
-#### 6、简化部署
+#### 简化部署
 
 ```xml
 <!--可以将应用打包成一个可执行的jar宝-->
@@ -123,20 +123,20 @@ public class HelloWorldMainApplication {
 </build>
 ```
 
-##### 1、将这个应用打成jar包，直接用java -jar的命令进行执行；
+##### 将这个应用打成jar包，直接用java -jar的命令进行执行；
 
-##### 2、终止运行
+##### 终止运行
 
 ```shell
 netstat -aon|findstr "8080"
 taskkill /f /pid 8976  终止jar命令运行的程序
 ```
 
-### 5、Hello World探究
+### Hello World探究
 
-#### 1、pom文件
+#### pom文件
 
-##### 1、父文件
+##### 父文件
 
 ```xml
 <parent>
@@ -153,7 +153,7 @@ Spring Boot的版本仲裁中心
 
 以后我们导入依赖默认是不需要写版本号的（没有在dependencies里面管理的依赖自然需要声明版本号）
 
-##### 2、导入的依赖
+##### 导入的依赖
 
 ```xml
 <dependency>
@@ -168,7 +168,7 @@ spring-boot-starter-web：
 
 Spring Boot将所有功能场景都抽取出来，做成一个个starters(启动器)，只需要在项目里引入这些starter相关场景的所有依赖都会导入进来。要用什么功能就导入什么场景的启动器
 
-##### 3、主程序类
+##### 主程序类
 
 ```java
 /**
@@ -254,7 +254,7 @@ Spring Boot在启动的时候从类路径下的"META-INF/spring.factories"中获
 
 J2EE的整体整合解决方案和自动配置都在m2\repository\org\springframework\boot\spring-boot-autoconfigure\1.5.9.RELEASE\spring-boot-autoconfigure-1.5.9.RELEASE.jar
 
-### 6、使用Spring Initializer快速创建Spring Boot项目
+### 使用Spring Initializer快速创建Spring Boot项目
 
 IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目；
 
@@ -274,7 +274,7 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
 ## 配置文件
 
-### 1、SpringBoot使用一个全局的配置文件，配置文件名是固定的；
+### SpringBoot使用一个全局的配置文件，配置文件名是固定的；
 
 application.properties
 
@@ -286,13 +286,13 @@ SpringBoot在底层都给我们自动配置好；
 
 YAML是一个标记语言：以前的配置大都使用xxx.xml文件，而yaml以数据为中心，比json,xml更适合作配置文件
 
-### 2、YAML语法
+### YAML语法
 
-#### 1、k: v :标识一对键值对（空格必须有）
+#### k: v :标识一对键值对（空格必须有）
 
 以空格的缩进来控制层级关系，只要左对齐的一列数据，都是一个层级的，属性和值也是大小写敏感；
 
-#### 2、值的写法
+#### 值的写法
 
 字面量：普通的值（数字、字符串、布尔）
 
@@ -335,9 +335,9 @@ pets:
 pets:{cat,dog,pig}
 ```
 
-### 3、配置文件的注入和校验
+### 配置文件的注入和校验
 
-#### 1、properities配置文件在idea中默认utf-8可能会乱码
+#### properities配置文件在idea中默认utf-8可能会乱码
 
 ```yml
 person:
@@ -402,7 +402,7 @@ public class Person {
 
 如果只需要获取简单属性值可用@Value
 
-#### 2、@PropertySource&ImportResource
+#### @PropertySource&ImportResource
 
 @PropertySource:加载指定的配置文件，需要指定配置文件的路径
 
@@ -461,7 +461,7 @@ public class myAppConfig {
 }
 ```
 
-### 4、配置文件占位符
+### 配置文件占位符
 
 占位符后期之前配置的值，如果没有可用：指定默认值
 
@@ -481,15 +481,15 @@ person:
     age: 2
 ```
 
-### 5、Profile
+### Profile
 
-#### 1、多profile文件
+#### 多profile文件
 
 我们在主配置文件编写的时候，文件名可用applicaton-{profile}.properties/yml
 
 默认使用application.properties的配置
 
-#### 2、yml支持多文档块的方式
+#### yml支持多文档块的方式
 
 ```yml
 server:
@@ -512,19 +512,19 @@ spring:
 
 
 
-#### 3、激活指定profile
+#### 激活指定profile
 
-##### 1、在配置文件中指定spring.profiles.active=dev
+##### 在配置文件中指定spring.profiles.active=dev
 
-##### 2、命令行的方式
+##### 命令行的方式
 
 ​	在启动配置里 --spring.profiles.active=dev或java -jar xxx.jar --spring.profiles.active=dev
 
-##### 3、虚拟机参数
+##### 虚拟机参数
 
 ​	-Dspring.profiles.active=dev
 
-### 6、配置文件的加载默认的优先级由高到低
+### 配置文件的加载默认的优先级由高到低
 
 高优先级的配置会覆盖低优先级的配置生效；
 
@@ -546,7 +546,7 @@ SpringBoot会从这四个位置全部加载主配置文件；互补配置；
 
 
 
-### 7、自动配置原理
+### 自动配置原理
 
 配置文件能配置的属性参照
 
@@ -851,7 +851,7 @@ Did not match:
 
 ## Spring Boot与日志
 
-#### 1、日志门面SLF4J  日志实现Logback;
+#### 日志门面SLF4J  日志实现Logback;
 
 SpringBoot:底层是Spring框架，Spring框架默认用JCL;
 
@@ -877,7 +877,7 @@ public class HelloWorld {
 
 每一个日志的实现框架都有自己的配置文件。使用slf4j后，*配置文件还是做成日志实现框架自己本身的配置文件*；
 
-#### 2、遗留问题
+#### 遗留问题
 
 不同系统有不同的日志框架，需要做到统一日志记录，即使别的框架和我一起使用slf4j进行输出
 
@@ -1034,17 +1034,17 @@ logging.pattern.file=%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n
 
 可以按照slfj的日志适配图，进行相关的切换
 
-## Spring Boot 与Web开发
+## SpringBoot与Web开发
 
-### 1、使用SpringBoot
+#### 使用SpringBoot
 
-#### 1、创建SpringBoot应用，选中我们需要的模块；
+##### 创建SpringBoot应用，选中我们需要的模块；
 
-#### 2、SpringBoot已经默认将这些场景配置好了，只需要在配置文件中指定少量配置就可以运行起来；
+##### SpringBoot已经默认将这些场景配置好了，只需要在配置文件中指定少量配置就可以运行起来；
 
-#### 3、自己编写业务逻辑代码；
+##### 自己编写业务逻辑代码；
 
-### 2、自动配置原理
+#### 自动配置原理
 
 这个场景SpringBoot帮我们配置了什么，能不能修改，能修改哪些配置，能不能扩展
 
@@ -1052,7 +1052,7 @@ xxxAutoConfiguration:帮我们给容器中自动配置组件
 
 xxxProperties：配置类来封装配置文件中的内容
 
-### 3、SpringBoot对静态资源的映射规则
+#### SpringBoot对静态资源的映射规则
 
 ResourceProperties可以设置静态资源有关的参数，缓存时间等
 
@@ -1134,13 +1134,13 @@ Spring Boot 2.3要在配置文件配置静态资源访问路径
 
 所有的**/favicon.ico都是在静态资源文件下找
 
-### 4、模板引擎
+#### 模板引擎
 
 Thymeleaf
 
 语法更简单，功能更强大
 
-#### 1、引入Thymeleaf
+##### 引入Thymeleaf
 
 ```xml
 <!--模板引擎-->
