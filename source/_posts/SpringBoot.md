@@ -6,7 +6,7 @@ tags: springboot
 category: java
 ---
 
-## 一、Spring Boot入门
+## Spring Boot入门
 
 ### 1、Spring Boot简介
 
@@ -272,7 +272,7 @@ IDE都支持使用Spring的项目创建向导快速创建一个Spring Boot项目
 
    application.properties:Spring Boot 的配置文件，可以修改一些默认设置；
 
-## 二、配置文件
+## 配置文件
 
 ### 1、SpringBoot使用一个全局的配置文件，配置文件名是固定的；
 
@@ -849,7 +849,7 @@ Did not match:
 - @ConditionalOnClass did not find required class 'javax.jms.ConnectionFactory' (OnClassCondition)
 ```
 
-## 三、Spring Boot与日志
+## Spring Boot与日志
 
 #### 1、日志门面SLF4J  日志实现Logback;
 
@@ -1034,7 +1034,7 @@ logging.pattern.file=%d{yyyy-MM-dd} [%thread] %-5level %logger{50} - %msg%n
 
 可以按照slfj的日志适配图，进行相关的切换
 
-## 四、Spring Boot 与Web开发
+## Spring Boot 与Web开发
 
 ### 1、使用SpringBoot
 
