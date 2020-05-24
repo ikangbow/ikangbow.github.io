@@ -1,4 +1,5 @@
 ---
+
 title: SpringBoot
 date: 2020-05-23 08:51:04
 tags: springboot
@@ -334,7 +335,9 @@ pets:
 pets:{cat,dog,pig}
 ```
 
-#### 3、配置文件的注入和校验
+### 3、配置文件的注入和校验
+
+#### 1、properities配置文件在idea中默认utf-8可能会乱码
 
 ```yml
 person:
@@ -399,11 +402,143 @@ public class Person {
 
 如果只需要获取简单属性值可用@Value
 
-#### 4、@PropertySource&ImportResource
+#### 2、@PropertySource&ImportResource
 
-@PropertySource:加载指定的配置文件
+@PropertySource:加载指定的配置文件，需要指定配置文件的路径
+
+```java
+/**
+ * @Description 将配置文件中的每一个属性的值映射到这个组件中
+ * @ConfigurationProperties告诉SpringBoot将本类中的所有属性和配置文件中相关的配置进行绑定
+ * prefix = "person":配置文件中哪个下面的所有属性进行一一映射
+ * 只有这个组件是容器中的组件，才能用容器提供的@ConfigurationProperties功能,需要加上@Component
+ **/
+@PropertySource(value = {"classpath:person.properties"})
+@Component
+@ConfigurationProperties(prefix = "person")
+public class Person {
+    private String name;
+    private Integer age;
+    private boolean boss;
+    private Date birth;
+    private Map<String,Object> map;
+    private List<Object> objectList;
+    private Dog dog;
+```
+
+@ImportResource:导入Spring的配置文件，让配置文件里面的内容生效；
+
+Spring Boot里面没有Spring的配置文件，我们自己编写的配置文件，也不能自动识别，想让Spring的配置文件生效，加载进来；@ImportResource需要标注在一个配置类上
+
+```
+@ImportResource(locations = {"classpath:beans.xml"})
+导入Spring的配置文件，让其生效
+```
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<bean id="helloService" class="com.think.hello.service.HelloService"></bean>
+</beans>
+```
+
+SpringBoot推荐给容器中添加组件的方式，推荐使用全注解的方式；
+
+1、配置类===Spring配置文件
+
+2、@Bean给容器中添加组件
+
+```java
+@Configuration
+public class myAppConfig {
+    //将方法的返回值添加到容器，容器中这个组件默认的id就是方法名
+    @Bean
+    public HelloService helloService(){
+        return new HelloService();
+    }
+}
+```
+
+### 4、配置文件占位符
+
+占位符后期之前配置的值，如果没有可用：指定默认值
+
+```yml
+person:
+  name: zhangsan${random.uuid}
+  boss: false
+  age: ${random.int}
+  birth: 2020/12/12
+  map: {k1: v1,k2: 12}
+  objectList:
+    - lisi
+    - wangwu
+    - zhangsan
+  dog:
+    name: ${person.hello:hello}mumu
+    age: 2
+```
+
+### 5、Profile
+
+#### 1、多profile文件
+
+我们在主配置文件编写的时候，文件名可用applicaton-{profile}.properties/yml
+
+默认使用application.properties的配置
+
+#### 2、yml支持多文档块的方式
+
+```yml
+server:
+  port: 8080
+spring:
+  profiles:
+    active: prod
+---
+server:
+  port: 8081
+spring:
+  profiles: dev
+---
+server:
+  port: 8082
+spring:
+  profiles: prod
+---
+```
 
 
 
+#### 3、激活指定profile
 
+##### 1、在配置文件中指定spring.profiles.active=dev
+
+##### 2、命令行的方式
+
+​	在启动配置里 --spring.profiles.active=dev或java -jar xxx.jar --spring.profiles.active=dev
+
+##### 3、虚拟机参数
+
+​	-Dspring.profiles.active=dev
+
+### 6、配置文件的加载默认的优先级由高到低
+
+高优先级的配置会覆盖低优先级的配置生效；
+
+SpringBoot会从这四个位置全部加载主配置文件；互补配置；
+
+-file:./conifg/
+
+-file:./
+
+-classpath:/config/
+
+-classpath:/
+
+我们还可用通过spring.config.location来改变默认的配置文件位置
+
+项目打包后可用命令行参数的形式，启动项目的时候来指定配置文件的新位置，指定配置文件会和默认加载的这些配置文件共同起作用形成配置
 
