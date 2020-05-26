@@ -4,7 +4,6 @@ date: 2020-05-26 21:34:15
 tags: springboot
 category: java
 ---
-# Spring Boot入门
 
 ## Spring Boot简介
 
@@ -787,9 +786,9 @@ xxxProperties：封装配置文件中相关属性
 	Did not match:
 	- @ConditionalOnClass did not find required class 'javax.jms.ConnectionFactory' (OnClassCondition)
 
-## Spring Boot与日志
+## SpringBoot与日志
 
-#### 日志门面SLF4J  日志实现Logback;
+### 日志门面SLF4J日志实现Logback;
 
 SpringBoot:底层是Spring框架，Spring框架默认用JCL;
 
@@ -813,7 +812,7 @@ SpringBoot选用SLF4J(日志的抽象层)和logback;
 
 每一个日志的实现框架都有自己的配置文件。使用slf4j后，*配置文件还是做成日志实现框架自己本身的配置文件*；
 
-#### 遗留问题
+### 遗留问题
 
 不同系统有不同的日志框架，需要做到统一日志记录，即使别的框架和我一起使用slf4j进行输出
 
@@ -1047,7 +1046,7 @@ Thymeleaf
 
 语法更简单，功能更强大
 
-##### 引入Thymeleaf
+#### 引入Thymeleaf
 
     <!--模板引擎-->
 	<dependency>
@@ -1076,7 +1075,7 @@ Thymeleaf
 
 参考thymeleaf手册
 
-### SpringMVC自动配置
+#### SpringMVC自动配置
 
 #### Spring Boot自动配置好了SpringMVC
 
@@ -1160,6 +1159,6 @@ If you want to keep those Spring Boot MVC customizations and make more [MVC cust
 
 SpringBoot对SpringMVC的自动配置不需要，所有都是我们自己配，只需要在配置类中添加@EnableWebMvc
 
-### 如何修改SpringBoot的默认配置
+#### 如何修改SpringBoot的默认配置
 
 1、SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean,@Component）如果有就用用户配置的，如果没有才自动配置；如果有些组件可以有多个，他是将用户配置的和自己默认的组合起来
