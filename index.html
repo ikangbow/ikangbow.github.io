@@ -1176,7 +1176,7 @@ public void addResourceHandlers(ResourceHandlerRegistry registry) {
 <p>所有的**/favicon.ico都是在静态资源文件下找</p>
 <h4 id="模板引擎"><a href="#模板引擎" class="headerlink" title="模板引擎"></a>模板引擎</h4><p>Thymeleaf</p>
 <p>语法更简单，功能更强大</p>
-<h5 id="引入Thymeleaf"><a href="#引入Thymeleaf" class="headerlink" title="引入Thymeleaf"></a>引入Thymeleaf</h5><pre><code>&lt;!--模板引擎--&gt;
+<h4 id="引入Thymeleaf"><a href="#引入Thymeleaf" class="headerlink" title="引入Thymeleaf"></a>引入Thymeleaf</h4><pre><code>&lt;!--模板引擎--&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
@@ -1199,7 +1199,7 @@ public class ThymeleafProperties {
 导入thymeleaf的名称空间
 &lt;html xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
 </code></pre><h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><p>参考thymeleaf手册</p>
-<h3 id="SpringMVC自动配置"><a href="#SpringMVC自动配置" class="headerlink" title="SpringMVC自动配置"></a>SpringMVC自动配置</h3><h4 id="Spring-Boot自动配置好了SpringMVC"><a href="#Spring-Boot自动配置好了SpringMVC" class="headerlink" title="Spring Boot自动配置好了SpringMVC"></a>Spring Boot自动配置好了SpringMVC</h4><p>以下是SpringBoot对SpringMVC的默认</p>
+<h4 id="SpringMVC自动配置"><a href="#SpringMVC自动配置" class="headerlink" title="SpringMVC自动配置"></a>SpringMVC自动配置</h4><h4 id="Spring-Boot自动配置好了SpringMVC"><a href="#Spring-Boot自动配置好了SpringMVC" class="headerlink" title="Spring Boot自动配置好了SpringMVC"></a>Spring Boot自动配置好了SpringMVC</h4><p>以下是SpringBoot对SpringMVC的默认</p>
 <p>The auto-configuration adds the following features on top of Spring’s defaults:</p>
 <ul>
 <li><p>Inclusion of <code>ContentNegotiatingViewResolver</code> and <code>BeanNameViewResolver</code> beans.</p>
@@ -1273,7 +1273,7 @@ public void setConfigurers(List&lt;WebMvcConfigurer&gt; configurers) {
 }
 容器中所有的WebMvcConfigurer都会一起起作用，包括自己写的配置类
 </code></pre><h4 id="全面接管SpringMVC"><a href="#全面接管SpringMVC" class="headerlink" title="全面接管SpringMVC"></a>全面接管SpringMVC</h4><p>SpringBoot对SpringMVC的自动配置不需要，所有都是我们自己配，只需要在配置类中添加@EnableWebMvc</p>
-<h3 id="如何修改SpringBoot的默认配置"><a href="#如何修改SpringBoot的默认配置" class="headerlink" title="如何修改SpringBoot的默认配置"></a>如何修改SpringBoot的默认配置</h3><p>1、SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean,@Component）如果有就用用户配置的，如果没有才自动配置；如果有些组件可以有多个，他是将用户配置的和自己默认的组合起来</p>
+<h4 id="如何修改SpringBoot的默认配置"><a href="#如何修改SpringBoot的默认配置" class="headerlink" title="如何修改SpringBoot的默认配置"></a>如何修改SpringBoot的默认配置</h4><p>1、SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean,@Component）如果有就用用户配置的，如果没有才自动配置；如果有些组件可以有多个，他是将用户配置的和自己默认的组合起来</p>
 
           
         
