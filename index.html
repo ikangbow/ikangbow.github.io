@@ -772,8 +772,8 @@ JedisConnectionConfiguration.class有注解：@ConditionalOnClass({GenericObject
 </code></pre><h4 id="spring是怎样读取redis配置参数？"><a href="#spring是怎样读取redis配置参数？" class="headerlink" title="spring是怎样读取redis配置参数？"></a>spring是怎样读取redis配置参数？</h4><p>关键是org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration的注解：@EnableConfigurationProperties({RedisProperties.class})</p>
 <p><em>知识点：@EnableConfigurationProperties会将配置文件的key-value映射成Java对象。<br>redis配置类，如果没redis配置，使用本地的redis这需要本地安装redis服务，如果有redis配置就设置redis host、port等属性</em></p>
 <p>appliccation.yml redis配置。必须以spring.redis开头</p>
-<h3 id="spring-boot-starter"><a href="#spring-boot-starter" class="headerlink" title="spring-boot-starter"></a>spring-boot-starter</h3><p>SpringBoot 可以省略众多的繁琐配置，它的众多starter可以说功不可没。 例如集成redis,只需要pom.xml中引入spring-boot-starter-data-redis,配置文件application.yml中加入spring.redis.database等几个关键配置项即可，常用的starter还有spring-boot-starter-web、spring-boot-starter-test等，相比传统的xml配置大大减少了集成的工作量。</p>
-<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>利用starter实现自动化配置只需要两个条件–maven依赖、配置文件。引入maven实质就是导入jar包，spring-boot启动的时候会找到starter jar包中的resources/META-INF/spring.factories文件，根据spring.factories文件中的配置，找到需要自动配置的类。</p>
+<h2 id="spring-boot-starter"><a href="#spring-boot-starter" class="headerlink" title="spring-boot-starter"></a>spring-boot-starter</h2><p>SpringBoot 可以省略众多的繁琐配置，它的众多starter可以说功不可没。 例如集成redis,只需要pom.xml中引入spring-boot-starter-data-redis,配置文件application.yml中加入spring.redis.database等几个关键配置项即可，常用的starter还有spring-boot-starter-web、spring-boot-starter-test等，相比传统的xml配置大大减少了集成的工作量。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>利用starter实现自动化配置只需要两个条件–maven依赖、配置文件。引入maven实质就是导入jar包，spring-boot启动的时候会找到starter jar包中的resources/META-INF/spring.factories文件，根据spring.factories文件中的配置，找到需要自动配置的类。</p>
 <table>
 <thead>
 <tr>
@@ -804,7 +804,7 @@ JedisConnectionConfiguration.class有注解：@ConditionalOnClass({GenericObject
 </tr>
 </tbody>
 </table>
-<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>pom.xml</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>pom.xml</p>
 <pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
          xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
@@ -868,20 +868,20 @@ JedisConnectionConfiguration.class有注解：@ConditionalOnClass({GenericObject
 
 &lt;/project&gt;
 </code></pre><p>spring-boot-configuration-processor 的作用是编译时生成 spring-configuration-metadata.json ，在IDE中编辑配置文件时，会出现提示。 打包选择jar-no-fork，因为这里不需要main函数。</p>
-<h4 id="EnableDemoConfiguration"><a href="#EnableDemoConfiguration" class="headerlink" title="EnableDemoConfiguration"></a>EnableDemoConfiguration</h4><pre><code>@Target({ElementType.TYPE})
+<h3 id="EnableDemoConfiguration"><a href="#EnableDemoConfiguration" class="headerlink" title="EnableDemoConfiguration"></a>EnableDemoConfiguration</h3><pre><code>@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 public @interface EnableDemoConfiguration {
 }
-</code></pre><h4 id="DemoProperties"><a href="#DemoProperties" class="headerlink" title="DemoProperties"></a>DemoProperties</h4><pre><code>@Data
+</code></pre><h3 id="DemoProperties"><a href="#DemoProperties" class="headerlink" title="DemoProperties"></a>DemoProperties</h3><pre><code>@Data
 @ConfigurationProperties(prefix = &quot;demo&quot;)
 public class DemoProperties {
     private String name;
     private Integer age;
 }
 </code></pre><p>name和age对应application.properties里面的demo.name和demo.age</p>
-<h4 id="DemoAutoConfiguration"><a href="#DemoAutoConfiguration" class="headerlink" title="DemoAutoConfiguration"></a>DemoAutoConfiguration</h4><pre><code>@Configuration
+<h3 id="DemoAutoConfiguration"><a href="#DemoAutoConfiguration" class="headerlink" title="DemoAutoConfiguration"></a>DemoAutoConfiguration</h3><pre><code>@Configuration
 @ConditionalOnBean(annotation = EnableDemoConfiguration.class)
 @EnableConfigurationProperties(DemoProperties.class)
 public class DemoAutoConfiguration {
@@ -894,7 +894,7 @@ public class DemoAutoConfiguration {
 
 }
 </code></pre><p>这里设置自动配置的相关条件，和相关操作，由于这里只想写一个最简单的demo，所以这里只需要简单注入一个bean，没有复杂逻辑，实际开发中，这个类是最关键的。</p>
-<h4 id="DemoService"><a href="#DemoService" class="headerlink" title="DemoService"></a>DemoService</h4><pre><code>public class DemoService {
+<h3 id="DemoService"><a href="#DemoService" class="headerlink" title="DemoService"></a>DemoService</h3><pre><code>public class DemoService {
 
     @Autowired
     private DemoProperties demoProperties;
@@ -905,12 +905,12 @@ public class DemoAutoConfiguration {
     }
 }
 </code></pre><p>这里不需要@Service，因为已经通过DemoAutoConfiguration注入spring容器了。</p>
-<h4 id="spring-factories"><a href="#spring-factories" class="headerlink" title="spring.factories"></a>spring.factories</h4><p>在resources/META-INF/下创建spring.factories文件:<br>org.springframework.boot.autoconfigure.EnableAutoConfiguration=\<br>com.air.starterdemo.config.DemoAutoConfiguration<br>告诉spring-boot，启动时需要扫描的类。</p>
-<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>pom.xml 本地mvn install之后，在新的spring-boot项目里面引入<br>    <dependency><br>        <groupid>com.air</groupid><br>        <artifactid>starter-demo</artifactid><br>        <version>0.0.1-SNAPSHOT</version><br>    </dependency></p>
-<h4 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h4><pre><code>demo.name = ooo
+<h3 id="spring-factories"><a href="#spring-factories" class="headerlink" title="spring.factories"></a>spring.factories</h3><p>在resources/META-INF/下创建spring.factories文件:<br>org.springframework.boot.autoconfigure.EnableAutoConfiguration=\<br>com.air.starterdemo.config.DemoAutoConfiguration<br>告诉spring-boot，启动时需要扫描的类。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>pom.xml 本地mvn install之后，在新的spring-boot项目里面引入<br>    <dependency><br>        <groupid>com.air</groupid><br>        <artifactid>starter-demo</artifactid><br>        <version>0.0.1-SNAPSHOT</version><br>    </dependency></p>
+<h3 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h3><pre><code>demo.name = ooo
 demo.age = 11
 </code></pre><p>如果使用的是IDEA，在编辑时会出现提示。</p>
-<h4 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h4><pre><code>@SpringBootApplication
+<h3 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h3><pre><code>@SpringBootApplication
 @EnableDemoConfiguration
 public class Demo1Application {
 
@@ -927,7 +927,7 @@ public class Demo1Application {
     }
 }
 </code></pre><p>启动main函数，控制台会打印出配置文件中的name和age，一个简单的spring-boot-starter就写好了</p>
-<h4 id="spring-factories-1"><a href="#spring-factories-1" class="headerlink" title="spring.factories"></a>spring.factories</h4><pre><code># Initializers
+<h3 id="spring-factories-1"><a href="#spring-factories-1" class="headerlink" title="spring.factories"></a>spring.factories</h3><pre><code># Initializers
 org.springframework.context.ApplicationContextInitializer=\
 org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer,\
 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener
