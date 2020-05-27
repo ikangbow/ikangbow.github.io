@@ -1364,6 +1364,28 @@ public void setConfigurers(List&lt;WebMvcConfigurer&gt; configurers) {
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/mongo/" itemprop="url" rel="index">
+                    <span itemprop="name">mongo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -1462,7 +1484,33 @@ public void setConfigurers(List&lt;WebMvcConfigurer&gt; configurers) {
 <h2 id="设置唯一字段"><a href="#设置唯一字段" class="headerlink" title="设置唯一字段"></a>设置唯一字段</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//used 是1 将其他所有是1的更新为0</span><br><span class="line">    if(address.getUsed()==1)&#123;</span><br><span class="line">    Query q = new Query(Criteria.where(&quot;userId&quot;).is(user.get_id()));//查询</span><br><span class="line">    Update u = new Update().set(&quot;used&quot;,0);</span><br><span class="line">    BulkOperations ops = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, &quot;address&quot;);</span><br><span class="line">    ops.updateMulti(q,u);//全部更新</span><br><span class="line">    ops.execute();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="插入多条数据"><a href="#插入多条数据" class="headerlink" title="插入多条数据"></a>插入多条数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public ReturnStatus upsert(List&lt;BspecialLink&gt; specialLinks) &#123;</span><br><span class="line">    ReturnStatus status;</span><br><span class="line">    mongoTemplate.insertAll(specialLinks);</span><br><span class="line">    status = new ReturnStatus(true);</span><br><span class="line">    return status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="获取数据库所有集合名称"><a href="#获取数据库所有集合名称" class="headerlink" title="获取数据库所有集合名称"></a>获取数据库所有集合名称</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; sets = mongoTemplage.getDb().getCollectionNames();</span><br></pre></td></tr></table></figure>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ol>
+<h2 id="查询当天数据"><a href="#查询当天数据" class="headerlink" title="查询当天数据"></a>查询当天数据</h2><pre><code>private static Date getStartTime() {
+    Calendar todayStart = Calendar.getInstance();
+    todayStart.set(Calendar.HOUR_OF_DAY, 0);
+    todayStart.set(Calendar.MINUTE, 0);
+    todayStart.set(Calendar.SECOND, 0);
+    todayStart.set(Calendar.MILLISECOND, 0);
+    return todayStart.getTime();
+}
+
+private static Date getEndTime() {
+    Calendar todayEnd = Calendar.getInstance();
+    todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+    todayEnd.set(Calendar.MINUTE, 59);
+    todayEnd.set(Calendar.SECOND, 59);
+    todayEnd.set(Calendar.MILLISECOND, 999);
+    return todayEnd.getTime();
+}
+
+Criteria criteria = new Criteria();
+criteria.andOperator(
+        Criteria.where(&quot;type&quot;).is(type),
+        Criteria.where(&quot;typeId&quot;).is(typeId),
+        Criteria.where(&quot;userId&quot;).is(user.get_id()),
+        Criteria.where(&quot;createtime&quot;).gte(getStartTime())
+                .lte(getEndTime()));
+return mongoTemplate.exists(Query.query(criteria), Zan.class);
+</code></pre><h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ol>
 <li><p>删除字段</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.yourcollection.update(&#123;&#125;,&#123;$unset:&#123;&quot;需要删除的字段&quot;:&quot;&quot;&#125;&#125;,false,true)</span><br></pre></td></tr></table></figure>
 </li>
@@ -4126,7 +4174,7 @@ http:// 192.168.1.64:8080
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

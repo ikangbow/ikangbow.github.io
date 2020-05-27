@@ -1078,7 +1078,7 @@ public class ModuleControllerAdvice{
 </ul>
 <p>使用 yum 安装（CentOS 7下）</p>
 <p>通过 uname -r 命令查看你当前的内核版本 </p>
-<pre><code>[root@runoob ~]# uname -r 3.10.0-327.el7.x86_64
+<pre><code>[root@airthink ~]# uname -r 3.10.0-327.el7.x86_64
 </code></pre><p>只需通过以下命令即可安装 Docker 软件：</p>
 <pre><code>yum -y install docker-io
 </code></pre><p>可使用以下命令，查看 Docker 是否安装成功</p>
@@ -1104,26 +1104,160 @@ OS/Arch:          linux/amd64
 Experimental:     false
 </code></pre><p>若输出了 Docker 的版本号，则说明安装成功了，可通过以下命令启动 Docker 服务：</p>
 <pre><code>service docker start
-</code></pre><h1 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h1><p>使用以下命令查看本地所有的镜像：</p>
-<pre><code>docker images
-</code></pre><p>首先，访问 Docker 中文网，在首页中搜索名为“centos”的镜像，在搜索的结果中，有一个“官方镜像”，它就是我们所需的。</p>
-<p>然后，进入 CentOS 官方镜像页面，在“Pull this repository”输入框中，有一段命令，把它复制下来，在自己的命令行上运行该命令，随后将立即下载该镜像。</p>
-<p>最后，使用以下命令查看本地所有的镜像：</p>
-<pre><code>REPOSITORY                TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
-centos                   latest             1e1148e4cc2c        5 weeks ago         202MB
-</code></pre><p>如果看到以上输出，说明您可以使用“centos”这个镜像了，或将其称为仓库（Repository），该镜像有一个名为“latest ”的标签（Tag），此外还有一个名为“1e1148e4cc2c ”的镜像 ID（可能您所看到的镜像 ID 与此处的不一致，那是正常现象，因为这个数字是随机生成的）。此外，我们可以看到该镜像只有 202MB MB，非常小巧，而不像虚拟机的镜像文件那样庞大。</p>
-<h1 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h1><p>容器是在镜像的基础上来运行的，一旦容器启动了，我们就可以登录到容器中，安装自己所需的软件或应用程序。</p>
-<p>只需使用以下命令即可启动容器：</p>
-<pre><code>docker run -i -t -v /root/software/:/mnt/software/ 1e1148e4cc2c /bin/bash
-</code></pre><p>docker run &lt;相关参数&gt; &lt;镜像 ID&gt; &lt;初始命令&gt;解析</p>
-<ul>
-<li>-i：表示以“交互模式”运行容器</li>
-<li>-t：表示容器启动后会进入其命令行</li>
-<li>-v：表示需要将本地哪个目录挂载到容器中，格式：-v &lt;宿主机目录&gt;:&lt;容器目录&gt;<br>假设我们的所有安装程序都放在了宿主机的/root/software/目录下，现在需要将其挂载到容器的/mnt/software/目录下。</li>
-</ul>
-<p>需要说明的是，不一定要使用“镜像 ID”，也可以使用“仓库名:标签名”，例如：centos: latest。</p>
-<p>初始命令表示一旦容器启动，需要运行的命令，此时使用“/bin/bash”，表示什么也不做，只需进入命令行即可。</p>
-<h1 id="安装相关软件"><a href="#安装相关软件" class="headerlink" title="安装相关软件"></a>安装相关软件</h1><p>为了搭建 Java Web 运行环境，我们需要安装 JDK 、数据库、redis与 Tomcat，首先要再宿主机上传JDK 、数据库、redis与 Tomcat压缩包，以/mnt/software/为例。下面的过程均在容器内部进行。我们不妨选择/opt/目录作为安装目录，首先需要通过cd /opt/命令进入该目录。</p>
+</code></pre><h1 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h1><pre><code>docker search &quot;镜像名&quot;，搜索镜像，第一个字段为imagename（镜像名字），第四个字段为official，是否为官方镜像，个人也可以把自己制作的镜像放到docker hub上，找到自己想要下载的镜像名字就可以拉取了
+docker pull &quot;镜像名&quot;，下载镜像
+docker rmi &quot;镜像名&quot;，删除镜像
+运行一个新的container
+docker run [-i -t -d -p -P -c] [--name]:在容器内运行一个应用程序
+ -t :在新容器内指定一个伪终端或终端
+ -i:允许你对容器内的标准输入进行交互
+ -d：以进程方式运行容器，让容器在后台运行
+ -p：设置端口
+ -P：将容器内部使用的网络端口映射到我们使用的主机，就是让我们访问我们使用的主机就等同于访问到容器内部
+ -c：command,后面接命令
+ --name container name：指定容器名字
+
+docker ps -a  列出创建的所有容器
+docker ps -s  列出正在运行的容器
+docker start [container ID]
+docker exec -it [container ID] /bin/bash 即可进入一个已经在运行的容器
+exit 可退出容器
+docker stop [container ID] 停用容器
+Docker 1.13版本以后，可以使用 docker containers prune 命令，删除孤立的容器。
+docker container prune
+
+docker rmi -f image_ID//删除镜像
+</code></pre><h1 id="Dockerfile部分命令"><a href="#Dockerfile部分命令" class="headerlink" title="Dockerfile部分命令"></a>Dockerfile部分命令</h1><pre><code>首先，每个指令的前缀必须大写
+指令：FROM
+功能描述：设置基础镜像
+语法：FROM &lt; image&gt;[:&lt; tag&gt; | @&lt; digest&gt;]
+提示：镜像都是从一个基础镜像（操作系统或其他镜像）生成，可以在一个Dockerfile中添加多条FROM指令，一次生成多个镜像
+注意：如果忽略tag选项，会使用latest镜像
+
+指令：MAINTAINER
+功能描述：设置镜像作者
+语法：MAINTAINER &lt; name&gt;
+
+指令：RUN
+功能描述：
+语法：RUN &lt; command&gt;
+RUN [“executable”,”param1”,”param2”]
+提示：RUN指令会生成容器，在容器中执行脚本，容器使用当前镜像，脚本指令完成后，Docker Daemon会将该容器提交为一个中间镜像，供后面的指令使用
+补充：RUN指令第一种方式为shell方式，使用/bin/sh -c &lt; command&gt;运行脚本，可以在其中使用\将脚本分为多行
+RUN指令第二种方式为exec方式，镜像中没有/bin/sh或者要使用其他shell时使用该方式，其不会调用shell命令
+例子：RUN source $HOME/.bashrc;\
+echo $HOME
+
+RUN [“/bin/bash”,”-c”,”echo hello”]
+
+RUN [“sh”,”-c”,”echo”,”$HOME”] 使用第二种方式调用shell读取环境变量
+
+指令：CMD
+功能描述：设置容器的启动命令
+语法：CMD [“executable”,”param1”,”param2”]
+CMD [“param1”,”param2”]
+CMD &lt; command&gt;
+提示：CMD第一种、第三种方式和RUN类似，第二种方式为ENTRYPOINT参数方式，为entrypoint提供参数列表
+注意：Dockerfile中只能有一条CMD命令，如果写了多条则最后一条生效
+
+指令：LABEL
+功能描述：设置镜像的标签
+延伸：镜像标签可以通过docker inspect查看
+格式：LABEL &lt; key&gt;=&lt; value&gt; &lt; key&gt;=&lt; value&gt; …
+提示：不同标签之间通过空格隔开
+注意：每条指令都会生成一个镜像层，Docker中镜像最多只能有127层，如果超出Docker Daemon就会报错，如LABEL ..=.. &lt;假装这里有个换行&gt; LABEL ..=..合在一起用空格分隔就可以减少镜像层数量，同样，可以使用连接符\将脚本分为多行
+镜像会继承基础镜像中的标签，如果存在同名标签则会覆盖
+
+指令：EXPOSE
+功能描述：设置镜像暴露端口，记录容器启动时监听哪些端口
+语法：EXPOSE &lt; port&gt; &lt; port&gt; …
+延伸：镜像暴露端口可以通过docker inspect查看
+提示：容器启动时，Docker Daemon会扫描镜像中暴露的端口，如果加入-P参数，Docker Daemon会把镜像中所有暴露端口导出，并为每个暴露端口分配一个随机的主机端口（暴露端口是容器监听端口，主机端口为外部访问容器的端口）
+注意：EXPOSE只设置暴露端口并不导出端口，只有启动容器时使用-P/-p才导出端口，这个时候才能通过外部访问容器提供的服务
+
+指令：ENV
+功能描述：设置镜像中的环境变量
+语法：ENV &lt; key&gt;=&lt; value&gt;…|&lt; key&gt; &lt; value&gt;
+注意：环境变量在整个编译周期都有效，第一种方式可设置多个环境变量，第二种方式只设置一个环境变量
+提示：通过${变量名}或者 $变量名使用变量，使用方式${变量名}时可以用${变量名:-default} ${变量名:+cover}设定默认值或者覆盖值
+ENV设置的变量值在整个编译过程中总是保持不变的
+
+指令：ADD
+功能描述：复制文件到镜像中
+语法：ADD &lt; src&gt;… &lt; dest&gt;|[“&lt; src&gt;”,… “&lt; dest&gt;”]
+注意：当路径中有空格时，需要使用第二种方式
+当src为文件或目录时，Docker Daemon会从编译目录寻找这些文件或目录，而dest为镜像中的绝对路径或者相对于WORKDIR的路径
+提示：src为目录时，复制目录中所有内容，包括文件系统的元数据，但不包括目录本身
+src为压缩文件，并且压缩方式为gzip,bzip2或xz时，指令会将其解压为目录
+如果src为文件，则复制文件和元数据
+如果dest不存在，指令会自动创建dest和缺失的上级目录
+
+指令：COPY
+功能描述：复制文件到镜像中
+语法：COPY &lt; src&gt;… &lt; dest&gt;|[“&lt; src&gt;”,… “&lt; dest&gt;”]
+提示：指令逻辑和ADD十分相似，同样Docker Daemon会从编译目录寻找文件或目录，dest为镜像中的绝对路径或者相对于WORKDIR的路径
+
+指令：ENTRYPOINT
+功能描述：设置容器的入口程序
+语法：ENTRYPOINT [“executable”,”param1”,”param2”]
+ENTRYPOINT command param1 param2（shell方式）
+提示：入口程序是容器启动时执行的程序，docker run中最后的命令将作为参数传递给入口程序
+入口程序有两种格式：exec、shell，其中shell使用/bin/sh -c运行入口程序，此时入口程序不能接收信号量
+当Dockerfile有多条ENTRYPOINT时只有最后的ENTRYPOINT指令生效
+如果使用脚本作为入口程序，需要保证脚本的最后一个程序能够接收信号量，可以在脚本最后使用exec或gosu启动传入脚本的命令
+注意：通过shell方式启动入口程序时，会忽略CMD指令和docker run中的参数
+为了保证容器能够接受docker stop发送的信号量，需要通过exec启动程序；如果没有加入exec命令，则在启动容器时容器会出现两个进程，并且使用docker stop命令容器无法正常退出（无法接受SIGTERM信号），超时后docker stop发送SIGKILL，强制停止容器
+
+指令：VOLUME
+功能描述：设置容器的挂载点
+语法：VOLUME [“/data”]
+VOLUME /data1 /data2
+提示：启动容器时，Docker Daemon会新建挂载点，并用镜像中的数据初始化挂载点，可以将主机目录或数据卷容器挂载到这些挂载点
+
+指令：USER
+功能描述：设置RUN CMD ENTRYPOINT的用户名或UID
+语法：USER &lt; name&gt;
+
+指令：WORKDIR
+功能描述：设置RUN CMD ENTRYPOINT ADD COPY指令的工作目录
+语法：WORKDIR &lt; Path&gt;
+提示：如果工作目录不存在，则Docker Daemon会自动创建
+Dockerfile中多个地方都可以调用WORKDIR，如果后面跟的是相对位置，则会跟在上条WORKDIR指定路径后（如WORKDIR /A   WORKDIR B   WORKDIR C，最终路径为/A/B/C）
+
+指令：ARG
+功能描述：设置编译变量
+语法：ARG &lt; name&gt;[=&lt; defaultValue&gt;]
+注意：ARG从定义它的地方开始生效而不是调用的地方，在ARG之前调用编译变量总为空，在编译镜像时，可以通过docker build –build-arg &lt; var&gt;=&lt; value&gt;设置变量，如果var没有通过ARG定义则Daemon会报错
+可以使用ENV或ARG设置RUN使用的变量，如果同名则ENV定义的值会覆盖ARG定义的值，与ENV不同，ARG的变量值在编译过程中是可变的，会对比使用编译缓存造成影响（ARG值不同则编译过程也不同）
+例子：ARG CONT_IMAG_VER &lt;换行&gt; RUN echo $CONT_IMG_VER
+ARG CONT_IMAG_VER &lt;换行&gt; RUN echo hello
+当编译时给ARG变量赋值hello，则两个Dockerfile可以使用相同的中间镜像，如果不为hello，则不能使用同一个中间镜
+</code></pre><p>示例：Dockerfile以阿里中间件大赛给的debian-jdk8镜像为例，Dockerfile文件如下：<br>    FROM debian:stretch<br>    ARG DEBIAN_FRONTEND=noninteractive<br>    ARG JAVA_VERSION=8<br>    ARG JAVA_UPDATE=172<br>    ARG JAVA_BUILD=11<br>    ARG JAVA_PACKAGE=jdk<br>    ARG JAVA_HASH=a58eab1ec242421181065cdc37240b08</p>
+<pre><code>ENV LANG C.UTF-8
+ENV JAVA_HOME=/opt/jdk
+ENV PATH=${PATH}:${JAVA_HOME}/bin
+
+RUN set -ex \
+ &amp;&amp; apt-get update \
+ &amp;&amp; apt-get -y install ca-certificates wget unzip \
+ &amp;&amp; wget -q --header &quot;Cookie: oraclelicense=accept-securebackup-cookie&quot; \
+     -O /tmp/java.tar.gz \
+     http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_HASH}/${JAVA_PACKAGE}-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz \
+ &amp;&amp; CHECKSUM=$(wget -q -O - https://www.oracle.com/webfolder/s/digest/${JAVA_VERSION}u${JAVA_UPDATE}checksum.html | grep -E &quot;${JAVA_PACKAGE}-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64\.tar\.gz&quot; | grep -Eo &apos;(sha256: )[^&lt;]+&apos; | cut -d: -f2 | xargs) \
+ &amp;&amp; echo &quot;${CHECKSUM}  /tmp/java.tar.gz&quot; &gt; /tmp/java.tar.gz.sha256 \
+ &amp;&amp; sha256sum -c /tmp/java.tar.gz.sha256 \
+ &amp;&amp; mkdir ${JAVA_HOME} \
+ &amp;&amp; tar -xzf /tmp/java.tar.gz -C ${JAVA_HOME} --strip-components=1 \
+ &amp;&amp; wget -q --header &quot;Cookie: oraclelicense=accept-securebackup-cookie;&quot; \
+     -O /tmp/jce_policy.zip \
+     http://download.oracle.com/otn-pub/java/jce/${JAVA_VERSION}/jce_policy-${JAVA_VERSION}.zip \
+ &amp;&amp; unzip -jo -d ${JAVA_HOME}/jre/lib/security /tmp/jce_policy.zip \
+ &amp;&amp; rm -rf ${JAVA_HOME}/jar/lib/security/README.txt \
+   /var/lib/apt/lists/* \
+   /tmp/* \
+   /root/.wget-hsts
+</code></pre><p>体验一下如何用Dockerfile打包一个镜像，新建一个空目录，假设就是~/debian-jdk8吧，cd进这个目录，新建一个Dockerfile，然后把上面的内容copy进去，然后执行下面的命令：<br>    docker build -t debian-jdk8:v1.0 .<br>其中-t debian-jdk8:v1.0表示打包的镜像名为debian-jdk，tag为v1.0（前面说过，tag是可以任意命名的，不一定要是这种格式），注意命令的最后有一个.，这个表示打包的上下文（其实就是Dockerfile所在目录）是在当前目录，然后目录下的Dockerfile就会被编译执行。<br>执行完毕后运行docker images就会发现多了一个debian-jdk8镜像。<br>下面来解释一下Dockerfile的结构，那些字母全部大写的每行第一个单词都是Dockerfile的指令，可以看出这个Dockefile中包括的指令有FROM、ARG、ENV、RUN<br>FROM：FROM debian:stretch表示以debian:stretch作为基础镜像进行构建<br>RUN    可以看出RUN后面跟的其实就是一些shell命令，通过&amp;&amp;将这些脚本连接在了一行执行，这么做的原因是为了减少镜像的层数，每多一行RUN都会给镜像增加一层，所以这里选择将所有命令联结在一起执行以减少层数<br>ARG    特地将这个指令放在RUN之后讲解，这个指令可以进行一些宏定义，比如我定义ENV JAVAHOME=/opt/jdk，之后RUN后面的shell命令中的${JAVAHOME}都会被/opt/jdk代替<br>ENV    可以看出这个指令的作用是在shell中设置一些环境变量（其实就是export）</p>
+<h1 id="Docker部署web程序"><a href="#Docker部署web程序" class="headerlink" title="Docker部署web程序"></a>Docker部署web程序</h1><p>为了搭建 Java Web 运行环境，我们需要安装 JDK 、数据库、redis与 Tomcat，首先要再宿主机上传JDK 、数据库、redis与 Tomcat压缩包，以/mnt/software/为例。下面的过程均在容器内部进行。我们不妨选择/opt/目录作为安装目录，首先需要通过cd /opt/命令进入该目录。</p>
 <p>首先，解压程序包</p>
 <pre><code>tar -zxf /mnt/software/jdk-7u67-linux-x64.tar.gz
 tar -zxf /mnt/software/apache-tomcat-7.0.55.tar.gz
@@ -3205,7 +3339,7 @@ http://www.joes.com/seanonal/goods.html?item=45454#name
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
