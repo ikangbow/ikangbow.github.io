@@ -2,6 +2,7 @@
 title: mongo
 date: 2020-05-23 08:51:04
 tags: mongo
+category: mongo
 ---
 
 # 什么是MongoDB ?
@@ -291,6 +292,34 @@ public ReturnStatus upsert(List<BspecialLink> specialLinks) {
 Set<String> sets = mongoTemplage.getDb().getCollectionNames();
 ```
 
+## 查询当天数据
+
+    private static Date getStartTime() {
+	    Calendar todayStart = Calendar.getInstance();
+	    todayStart.set(Calendar.HOUR_OF_DAY, 0);
+	    todayStart.set(Calendar.MINUTE, 0);
+	    todayStart.set(Calendar.SECOND, 0);
+	    todayStart.set(Calendar.MILLISECOND, 0);
+	    return todayStart.getTime();
+	}
+	
+	private static Date getEndTime() {
+	    Calendar todayEnd = Calendar.getInstance();
+	    todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+	    todayEnd.set(Calendar.MINUTE, 59);
+	    todayEnd.set(Calendar.SECOND, 59);
+	    todayEnd.set(Calendar.MILLISECOND, 999);
+	    return todayEnd.getTime();
+	}
+	
+	Criteria criteria = new Criteria();
+	criteria.andOperator(
+	        Criteria.where("type").is(type),
+	        Criteria.where("typeId").is(typeId),
+	        Criteria.where("userId").is(user.get_id()),
+	        Criteria.where("createtime").gte(getStartTime())
+	                .lte(getEndTime()));
+	return mongoTemplate.exists(Query.query(criteria), Zan.class);
 # 其他
 
 1. 删除字段

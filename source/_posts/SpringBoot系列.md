@@ -7,11 +7,19 @@ category: java
 
 ## Spring Boot简介
 
-简化Spring应用开发的一个框架
+1. Spring boot是Spring家族中的一个全新的框架，它用来简化Spring应用程序的创建和开发过程，也可以说Spring boot能简化我们之前采用SpringMVC+Spring+Mybatis框架进行开发的过程。
+2. 在以往我们采用SpringMVC+Spring+Mybatis框架进行开发的时候，搭建和整合三大框架，我们需要做很好工作，比如配置web.xml，配置Spring，配置Mybatis,并将它们整合在一起等，而Spring boot框架对此开发过程进行了革命性的颠覆，抛弃了繁琐的xml配置过程，采用大量的默认配置简化我们的开发过程。
+3. 所以采用Spring boot可以非常容易和快速的创建基于Spring框架的应用程序，它让编码变简单了，配置变简单了，部署变简单了，监控也变简单了。
+4. 正因为Spring boot它化繁为简，让开发变得极其简单和快捷，所以在业界备受关注。Spring boot在国内的关注趋势也日渐超过Spring。
 
-整个Spring技术栈的一个大整合
 
-J2EE开发的一站式解决方案
+
+1. 能够快速创建基于Spring的应用程序。（简化配置）
+2. 能够直接使用java的main方法启动内嵌的Tomcat，Jetty服务器运行Spring boot程序，不需要部署war包文件。
+3. 提供约定的starter POM来简化来简化Maven配置，让Maven配置变得简单。
+4. 根据项目的maven依赖配置，Spring boot自动配置Spring,SpringMVC等其它开源框架。
+.提供程序的健康检查等功能。（检查内部的运行状态等）
+基本可以完全不使用xml配置文件，采用注解配置。（或者默认约定的配置，代码中已经实现）
 
 ## 微服务
 
@@ -506,24 +514,230 @@ SpringBoot会从这四个位置全部加载主配置文件；互补配置；
 
 [https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties)
 
-1、SpringBoot启动的时候加载主配置类，开启了自动配置功能@EnableAutoConfiguration
+	@SpringBootApplication
+	@SpringBootApplication是一个复合注解或派生注解，在@SpringBootApplication中有一个注解@EnableAutoConfiguration，该注解是开启自动配置
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Inherited
+	@SpringBootConfiguration
+	@EnableAutoConfiguration
+	@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+	        @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+	public @interface SpringBootApplication {
 
-2、@EnableAutoConfiguration
+@EnableAutoConfiguration也是一个派生注解，其中的关键功能是由@Import提供，其导入的AutoConfigurationImportSelector的selectImports()方法通过SpringFactoriesLoader.loadFactoryNames()扫描所有具有META-INF/spring.factories的jar包。 spring-boot-autoconfigure-x.x.x.x.jar里就有一个spring.factories文件。spring.factories文件由一组一组的key=value的形式，其中一个key是EnableAutoConfiguration类的全类名，而它的value是一个xxxxAutoConfiguration的类名的列表， 这些类名以逗号分隔。
+spring-boot-autoconfigure-x.x.x.x.jar -> META-INF/spring.factories -> org.springframework.boot.autoconfigure.xxx.xxxAutoConfiguration 类列表将会被实例化到Spring容器。
+SpringBoot项目启动时，@SpringBootApplication用在启动类SpringApplication.run()的内部就会置顶selectImports()方法，找到所有JavaConfig自动配置类的全限定名对应的class,然后将所有自动配置类加载到Spring容器中。
 
-​利用AutoConfigurationImportSelector给容器中导入一些组件
+### 以redis自动配置，解析Spring自动配置原理
 
-​可以查看selectImports（）方法的内容
+#### 将redis starter依赖加入
 
-    List<String> configurations = this.getCandidateConfigurations(annotationMetadata, attributes);
+	<!--redis jar-->
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-data-redis</artifactId>
+	</dependency>
 
-获取候选的配置
+org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration会被实例化到容器。该类为什么会被实例化？ 因为它在META-INF/spring.factories的Auto Configure列表。
+org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration被实例化，然而redis也会被实例化即创建RedisTemplate在Spring容器。
 
-SpringFactoriesLoader.loadFactoryNames()
-扫描所有jar包类路径下 META-INF/spring.factories
-把扫描到的这些文件的内容包装成properties
-从properties中获取到EnableAutoConfiguration.class（类名）对应的值，将其加入到容器中
+然而实例化redis对象是有条件的即@ConditionalOnClass({RedisOperations.class})，意思：当给定的类名在类路径上存在，则实例化当前Bean。
 
-将类路径下META-INF/spring.factories里面配置的所有EnableAutoConfiguration的值加入到了容器中
+也就是想Spring创建redis实例对象，必须需要将redis starter包：spring-boot-starter-data-redis依赖引入。有了redis starter依赖springboot自动配置就会检测到classpath路径下有相关的类，然后就可以实例化对应的类了，这就是自动配置的原理。
+
+*知识点：类上有该注解@Configuration，类被实例化 时@bean会自动执行，生成对应的bean实例，放入Spring容器。*
+
+	org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration会导入JedisConnectionConfiguration.class
+	@Import({LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class})
+	
+	JedisConnectionConfiguration.class有注解：@ConditionalOnClass({GenericObjectPool.class, JedisConnection.class, Jedis.class}) 
+
+#### spring是怎样读取redis配置参数？
+
+关键是org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration的注解：@EnableConfigurationProperties({RedisProperties.class})
+
+*知识点：@EnableConfigurationProperties会将配置文件的key-value映射成Java对象。
+redis配置类，如果没redis配置，使用本地的redis这需要本地安装redis服务，如果有redis配置就设置redis host、port等属性*
+
+appliccation.yml redis配置。必须以spring.redis开头
+
+## spring-boot-starter
+
+SpringBoot 可以省略众多的繁琐配置，它的众多starter可以说功不可没。 例如集成redis,只需要pom.xml中引入spring-boot-starter-data-redis,配置文件application.yml中加入spring.redis.database等几个关键配置项即可，常用的starter还有spring-boot-starter-web、spring-boot-starter-test等，相比传统的xml配置大大减少了集成的工作量。
+
+### 原理
+
+利用starter实现自动化配置只需要两个条件--maven依赖、配置文件。引入maven实质就是导入jar包，spring-boot启动的时候会找到starter jar包中的resources/META-INF/spring.factories文件，根据spring.factories文件中的配置，找到需要自动配置的类。
+
+| 注解       | 说明  | 
+| -------------------   | ----------------------  | 
+| @Configuration | 表明是一个配置文件，被注解的类将成为一个bean配置类 |   
+| @ConditionalOnClass | 当classpath下发现该类的情况下进行自动配置|  
+| @ConditionalOnBean | 当classpath下发现该类的情况下进行自动配置| 
+| @EnableConfigurationProperties | 使@ConfigurationProperties注解生效| 
+| @AutoConfigureAfter | 完成自动配置后实例化这个bean| 
+
+### 实现
+
+pom.xml
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	    <modelVersion>4.0.0</modelVersion>
+	    <parent>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-parent</artifactId>
+	        <version>2.1.4.RELEASE</version>
+	        <relativePath/> <!-- lookup parent from repository -->
+	    </parent>
+	    <groupId>com.air</groupId>
+	    <artifactId>starter-demo</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	    <name>starter-demo</name>
+	    <description>spring-boot-starter demo</description>
+	
+	    <properties>
+	        <java.version>1.8</java.version>
+	    </properties>
+	
+	    <dependencies>
+	        <dependency>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-starter</artifactId>
+	        </dependency>
+	
+	        <dependency>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-configuration-processor</artifactId>
+	            <optional>true</optional>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.projectlombok</groupId>
+	            <artifactId>lombok</artifactId>
+	            <optional>true</optional>
+	        </dependency>
+	        <dependency>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-starter-test</artifactId>
+	            <scope>test</scope>
+	        </dependency>
+	    </dependencies>
+	
+	    <build>
+	        <plugins>
+	            <!-- Source -->
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-source-plugin</artifactId>
+	                <executions>
+	                    <execution>
+	                        <phase>package</phase>
+	                        <goals>
+	                            <goal>jar-no-fork</goal>
+	                        </goals>
+	                    </execution>
+	                </executions>
+	            </plugin>
+	        </plugins>
+	    </build>
+	
+	</project>
+
+spring-boot-configuration-processor 的作用是编译时生成 spring-configuration-metadata.json ，在IDE中编辑配置文件时，会出现提示。 打包选择jar-no-fork，因为这里不需要main函数。
+
+### EnableDemoConfiguration
+	@Target({ElementType.TYPE})
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Inherited
+	public @interface EnableDemoConfiguration {
+	}
+
+### DemoProperties
+
+	@Data
+	@ConfigurationProperties(prefix = "demo")
+	public class DemoProperties {
+	    private String name;
+	    private Integer age;
+	}
+
+name和age对应application.properties里面的demo.name和demo.age
+
+### DemoAutoConfiguration
+
+	@Configuration
+	@ConditionalOnBean(annotation = EnableDemoConfiguration.class)
+	@EnableConfigurationProperties(DemoProperties.class)
+	public class DemoAutoConfiguration {
+	
+	    @Bean
+	    @ConditionalOnMissingBean
+	    DemoService demoService (){
+	        return new DemoService();
+	    }
+	
+	}
+这里设置自动配置的相关条件，和相关操作，由于这里只想写一个最简单的demo，所以这里只需要简单注入一个bean，没有复杂逻辑，实际开发中，这个类是最关键的。
+
+### DemoService
+
+	public class DemoService {
+	
+	    @Autowired
+	    private DemoProperties demoProperties;
+	
+	    public void print() {
+	        System.out.println(demoProperties.getName());
+	        System.out.println(demoProperties.getAge());
+	    }
+	}
+这里不需要@Service，因为已经通过DemoAutoConfiguration注入spring容器了。
+
+### spring.factories
+
+在resources/META-INF/下创建spring.factories文件:
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.air.starterdemo.config.DemoAutoConfiguration
+告诉spring-boot，启动时需要扫描的类。
+
+### 测试
+pom.xml 本地mvn install之后，在新的spring-boot项目里面引入
+	<dependency>
+	    <groupId>com.air</groupId>
+	    <artifactId>starter-demo</artifactId>
+	    <version>0.0.1-SNAPSHOT</version>
+	</dependency>
+
+### 配置文件
+
+	demo.name = ooo
+	demo.age = 11
+
+如果使用的是IDEA，在编辑时会出现提示。
+### 测试
+	@SpringBootApplication
+	@EnableDemoConfiguration
+	public class Demo1Application {
+	
+	    @Autowired
+	    private DemoService demoService;
+	
+	    public static void main(String[] args) {
+	        SpringApplication.run(Demo1Application.class, args);
+	    }
+	
+	    @PostConstruct
+	    public void test() {
+	        demoService.print();
+	    }
+	}
+启动main函数，控制台会打印出配置文件中的name和age，一个简单的spring-boot-starter就写好了
+
+### spring.factories
 
     # Initializers
 	org.springframework.context.ApplicationContextInitializer=\
