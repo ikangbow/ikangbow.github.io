@@ -94,23 +94,23 @@
 
 
 
-<meta name="description" content="Spring Boot简介简化Spring应用开发的一个框架 整个Spring技术栈的一个大整合 J2EE开发的一站式解决方案 微服务微服务：架构风格 一个应用应该是一组小型服务；可以通过HTTP的方式进行互通； 每一个功能元素最终都是一个可独立替换和独立升级的软件单元； 环境准备环境约束-jdk1.8 -maven 3.x -springboot1.5.9RELEASE MAVEN设置12345">
+<meta name="description" content="Spring Boot简介 Spring boot是Spring家族中的一个全新的框架，它用来简化Spring应用程序的创建和开发过程，也可以说Spring boot能简化我们之前采用SpringMVC+Spring+Mybatis框架进行开发的过程。 在以往我们采用SpringMVC+Spring+Mybatis框架进行开发的时候，搭建和整合三大框架，我们需要做很好工作，比如配置web.xml，">
 <meta name="keywords" content="springboot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot系列">
 <meta property="og:url" content="http://yoursite.com/2020/05/26/SpringBoot系列/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="Spring Boot简介简化Spring应用开发的一个框架 整个Spring技术栈的一个大整合 J2EE开发的一站式解决方案 微服务微服务：架构风格 一个应用应该是一组小型服务；可以通过HTTP的方式进行互通； 每一个功能元素最终都是一个可独立替换和独立升级的软件单元； 环境准备环境约束-jdk1.8 -maven 3.x -springboot1.5.9RELEASE MAVEN设置12345">
+<meta property="og:description" content="Spring Boot简介 Spring boot是Spring家族中的一个全新的框架，它用来简化Spring应用程序的创建和开发过程，也可以说Spring boot能简化我们之前采用SpringMVC+Spring+Mybatis框架进行开发的过程。 在以往我们采用SpringMVC+Spring+Mybatis框架进行开发的时候，搭建和整合三大框架，我们需要做很好工作，比如配置web.xml，">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/05/26/SpringBoot系列/批注%202020-05-23%20145433.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/05/26/SpringBoot系列/批注%202020-05-24%20123704.png">
 <meta property="og:image" content="http://yoursite.com/2020/05/26/SpringBoot系列/legacy.png">
 <meta property="og:image" content="http://yoursite.com/2020/05/26/SpringBoot系列/批注%202020-05-24%20125540.png">
 <meta property="og:image" content="http://yoursite.com/2020/05/26/SpringBoot系列/批注%202020-05-24%20160548.png">
-<meta property="og:updated_time" content="2020-05-26T14:33:46.438Z">
+<meta property="og:updated_time" content="2020-05-27T13:10:46.537Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot系列">
-<meta name="twitter:description" content="Spring Boot简介简化Spring应用开发的一个框架 整个Spring技术栈的一个大整合 J2EE开发的一站式解决方案 微服务微服务：架构风格 一个应用应该是一组小型服务；可以通过HTTP的方式进行互通； 每一个功能元素最终都是一个可独立替换和独立升级的软件单元； 环境准备环境约束-jdk1.8 -maven 3.x -springboot1.5.9RELEASE MAVEN设置12345">
+<meta name="twitter:description" content="Spring Boot简介 Spring boot是Spring家族中的一个全新的框架，它用来简化Spring应用程序的创建和开发过程，也可以说Spring boot能简化我们之前采用SpringMVC+Spring+Mybatis框架进行开发的过程。 在以往我们采用SpringMVC+Spring+Mybatis框架进行开发的时候，搭建和整合三大框架，我们需要做很好工作，比如配置web.xml，">
 <meta name="twitter:image" content="http://yoursite.com/2020/05/26/SpringBoot系列/批注%202020-05-23%20145433.jpg">
 
 
@@ -410,9 +410,18 @@
       
 
       
-        <h2 id="Spring-Boot简介"><a href="#Spring-Boot简介" class="headerlink" title="Spring Boot简介"></a>Spring Boot简介</h2><p>简化Spring应用开发的一个框架</p>
-<p>整个Spring技术栈的一个大整合</p>
-<p>J2EE开发的一站式解决方案</p>
+        <h2 id="Spring-Boot简介"><a href="#Spring-Boot简介" class="headerlink" title="Spring Boot简介"></a>Spring Boot简介</h2><ol>
+<li>Spring boot是Spring家族中的一个全新的框架，它用来简化Spring应用程序的创建和开发过程，也可以说Spring boot能简化我们之前采用SpringMVC+Spring+Mybatis框架进行开发的过程。</li>
+<li>在以往我们采用SpringMVC+Spring+Mybatis框架进行开发的时候，搭建和整合三大框架，我们需要做很好工作，比如配置web.xml，配置Spring，配置Mybatis,并将它们整合在一起等，而Spring boot框架对此开发过程进行了革命性的颠覆，抛弃了繁琐的xml配置过程，采用大量的默认配置简化我们的开发过程。</li>
+<li>所以采用Spring boot可以非常容易和快速的创建基于Spring框架的应用程序，它让编码变简单了，配置变简单了，部署变简单了，监控也变简单了。</li>
+<li>正因为Spring boot它化繁为简，让开发变得极其简单和快捷，所以在业界备受关注。Spring boot在国内的关注趋势也日渐超过Spring。</li>
+</ol>
+<ol>
+<li>能够快速创建基于Spring的应用程序。（简化配置）</li>
+<li>能够直接使用java的main方法启动内嵌的Tomcat，Jetty服务器运行Spring boot程序，不需要部署war包文件。</li>
+<li>提供约定的starter POM来简化来简化Maven配置，让Maven配置变得简单。</li>
+<li>根据项目的maven依赖配置，Spring boot自动配置Spring,SpringMVC等其它开源框架。<br>.提供程序的健康检查等功能。（检查内部的运行状态等）<br>基本可以完全不使用xml配置文件，采用注解配置。（或者默认约定的配置，代码中已经实现）</li>
+</ol>
 <h2 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h2><p>微服务：架构风格</p>
 <p>一个应用应该是一组小型服务；可以通过HTTP的方式进行互通；</p>
 <p>每一个功能元素最终都是一个可独立替换和独立升级的软件单元；</p>
@@ -737,15 +746,190 @@ spring:
 <p> -jar xxx.jar –server.port=8080</p>
 <h3 id="自动配置原理"><a href="#自动配置原理" class="headerlink" title="自动配置原理"></a>自动配置原理</h3><p>配置文件能配置的属性参照</p>
 <p><a href="https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties</a></p>
-<p>1、SpringBoot启动的时候加载主配置类，开启了自动配置功能@EnableAutoConfiguration</p>
-<p>2、@EnableAutoConfiguration</p>
-<p>​利用AutoConfigurationImportSelector给容器中导入一些组件</p>
-<p>​可以查看selectImports（）方法的内容</p>
-<pre><code>List&lt;String&gt; configurations = this.getCandidateConfigurations(annotationMetadata, attributes);
-</code></pre><p>获取候选的配置</p>
-<p>SpringFactoriesLoader.loadFactoryNames()<br>扫描所有jar包类路径下 META-INF/spring.factories<br>把扫描到的这些文件的内容包装成properties<br>从properties中获取到EnableAutoConfiguration.class（类名）对应的值，将其加入到容器中</p>
-<p>将类路径下META-INF/spring.factories里面配置的所有EnableAutoConfiguration的值加入到了容器中</p>
-<pre><code># Initializers
+<pre><code>@SpringBootApplication
+@SpringBootApplication是一个复合注解或派生注解，在@SpringBootApplication中有一个注解@EnableAutoConfiguration，该注解是开启自动配置
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(excludeFilters = { @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+        @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+public @interface SpringBootApplication {
+</code></pre><h4 id="EnableAutoConfiguration"><a href="#EnableAutoConfiguration" class="headerlink" title="@EnableAutoConfiguration"></a>@EnableAutoConfiguration</h4><p>@EnableAutoConfiguration也是一个派生注解，其中的关键功能是由@Import提供，其导入的AutoConfigurationImportSelector的selectImports()方法通过SpringFactoriesLoader.loadFactoryNames()扫描所有具有META-INF/spring.factories的jar包。 spring-boot-autoconfigure-x.x.x.x.jar里就有一个spring.factories文件。spring.factories文件由一组一组的key=value的形式，其中一个key是EnableAutoConfiguration类的全类名，而它的value是一个xxxxAutoConfiguration的类名的列表， 这些类名以逗号分隔。<br>spring-boot-autoconfigure-x.x.x.x.jar -&gt; META-INF/spring.factories -&gt; org.springframework.boot.autoconfigure.xxx.xxxAutoConfiguration 类列表将会被实例化到Spring容器。<br>SpringBoot项目启动时，@SpringBootApplication用在启动类SpringApplication.run()的内部就会置顶selectImports()方法，找到所有JavaConfig自动配置类的全限定名对应的class,然后将所有自动配置类加载到Spring容器中。</p>
+<h3 id="以redis自动配置，解析Spring自动配置原理"><a href="#以redis自动配置，解析Spring自动配置原理" class="headerlink" title="以redis自动配置，解析Spring自动配置原理"></a>以redis自动配置，解析Spring自动配置原理</h3><h4 id="将redis-starter依赖加入"><a href="#将redis-starter依赖加入" class="headerlink" title="将redis starter依赖加入"></a>将redis starter依赖加入</h4><pre><code>&lt;!--redis jar--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre><p>org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration会被实例化到容器。该类为什么会被实例化？ 因为它在META-INF/spring.factories的Auto Configure列表。<br>org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration被实例化，然而redis也会被实例化即创建RedisTemplate在Spring容器。</p>
+<p>然而实例化redis对象是有条件的即@ConditionalOnClass({RedisOperations.class})，意思：当给定的类名在类路径上存在，则实例化当前Bean。</p>
+<p>也就是想Spring创建redis实例对象，必须需要将redis starter包：spring-boot-starter-data-redis依赖引入。有了redis starter依赖springboot自动配置就会检测到classpath路径下有相关的类，然后就可以实例化对应的类了，这就是自动配置的原理。</p>
+<p><em>知识点：类上有该注解@Configuration，类被实例化 时@bean会自动执行，生成对应的bean实例，放入Spring容器。</em></p>
+<pre><code>org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration会导入JedisConnectionConfiguration.class
+@Import({LettuceConnectionConfiguration.class, JedisConnectionConfiguration.class})
+
+JedisConnectionConfiguration.class有注解：@ConditionalOnClass({GenericObjectPool.class, JedisConnection.class, Jedis.class}) 
+</code></pre><h4 id="spring是怎样读取redis配置参数？"><a href="#spring是怎样读取redis配置参数？" class="headerlink" title="spring是怎样读取redis配置参数？"></a>spring是怎样读取redis配置参数？</h4><p>关键是org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration的注解：@EnableConfigurationProperties({RedisProperties.class})</p>
+<p><em>知识点：@EnableConfigurationProperties会将配置文件的key-value映射成Java对象。<br>redis配置类，如果没redis配置，使用本地的redis这需要本地安装redis服务，如果有redis配置就设置redis host、port等属性</em></p>
+<p>appliccation.yml redis配置。必须以spring.redis开头</p>
+<h3 id="spring-boot-starter"><a href="#spring-boot-starter" class="headerlink" title="spring-boot-starter"></a>spring-boot-starter</h3><p>SpringBoot 可以省略众多的繁琐配置，它的众多starter可以说功不可没。 例如集成redis,只需要pom.xml中引入spring-boot-starter-data-redis,配置文件application.yml中加入spring.redis.database等几个关键配置项即可，常用的starter还有spring-boot-starter-web、spring-boot-starter-test等，相比传统的xml配置大大减少了集成的工作量。</p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>利用starter实现自动化配置只需要两个条件–maven依赖、配置文件。引入maven实质就是导入jar包，spring-boot启动的时候会找到starter jar包中的resources/META-INF/spring.factories文件，根据spring.factories文件中的配置，找到需要自动配置的类。</p>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Configuration</td>
+<td>表明是一个配置文件，被注解的类将成为一个bean配置类</td>
+</tr>
+<tr>
+<td>@ConditionalOnClass</td>
+<td>当classpath下发现该类的情况下进行自动配置</td>
+</tr>
+<tr>
+<td>@ConditionalOnBean</td>
+<td>当classpath下发现该类的情况下进行自动配置</td>
+</tr>
+<tr>
+<td>@EnableConfigurationProperties</td>
+<td>使@ConfigurationProperties注解生效</td>
+</tr>
+<tr>
+<td>@AutoConfigureAfter</td>
+<td>完成自动配置后实例化这个bean</td>
+</tr>
+</tbody>
+</table>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>pom.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.1.4.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;com.air&lt;/groupId&gt;
+    &lt;artifactId&gt;starter-demo&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;starter-demo&lt;/name&gt;
+    &lt;description&gt;spring-boot-starter demo&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-configuration-processor&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;!-- Source --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;
+                &lt;executions&gt;
+                    &lt;execution&gt;
+                        &lt;phase&gt;package&lt;/phase&gt;
+                        &lt;goals&gt;
+                            &lt;goal&gt;jar-no-fork&lt;/goal&gt;
+                        &lt;/goals&gt;
+                    &lt;/execution&gt;
+                &lt;/executions&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;
+</code></pre><p>spring-boot-configuration-processor 的作用是编译时生成 spring-configuration-metadata.json ，在IDE中编辑配置文件时，会出现提示。 打包选择jar-no-fork，因为这里不需要main函数。</p>
+<h4 id="EnableDemoConfiguration"><a href="#EnableDemoConfiguration" class="headerlink" title="EnableDemoConfiguration"></a>EnableDemoConfiguration</h4><pre><code>@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+public @interface EnableDemoConfiguration {
+}
+</code></pre><h4 id="DemoProperties"><a href="#DemoProperties" class="headerlink" title="DemoProperties"></a>DemoProperties</h4><pre><code>@Data
+@ConfigurationProperties(prefix = &quot;demo&quot;)
+public class DemoProperties {
+    private String name;
+    private Integer age;
+}
+</code></pre><p>name和age对应application.properties里面的demo.name和demo.age</p>
+<h4 id="DemoAutoConfiguration"><a href="#DemoAutoConfiguration" class="headerlink" title="DemoAutoConfiguration"></a>DemoAutoConfiguration</h4><pre><code>@Configuration
+@ConditionalOnBean(annotation = EnableDemoConfiguration.class)
+@EnableConfigurationProperties(DemoProperties.class)
+public class DemoAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean
+    DemoService demoService (){
+        return new DemoService();
+    }
+
+}
+</code></pre><p>这里设置自动配置的相关条件，和相关操作，由于这里只想写一个最简单的demo，所以这里只需要简单注入一个bean，没有复杂逻辑，实际开发中，这个类是最关键的。</p>
+<h4 id="DemoService"><a href="#DemoService" class="headerlink" title="DemoService"></a>DemoService</h4><pre><code>public class DemoService {
+
+    @Autowired
+    private DemoProperties demoProperties;
+
+    public void print() {
+        System.out.println(demoProperties.getName());
+        System.out.println(demoProperties.getAge());
+    }
+}
+</code></pre><p>这里不需要@Service，因为已经通过DemoAutoConfiguration注入spring容器了。</p>
+<h4 id="spring-factories"><a href="#spring-factories" class="headerlink" title="spring.factories"></a>spring.factories</h4><p>在resources/META-INF/下创建spring.factories文件:<br>org.springframework.boot.autoconfigure.EnableAutoConfiguration=\<br>com.air.starterdemo.config.DemoAutoConfiguration<br>告诉spring-boot，启动时需要扫描的类。</p>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>pom.xml 本地mvn install之后，在新的spring-boot项目里面引入<br>    <dependency><br>        <groupid>com.air</groupid><br>        <artifactid>starter-demo</artifactid><br>        <version>0.0.1-SNAPSHOT</version><br>    </dependency></p>
+<h4 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h4><pre><code>demo.name = ooo
+demo.age = 11
+</code></pre><p>如果使用的是IDEA，在编辑时会出现提示。</p>
+<h4 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h4><pre><code>@SpringBootApplication
+@EnableDemoConfiguration
+public class Demo1Application {
+
+    @Autowired
+    private DemoService demoService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(Demo1Application.class, args);
+    }
+
+    @PostConstruct
+    public void test() {
+        demoService.print();
+    }
+}
+</code></pre><p>启动main函数，控制台会打印出配置文件中的name和age，一个简单的spring-boot-starter就写好了</p>
+<h4 id="spring-factories-1"><a href="#spring-factories-1" class="headerlink" title="spring.factories"></a>spring.factories</h4><pre><code># Initializers
 org.springframework.context.ApplicationContextInitializer=\
 org.springframework.boot.autoconfigure.SharedMetadataReaderFactoryContextInitializer,\
 org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener
@@ -1459,7 +1643,7 @@ public void setConfigurers(List&lt;WebMvcConfigurer&gt; configurers) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot简介"><span class="nav-number">1.</span> <span class="nav-text">Spring Boot简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微服务"><span class="nav-number">2.</span> <span class="nav-text">微服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">3.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境约束"><span class="nav-number">3.1.</span> <span class="nav-text">环境约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAVEN设置"><span class="nav-number">3.2.</span> <span class="nav-text">MAVEN设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Boot-HelloWorld"><span class="nav-number">3.3.</span> <span class="nav-text">Spring Boot HelloWorld</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个maven工程（jar）"><span class="nav-number">3.3.1.</span> <span class="nav-text">创建一个maven工程（jar）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入springBoot-依赖"><span class="nav-number">3.3.2.</span> <span class="nav-text">导入springBoot 依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写主程序，启动Spring-Boot应用"><span class="nav-number">3.3.3.</span> <span class="nav-text">编写主程序，启动Spring Boot应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写相关的Controller、Service"><span class="nav-number">3.3.4.</span> <span class="nav-text">编写相关的Controller、Service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行主程序测试"><span class="nav-number">3.3.5.</span> <span class="nav-text">运行主程序测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简化部署"><span class="nav-number">3.3.6.</span> <span class="nav-text">简化部署</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#将这个应用打成jar包，直接用java-jar的命令进行执行；"><span class="nav-number">3.3.6.1.</span> <span class="nav-text">将这个应用打成jar包，直接用java -jar的命令进行执行；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#终止运行"><span class="nav-number">3.3.6.2.</span> <span class="nav-text">终止运行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-World探究"><span class="nav-number">3.4.</span> <span class="nav-text">Hello World探究</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pom文件"><span class="nav-number">3.4.1.</span> <span class="nav-text">pom文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#父文件"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">父文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入的依赖"><span class="nav-number">3.4.1.2.</span> <span class="nav-text">导入的依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#spring-boot-starter：spring-boot场景启动器；帮我们导入了web模块正常运行所依赖的组件"><span class="nav-number">3.4.1.2.1.</span> <span class="nav-text">spring-boot-starter：spring-boot场景启动器；帮我们导入了web模块正常运行所依赖的组件</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#主程序类"><span class="nav-number">3.4.1.3.</span> <span class="nav-text">主程序类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Spring-Initializer快速创建Spring-Boot项目"><span class="nav-number">3.5.</span> <span class="nav-text">使用Spring Initializer快速创建Spring Boot项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件"><span class="nav-number">4.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBoot使用一个全局的配置文件，配置文件名是固定的；"><span class="nav-number">4.1.</span> <span class="nav-text">SpringBoot使用一个全局的配置文件，配置文件名是固定的；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#YAML语法"><span class="nav-number">4.2.</span> <span class="nav-text">YAML语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#k-v-标识一对键值对（空格必须有）"><span class="nav-number">4.2.1.</span> <span class="nav-text">k: v :标识一对键值对（空格必须有）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值的写法"><span class="nav-number">4.2.2.</span> <span class="nav-text">值的写法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件的注入和校验"><span class="nav-number">4.3.</span> <span class="nav-text">配置文件的注入和校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#properities配置文件在idea中默认utf-8可能会乱码"><span class="nav-number">4.3.1.</span> <span class="nav-text">properities配置文件在idea中默认utf-8可能会乱码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PropertySource-amp-ImportResource"><span class="nav-number">4.3.2.</span> <span class="nav-text">@PropertySource&amp;ImportResource</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件占位符"><span class="nav-number">4.4.</span> <span class="nav-text">配置文件占位符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Profile"><span class="nav-number">4.5.</span> <span class="nav-text">Profile</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多profile文件"><span class="nav-number">4.5.1.</span> <span class="nav-text">多profile文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yml支持多文档块的方式"><span class="nav-number">4.5.2.</span> <span class="nav-text">yml支持多文档块的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#激活指定profile"><span class="nav-number">4.5.3.</span> <span class="nav-text">激活指定profile</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在配置文件中指定spring-profiles-active-dev"><span class="nav-number">4.5.3.1.</span> <span class="nav-text">在配置文件中指定spring.profiles.active=dev</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#命令行的方式"><span class="nav-number">4.5.3.2.</span> <span class="nav-text">命令行的方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟机参数"><span class="nav-number">4.5.3.3.</span> <span class="nav-text">虚拟机参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件的加载默认的优先级由高到低"><span class="nav-number">4.6.</span> <span class="nav-text">配置文件的加载默认的优先级由高到低</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动配置原理"><span class="nav-number">4.7.</span> <span class="nav-text">自动配置原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot与日志"><span class="nav-number">5.</span> <span class="nav-text">SpringBoot与日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志门面SLF4J日志实现Logback"><span class="nav-number">5.1.</span> <span class="nav-text">日志门面SLF4J日志实现Logback;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗留问题"><span class="nav-number">5.2.</span> <span class="nav-text">遗留问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot与Web开发"><span class="nav-number">6.</span> <span class="nav-text">SpringBoot与Web开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用SpringBoot"><span class="nav-number">6.1.</span> <span class="nav-text">使用SpringBoot</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建SpringBoot应用，选中我们需要的模块；"><span class="nav-number">6.1.1.</span> <span class="nav-text">创建SpringBoot应用，选中我们需要的模块；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringBoot已经默认将这些场景配置好了，只需要在配置文件中指定少量配置就可以运行起来；"><span class="nav-number">6.1.2.</span> <span class="nav-text">SpringBoot已经默认将这些场景配置好了，只需要在配置文件中指定少量配置就可以运行起来；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自己编写业务逻辑代码；"><span class="nav-number">6.1.3.</span> <span class="nav-text">自己编写业务逻辑代码；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动配置原理-1"><span class="nav-number">6.1.4.</span> <span class="nav-text">自动配置原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringBoot对静态资源的映射规则"><span class="nav-number">6.1.5.</span> <span class="nav-text">SpringBoot对静态资源的映射规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以什么样的路径访问静态资源"><span class="nav-number">6.1.6.</span> <span class="nav-text">以什么样的路径访问静态资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板引擎"><span class="nav-number">6.1.7.</span> <span class="nav-text">模板引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引入Thymeleaf"><span class="nav-number">6.1.8.</span> <span class="nav-text">引入Thymeleaf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">6.1.9.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringMVC自动配置"><span class="nav-number">6.1.10.</span> <span class="nav-text">SpringMVC自动配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Boot自动配置好了SpringMVC"><span class="nav-number">6.1.11.</span> <span class="nav-text">Spring Boot自动配置好了SpringMVC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全面接管SpringMVC"><span class="nav-number">6.1.12.</span> <span class="nav-text">全面接管SpringMVC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何修改SpringBoot的默认配置"><span class="nav-number">6.1.13.</span> <span class="nav-text">如何修改SpringBoot的默认配置</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Boot简介"><span class="nav-number">1.</span> <span class="nav-text">Spring Boot简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微服务"><span class="nav-number">2.</span> <span class="nav-text">微服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">3.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境约束"><span class="nav-number">3.1.</span> <span class="nav-text">环境约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MAVEN设置"><span class="nav-number">3.2.</span> <span class="nav-text">MAVEN设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Boot-HelloWorld"><span class="nav-number">3.3.</span> <span class="nav-text">Spring Boot HelloWorld</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个maven工程（jar）"><span class="nav-number">3.3.1.</span> <span class="nav-text">创建一个maven工程（jar）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入springBoot-依赖"><span class="nav-number">3.3.2.</span> <span class="nav-text">导入springBoot 依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写主程序，启动Spring-Boot应用"><span class="nav-number">3.3.3.</span> <span class="nav-text">编写主程序，启动Spring Boot应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编写相关的Controller、Service"><span class="nav-number">3.3.4.</span> <span class="nav-text">编写相关的Controller、Service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行主程序测试"><span class="nav-number">3.3.5.</span> <span class="nav-text">运行主程序测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简化部署"><span class="nav-number">3.3.6.</span> <span class="nav-text">简化部署</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#将这个应用打成jar包，直接用java-jar的命令进行执行；"><span class="nav-number">3.3.6.1.</span> <span class="nav-text">将这个应用打成jar包，直接用java -jar的命令进行执行；</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#终止运行"><span class="nav-number">3.3.6.2.</span> <span class="nav-text">终止运行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-World探究"><span class="nav-number">3.4.</span> <span class="nav-text">Hello World探究</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pom文件"><span class="nav-number">3.4.1.</span> <span class="nav-text">pom文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#父文件"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">父文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入的依赖"><span class="nav-number">3.4.1.2.</span> <span class="nav-text">导入的依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#spring-boot-starter：spring-boot场景启动器；帮我们导入了web模块正常运行所依赖的组件"><span class="nav-number">3.4.1.2.1.</span> <span class="nav-text">spring-boot-starter：spring-boot场景启动器；帮我们导入了web模块正常运行所依赖的组件</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#主程序类"><span class="nav-number">3.4.1.3.</span> <span class="nav-text">主程序类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Spring-Initializer快速创建Spring-Boot项目"><span class="nav-number">3.5.</span> <span class="nav-text">使用Spring Initializer快速创建Spring Boot项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置文件"><span class="nav-number">4.</span> <span class="nav-text">配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBoot使用一个全局的配置文件，配置文件名是固定的；"><span class="nav-number">4.1.</span> <span class="nav-text">SpringBoot使用一个全局的配置文件，配置文件名是固定的；</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#YAML语法"><span class="nav-number">4.2.</span> <span class="nav-text">YAML语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#k-v-标识一对键值对（空格必须有）"><span class="nav-number">4.2.1.</span> <span class="nav-text">k: v :标识一对键值对（空格必须有）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#值的写法"><span class="nav-number">4.2.2.</span> <span class="nav-text">值的写法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件的注入和校验"><span class="nav-number">4.3.</span> <span class="nav-text">配置文件的注入和校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#properities配置文件在idea中默认utf-8可能会乱码"><span class="nav-number">4.3.1.</span> <span class="nav-text">properities配置文件在idea中默认utf-8可能会乱码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PropertySource-amp-ImportResource"><span class="nav-number">4.3.2.</span> <span class="nav-text">@PropertySource&amp;ImportResource</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件占位符"><span class="nav-number">4.4.</span> <span class="nav-text">配置文件占位符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Profile"><span class="nav-number">4.5.</span> <span class="nav-text">Profile</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多profile文件"><span class="nav-number">4.5.1.</span> <span class="nav-text">多profile文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yml支持多文档块的方式"><span class="nav-number">4.5.2.</span> <span class="nav-text">yml支持多文档块的方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#激活指定profile"><span class="nav-number">4.5.3.</span> <span class="nav-text">激活指定profile</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在配置文件中指定spring-profiles-active-dev"><span class="nav-number">4.5.3.1.</span> <span class="nav-text">在配置文件中指定spring.profiles.active=dev</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#命令行的方式"><span class="nav-number">4.5.3.2.</span> <span class="nav-text">命令行的方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#虚拟机参数"><span class="nav-number">4.5.3.3.</span> <span class="nav-text">虚拟机参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件的加载默认的优先级由高到低"><span class="nav-number">4.6.</span> <span class="nav-text">配置文件的加载默认的优先级由高到低</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动配置原理"><span class="nav-number">4.7.</span> <span class="nav-text">自动配置原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EnableAutoConfiguration"><span class="nav-number">4.7.1.</span> <span class="nav-text">@EnableAutoConfiguration</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以redis自动配置，解析Spring自动配置原理"><span class="nav-number">4.8.</span> <span class="nav-text">以redis自动配置，解析Spring自动配置原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将redis-starter依赖加入"><span class="nav-number">4.8.1.</span> <span class="nav-text">将redis starter依赖加入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring是怎样读取redis配置参数？"><span class="nav-number">4.8.2.</span> <span class="nav-text">spring是怎样读取redis配置参数？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-boot-starter"><span class="nav-number">4.9.</span> <span class="nav-text">spring-boot-starter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理"><span class="nav-number">4.9.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现"><span class="nav-number">4.9.2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EnableDemoConfiguration"><span class="nav-number">4.9.3.</span> <span class="nav-text">EnableDemoConfiguration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DemoProperties"><span class="nav-number">4.9.4.</span> <span class="nav-text">DemoProperties</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DemoAutoConfiguration"><span class="nav-number">4.9.5.</span> <span class="nav-text">DemoAutoConfiguration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DemoService"><span class="nav-number">4.9.6.</span> <span class="nav-text">DemoService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-factories"><span class="nav-number">4.9.7.</span> <span class="nav-text">spring.factories</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">4.9.8.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件-1"><span class="nav-number">4.9.9.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试-1"><span class="nav-number">4.9.10.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-factories-1"><span class="nav-number">4.9.11.</span> <span class="nav-text">spring.factories</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot与日志"><span class="nav-number">5.</span> <span class="nav-text">SpringBoot与日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志门面SLF4J日志实现Logback"><span class="nav-number">5.1.</span> <span class="nav-text">日志门面SLF4J日志实现Logback;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗留问题"><span class="nav-number">5.2.</span> <span class="nav-text">遗留问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot与Web开发"><span class="nav-number">6.</span> <span class="nav-text">SpringBoot与Web开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用SpringBoot"><span class="nav-number">6.1.</span> <span class="nav-text">使用SpringBoot</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建SpringBoot应用，选中我们需要的模块；"><span class="nav-number">6.1.1.</span> <span class="nav-text">创建SpringBoot应用，选中我们需要的模块；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringBoot已经默认将这些场景配置好了，只需要在配置文件中指定少量配置就可以运行起来；"><span class="nav-number">6.1.2.</span> <span class="nav-text">SpringBoot已经默认将这些场景配置好了，只需要在配置文件中指定少量配置就可以运行起来；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自己编写业务逻辑代码；"><span class="nav-number">6.1.3.</span> <span class="nav-text">自己编写业务逻辑代码；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动配置原理-1"><span class="nav-number">6.1.4.</span> <span class="nav-text">自动配置原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringBoot对静态资源的映射规则"><span class="nav-number">6.1.5.</span> <span class="nav-text">SpringBoot对静态资源的映射规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以什么样的路径访问静态资源"><span class="nav-number">6.1.6.</span> <span class="nav-text">以什么样的路径访问静态资源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模板引擎"><span class="nav-number">6.1.7.</span> <span class="nav-text">模板引擎</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引入Thymeleaf"><span class="nav-number">6.1.8.</span> <span class="nav-text">引入Thymeleaf</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">6.1.9.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringMVC自动配置"><span class="nav-number">6.1.10.</span> <span class="nav-text">SpringMVC自动配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Boot自动配置好了SpringMVC"><span class="nav-number">6.1.11.</span> <span class="nav-text">Spring Boot自动配置好了SpringMVC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全面接管SpringMVC"><span class="nav-number">6.1.12.</span> <span class="nav-text">全面接管SpringMVC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何修改SpringBoot的默认配置"><span class="nav-number">6.1.13.</span> <span class="nav-text">如何修改SpringBoot的默认配置</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

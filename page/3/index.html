@@ -1232,8 +1232,16 @@ Dockerfile中多个地方都可以调用WORKDIR，如果后面跟的是相对位
 例子：ARG CONT_IMAG_VER &lt;换行&gt; RUN echo $CONT_IMG_VER
 ARG CONT_IMAG_VER &lt;换行&gt; RUN echo hello
 当编译时给ARG变量赋值hello，则两个Dockerfile可以使用相同的中间镜像，如果不为hello，则不能使用同一个中间镜
-</code></pre><p>示例：Dockerfile以阿里中间件大赛给的debian-jdk8镜像为例，Dockerfile文件如下：<br>    FROM debian:stretch<br>    ARG DEBIAN_FRONTEND=noninteractive<br>    ARG JAVA_VERSION=8<br>    ARG JAVA_UPDATE=172<br>    ARG JAVA_BUILD=11<br>    ARG JAVA_PACKAGE=jdk<br>    ARG JAVA_HASH=a58eab1ec242421181065cdc37240b08</p>
-<pre><code>ENV LANG C.UTF-8
+</code></pre><p>示例：Dockerfile以阿里中间件大赛给的debian-jdk8镜像为例，Dockerfile文件如下：</p>
+<pre><code>FROM debian:stretch
+ARG DEBIAN_FRONTEND=noninteractive
+ARG JAVA_VERSION=8
+ARG JAVA_UPDATE=172
+ARG JAVA_BUILD=11
+ARG JAVA_PACKAGE=jdk
+ARG JAVA_HASH=a58eab1ec242421181065cdc37240b08
+
+ENV LANG C.UTF-8
 ENV JAVA_HOME=/opt/jdk
 ENV PATH=${PATH}:${JAVA_HOME}/bin
 
