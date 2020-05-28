@@ -341,4 +341,98 @@ ENV	可以看出这个指令的作用是在shell中设置一些环境变量（�
     docker run -i -t -d -p 88:8080 -v /badou/badou/badou1.war:/usr/local/tomcat/webapps/badou.war -v /badou/conf/apiclient_cert.p12:/usr/local/tomcat/apiclient_cert.p12 -v /badou/badou/index.html:/usr/local/tomcat/webapps/ROOT/index.html --name=application andylaun/tomcat:v5
 
     -v  挂载文件目录
+
+## docker运行nginx ##
+
+    which nginx
+
+查看nginx安装在哪个目录
+
+## docker网络 ##
+
+docker具有隔离性,网络也是个隔离性的一部分，linux使用了命名空间来进行资源的隔离,比如pid namespace就是用来隔离进程的,mount namespace是用来隔离文件系统的,network namespace 是用来隔离网络的.每一个network namespace都提供了一个独立的网络环境,包括网卡路由iptable规则等等,都是与以其它的network space隔离的
+
+ docker容器在默认情况下,一般会分配一个独立的network-namespace,也就是网络类型中的Bridge模式，在使用Bridge时就涉及到了一个问题,既然它有独立的namesapce,这就需要一种技术使容器内的端口可以在主机上访问到,这种技术就是端口映射,docker可以指定你想把容器内的某一个端口可以在容器所在主机上的某一个端口它俩之间做一个映射,当你在访问主机上的端口时,其实就是访问容器里面的端口。
+
+## docker部署web ##
+
+1. 在宿主机系统下载所需要的的jdk版本gz文件
+
+	docker cp gz文件 容器ID:/root
+
+2. 复制gz文件到容器中的root的用户目录下
+
+	docker cp jdk-8u121-linux-x64.tar.gz ea49f55dde3d :/root
+3. 进入运行中的容器
+
+    docker exec -it ea49f55dde3d /bin/bash
+
+4. 在容器中解压gz文件
+
+	tar -zxvf jdk-8u121-linux-x64.tar.gz
+
+5. 建立容器系统的JAVA_HOME目录
+
+	mkdir /usr/lib/jvm
+
+6. 移动jdk目录到JAVA_HOME目录
+
+	mv ~/jdk1.8.0_121 /usr/lib/jvm
+
+7. 安装vim（可选）
+
+	apt-get update
+	apt-get install vim
+
+8. 设置环境变量
+
+	vim ~/.bashrc
+	export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_121  
+    export JRE_HOME=${JAVA_HOME}/jre  
+    export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib  
+    export PATH=${JAVA_HOME}/bin:$PATH
+
+9. 使得环境变量马上生效 
+
+	source ~/.bashrc
+
+10. 验证JDK是否安装成功
+
+	java -version
+
+## 安装tomcat ##
+
+1. 查找tomcat信息 
+
+	docker search tomcat
+
+2. 下载官方的镜像Starts最高的那个
+
+	docker pull docker.io/tomcat
+
+3. 查看docker镜像
+	
+	docker images
+
+4. 后台运行tomcat镜像
+
+	docker run -d --name tomcat -p 8081:8080 hub.c.163.com/library/tomcat
+
+5. 若端口被占用，可以指定容器和主机的映射端口，前者是外围访问端口，后者是容器内部端口。
+-d参数：容器会在后台运行并不会把输出的结果打印到宿主机上面。使用 -d 参数启动后会返回一个唯一的 id。
+
+## 部署web项目 ##
+
+1. 把宿主机的war包丢到docker容器tomcat/webapps下：
+
+	docker cp lsz.war ab6bce2c5826:/usr/local/tomcat/webapps
+
+2. 进入docker容器中
+
+	docker exec -it ab6bce2c5826 /bin/bash
+
+3. 查看webapps中的web项目
+4. 退出docker容器Ctrl+p+q
+5. 重新运行tomcat容器docker restart ab6bce2c5826
+6. 停止tomcat容器docker stop ab6bce2c5826
     
