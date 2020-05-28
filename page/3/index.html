@@ -315,6 +315,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/04/常用命令/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/04/常用命令/" itemprop="url">常用命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-04T13:24:01+08:00">
+                2019-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="项目拷贝"><a href="#项目拷贝" class="headerlink" title="项目拷贝"></a>项目拷贝</h1><p>1.项目右键 –&gt; properties –&gt; Web Project Settings –&gt; 修改Context root</p>
+<p>2.pom.xml</p>
+<p>3.工作空间中找到当前项目下.project文件</p>
+<p>4.工作空间中找到当前项目，打开.settings文件夹，找到org.eclipse.wst.common.component文件</p>
+<p>5..component</p>
+<h1 id="hexo-记录"><a href="#hexo-记录" class="headerlink" title="hexo 记录"></a>hexo 记录</h1><p>1.hexo new ‘页面名称’</p>
+<p>2.hexo clean 清除</p>
+<p>3.hexo g</p>
+<p>4.hexo d</p>
+<h2 id="git备份hexo源码"><a href="#git备份hexo源码" class="headerlink" title="git备份hexo源码"></a>git备份hexo源码</h2><h5 id="1、cd-本地分支里"><a href="#1、cd-本地分支里" class="headerlink" title="1、cd 本地分支里"></a>1、cd 本地分支里</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br><span class="line"></span><br><span class="line">* hexo</span><br><span class="line">  master</span><br><span class="line">  </span><br><span class="line">git remote –v</span><br><span class="line"></span><br><span class="line">若什么都没有，则和上游已断联系，拉不了代码也推不了代码</span><br><span class="line"></span><br><span class="line">加关联</span><br><span class="line">git remote add origin https://github.com/ikangbow/ikangbow.github.io</span><br><span class="line"></span><br><span class="line">git fetch origin</span><br><span class="line"></span><br><span class="line">再次检查远程仓库，显示对应的clone地址</span><br><span class="line">git remote –v</span><br><span class="line"></span><br><span class="line">origin  https://github.com/ikangbow/ikangbow.github.io (fetch)</span><br><span class="line">origin  https://github.com/ikangbow/ikangbow.github.io (push)</span><br><span class="line"></span><br><span class="line">本地git 文件添加</span><br><span class="line">git add .</span><br><span class="line"></span><br><span class="line">本地git 提交</span><br><span class="line">git commit -m "备注"</span><br></pre></td></tr></table></figure>
+<h5 id="2、进入H-hexo-ikangbow-github-io目录右键"><a href="#2、进入H-hexo-ikangbow-github-io目录右键" class="headerlink" title="2、进入H:\hexo\ikangbow.github.io目录右键"></a>2、进入H:\hexo\ikangbow.github.io目录右键</h5><p><img src="/2019/05/04/常用命令/批注 2020-05-23 225655.png" alt=""></p>
+<p><img src="/2019/05/04/常用命令/批注 2020-05-23 230053.png" alt=""></p>
+<p>点击黄框最后一个按钮push</p>
+<p>依次点击黄框的按钮即可提交最新代码到到远程仓库</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/03/JS/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1337,7 +1492,72 @@ docker rm application//删除镜像
 docker run -i -t -d -p 88:8080 -v /badou/badou/badou1.war:/usr/local/tomcat/webapps/badou.war -v /badou/conf/apiclient_cert.p12:/usr/local/tomcat/apiclient_cert.p12 -v /badou/badou/index.html:/usr/local/tomcat/webapps/ROOT/index.html --name=application andylaun/tomcat:v5
 
 -v  挂载文件目录
-</code></pre>
+</code></pre><h2 id="docker运行nginx"><a href="#docker运行nginx" class="headerlink" title="docker运行nginx"></a>docker运行nginx</h2><pre><code>which nginx
+</code></pre><p>查看nginx安装在哪个目录</p>
+<h2 id="docker网络"><a href="#docker网络" class="headerlink" title="docker网络"></a>docker网络</h2><p>docker具有隔离性,网络也是个隔离性的一部分，linux使用了命名空间来进行资源的隔离,比如pid namespace就是用来隔离进程的,mount namespace是用来隔离文件系统的,network namespace 是用来隔离网络的.每一个network namespace都提供了一个独立的网络环境,包括网卡路由iptable规则等等,都是与以其它的network space隔离的</p>
+<p> docker容器在默认情况下,一般会分配一个独立的network-namespace,也就是网络类型中的Bridge模式，在使用Bridge时就涉及到了一个问题,既然它有独立的namesapce,这就需要一种技术使容器内的端口可以在主机上访问到,这种技术就是端口映射,docker可以指定你想把容器内的某一个端口可以在容器所在主机上的某一个端口它俩之间做一个映射,当你在访问主机上的端口时,其实就是访问容器里面的端口。</p>
+<h2 id="docker部署web"><a href="#docker部署web" class="headerlink" title="docker部署web"></a>docker部署web</h2><ol>
+<li><p>在宿主机系统下载所需要的的jdk版本gz文件</p>
+<p> docker cp gz文件 容器ID:/root</p>
+</li>
+<li><p>复制gz文件到容器中的root的用户目录下</p>
+<p> docker cp jdk-8u121-linux-x64.tar.gz ea49f55dde3d :/root</p>
+</li>
+<li><p>进入运行中的容器</p>
+<p> docker exec -it ea49f55dde3d /bin/bash</p>
+</li>
+<li><p>在容器中解压gz文件</p>
+<p> tar -zxvf jdk-8u121-linux-x64.tar.gz</p>
+</li>
+<li><p>建立容器系统的JAVA_HOME目录</p>
+<p> mkdir /usr/lib/jvm</p>
+</li>
+<li><p>移动jdk目录到JAVA_HOME目录</p>
+<p> mv ~/jdk1.8.0_121 /usr/lib/jvm</p>
+</li>
+<li><p>安装vim（可选）</p>
+<p> apt-get update<br> apt-get install vim</p>
+</li>
+<li><p>设置环境变量</p>
+<p> vim ~/.bashrc<br> export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_121<br> export JRE_HOME=${JAVA_HOME}/jre<br> export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib<br> export PATH=${JAVA_HOME}/bin:$PATH</p>
+</li>
+<li><p>使得环境变量马上生效 </p>
+<p> source ~/.bashrc</p>
+</li>
+<li><p>验证JDK是否安装成功</p>
+<p>java -version</p>
+</li>
+</ol>
+<h2 id="安装tomcat"><a href="#安装tomcat" class="headerlink" title="安装tomcat"></a>安装tomcat</h2><ol>
+<li><p>查找tomcat信息 </p>
+<p> docker search tomcat</p>
+</li>
+<li><p>下载官方的镜像Starts最高的那个</p>
+<p> docker pull docker.io/tomcat</p>
+</li>
+<li><p>查看docker镜像</p>
+<p> docker images</p>
+</li>
+<li><p>后台运行tomcat镜像</p>
+<p> docker run -d –name tomcat -p 8081:8080 hub.c.163.com/library/tomcat</p>
+</li>
+<li><p>若端口被占用，可以指定容器和主机的映射端口，前者是外围访问端口，后者是容器内部端口。<br>-d参数：容器会在后台运行并不会把输出的结果打印到宿主机上面。使用 -d 参数启动后会返回一个唯一的 id。</p>
+</li>
+</ol>
+<h2 id="部署web项目"><a href="#部署web项目" class="headerlink" title="部署web项目"></a>部署web项目</h2><ol>
+<li><p>把宿主机的war包丢到docker容器tomcat/webapps下：</p>
+<p> docker cp lsz.war ab6bce2c5826:/usr/local/tomcat/webapps</p>
+</li>
+<li><p>进入docker容器中</p>
+<p> docker exec -it ab6bce2c5826 /bin/bash</p>
+</li>
+<li><p>查看webapps中的web项目</p>
+</li>
+<li>退出docker容器Ctrl+p+q</li>
+<li>重新运行tomcat容器docker restart ab6bce2c5826</li>
+<li>停止tomcat容器docker stop ab6bce2c5826</li>
+</ol>
+
           
         
       
@@ -3336,7 +3556,7 @@ http://www.joes.com/seanonal/goods.html?item=45454#name
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

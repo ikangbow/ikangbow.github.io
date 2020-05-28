@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="CentOS Docker 安装Docker支持以下的CentOS版本：  CentOS 7 (64-bit) CentOS 6.5 (64-bit) 或更高的版本  使用 yum 安装（CentOS 7下） 通过 uname -r 命令查看你当前的内核版本  [root@airthink ~]# uname -r 3.10.0-327.el7.x86_64 只需通过以下命令即可安装 Docker">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-27T12:58:55.816Z">
+<meta property="og:updated_time" content="2020-05-28T13:06:49.286Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker系列">
 <meta name="twitter:description" content="CentOS Docker 安装Docker支持以下的CentOS版本：  CentOS 7 (64-bit) CentOS 6.5 (64-bit) 或更高的版本  使用 yum 安装（CentOS 7下） 通过 uname -r 命令查看你当前的内核版本  [root@airthink ~]# uname -r 3.10.0-327.el7.x86_64 只需通过以下命令即可安装 Docker">
@@ -670,7 +670,72 @@ docker rm application//删除镜像
 docker run -i -t -d -p 88:8080 -v /badou/badou/badou1.war:/usr/local/tomcat/webapps/badou.war -v /badou/conf/apiclient_cert.p12:/usr/local/tomcat/apiclient_cert.p12 -v /badou/badou/index.html:/usr/local/tomcat/webapps/ROOT/index.html --name=application andylaun/tomcat:v5
 
 -v  挂载文件目录
-</code></pre>
+</code></pre><h2 id="docker运行nginx"><a href="#docker运行nginx" class="headerlink" title="docker运行nginx"></a>docker运行nginx</h2><pre><code>which nginx
+</code></pre><p>查看nginx安装在哪个目录</p>
+<h2 id="docker网络"><a href="#docker网络" class="headerlink" title="docker网络"></a>docker网络</h2><p>docker具有隔离性,网络也是个隔离性的一部分，linux使用了命名空间来进行资源的隔离,比如pid namespace就是用来隔离进程的,mount namespace是用来隔离文件系统的,network namespace 是用来隔离网络的.每一个network namespace都提供了一个独立的网络环境,包括网卡路由iptable规则等等,都是与以其它的network space隔离的</p>
+<p> docker容器在默认情况下,一般会分配一个独立的network-namespace,也就是网络类型中的Bridge模式，在使用Bridge时就涉及到了一个问题,既然它有独立的namesapce,这就需要一种技术使容器内的端口可以在主机上访问到,这种技术就是端口映射,docker可以指定你想把容器内的某一个端口可以在容器所在主机上的某一个端口它俩之间做一个映射,当你在访问主机上的端口时,其实就是访问容器里面的端口。</p>
+<h2 id="docker部署web"><a href="#docker部署web" class="headerlink" title="docker部署web"></a>docker部署web</h2><ol>
+<li><p>在宿主机系统下载所需要的的jdk版本gz文件</p>
+<p> docker cp gz文件 容器ID:/root</p>
+</li>
+<li><p>复制gz文件到容器中的root的用户目录下</p>
+<p> docker cp jdk-8u121-linux-x64.tar.gz ea49f55dde3d :/root</p>
+</li>
+<li><p>进入运行中的容器</p>
+<p> docker exec -it ea49f55dde3d /bin/bash</p>
+</li>
+<li><p>在容器中解压gz文件</p>
+<p> tar -zxvf jdk-8u121-linux-x64.tar.gz</p>
+</li>
+<li><p>建立容器系统的JAVA_HOME目录</p>
+<p> mkdir /usr/lib/jvm</p>
+</li>
+<li><p>移动jdk目录到JAVA_HOME目录</p>
+<p> mv ~/jdk1.8.0_121 /usr/lib/jvm</p>
+</li>
+<li><p>安装vim（可选）</p>
+<p> apt-get update<br> apt-get install vim</p>
+</li>
+<li><p>设置环境变量</p>
+<p> vim ~/.bashrc<br> export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_121<br> export JRE_HOME=${JAVA_HOME}/jre<br> export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib<br> export PATH=${JAVA_HOME}/bin:$PATH</p>
+</li>
+<li><p>使得环境变量马上生效 </p>
+<p> source ~/.bashrc</p>
+</li>
+<li><p>验证JDK是否安装成功</p>
+<p>java -version</p>
+</li>
+</ol>
+<h2 id="安装tomcat"><a href="#安装tomcat" class="headerlink" title="安装tomcat"></a>安装tomcat</h2><ol>
+<li><p>查找tomcat信息 </p>
+<p> docker search tomcat</p>
+</li>
+<li><p>下载官方的镜像Starts最高的那个</p>
+<p> docker pull docker.io/tomcat</p>
+</li>
+<li><p>查看docker镜像</p>
+<p> docker images</p>
+</li>
+<li><p>后台运行tomcat镜像</p>
+<p> docker run -d –name tomcat -p 8081:8080 hub.c.163.com/library/tomcat</p>
+</li>
+<li><p>若端口被占用，可以指定容器和主机的映射端口，前者是外围访问端口，后者是容器内部端口。<br>-d参数：容器会在后台运行并不会把输出的结果打印到宿主机上面。使用 -d 参数启动后会返回一个唯一的 id。</p>
+</li>
+</ol>
+<h2 id="部署web项目"><a href="#部署web项目" class="headerlink" title="部署web项目"></a>部署web项目</h2><ol>
+<li><p>把宿主机的war包丢到docker容器tomcat/webapps下：</p>
+<p> docker cp lsz.war ab6bce2c5826:/usr/local/tomcat/webapps</p>
+</li>
+<li><p>进入docker容器中</p>
+<p> docker exec -it ab6bce2c5826 /bin/bash</p>
+</li>
+<li><p>查看webapps中的web项目</p>
+</li>
+<li>退出docker容器Ctrl+p+q</li>
+<li>重新运行tomcat容器docker restart ab6bce2c5826</li>
+<li>停止tomcat容器docker stop ab6bce2c5826</li>
+</ol>
+
       
     </div>
     
@@ -787,7 +852,7 @@ docker run -i -t -d -p 88:8080 -v /badou/badou/badou1.war:/usr/local/tomcat/weba
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -857,7 +922,7 @@ docker run -i -t -d -p 88:8080 -v /badou/badou/badou1.war:/usr/local/tomcat/weba
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS-Docker-安装"><span class="nav-number">1.</span> <span class="nav-text">CentOS Docker 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下载镜像"><span class="nav-number">2.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dockerfile部分命令"><span class="nav-number">3.</span> <span class="nav-text">Dockerfile部分命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker部署web程序"><span class="nav-number">4.</span> <span class="nav-text">Docker部署web程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#退出容器"><span class="nav-number">5.</span> <span class="nav-text">退出容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建-Java-Web-镜像"><span class="nav-number">6.</span> <span class="nav-text">创建 Java Web 镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动-Java-Web-容器"><span class="nav-number">7.</span> <span class="nav-text">启动 Java Web 容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实际应用"><span class="nav-number">8.</span> <span class="nav-text">实际应用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS-Docker-安装"><span class="nav-number">1.</span> <span class="nav-text">CentOS Docker 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下载镜像"><span class="nav-number">2.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Dockerfile部分命令"><span class="nav-number">3.</span> <span class="nav-text">Dockerfile部分命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker部署web程序"><span class="nav-number">4.</span> <span class="nav-text">Docker部署web程序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#退出容器"><span class="nav-number">5.</span> <span class="nav-text">退出容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建-Java-Web-镜像"><span class="nav-number">6.</span> <span class="nav-text">创建 Java Web 镜像</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动-Java-Web-容器"><span class="nav-number">7.</span> <span class="nav-text">启动 Java Web 容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实际应用"><span class="nav-number">8.</span> <span class="nav-text">实际应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#docker运行nginx"><span class="nav-number">8.1.</span> <span class="nav-text">docker运行nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker网络"><span class="nav-number">8.2.</span> <span class="nav-text">docker网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker部署web"><span class="nav-number">8.3.</span> <span class="nav-text">docker部署web</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装tomcat"><span class="nav-number">8.4.</span> <span class="nav-text">安装tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署web项目"><span class="nav-number">8.5.</span> <span class="nav-text">部署web项目</span></a></li></ol></li></ol></div>
             
 
           </div>
