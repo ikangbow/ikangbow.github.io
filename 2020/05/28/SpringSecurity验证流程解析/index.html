@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="docker,">
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="The Pursuit of Happyness">
+<meta name="description" content="SpringSecurity TokenAuthenticationFilter if (httpRequest.getServletPath().equals(loginLink)) {//如果是登录或注销的话，设置不沿着过滤器向下 doNotContinueWithRequestProcessing(httpRequest); checkLoginAnDoSomething(httpReque">
+<meta name="keywords" content="docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringSecurity验证流程解析">
 <meta property="og:url" content="http://yoursite.com/2020/05/28/SpringSecurity验证流程解析/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="The Pursuit of Happyness">
+<meta property="og:description" content="SpringSecurity TokenAuthenticationFilter if (httpRequest.getServletPath().equals(loginLink)) {//如果是登录或注销的话，设置不沿着过滤器向下 doNotContinueWithRequestProcessing(httpRequest); checkLoginAnDoSomething(httpReque">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-28T13:08:05.075Z">
+<meta property="og:updated_time" content="2020-05-28T13:18:56.401Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringSecurity验证流程解析">
-<meta name="twitter:description" content="The Pursuit of Happyness">
+<meta name="twitter:description" content="SpringSecurity TokenAuthenticationFilter if (httpRequest.getServletPath().equals(loginLink)) {//如果是登录或注销的话，设置不沿着过滤器向下 doNotContinueWithRequestProcessing(httpRequest); checkLoginAnDoSomething(httpReque">
 
 
 
@@ -354,6 +355,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -381,7 +404,98 @@
       
 
       
-        
+        <h2 id="SpringSecurity"><a href="#SpringSecurity" class="headerlink" title="SpringSecurity"></a>SpringSecurity</h2><ol>
+<li>TokenAuthenticationFilter<br> if (httpRequest.getServletPath().equals(loginLink)) {<pre><code>//如果是登录或注销的话，设置不沿着过滤器向下
+doNotContinueWithRequestProcessing(httpRequest);
+checkLoginAnDoSomething(httpRequest, httpResponse, token);
+</code></pre> }</li>
+<li><p>checkLoginAnDoSomething(httpRequest, httpResponse, token);</p>
+<pre><code>example: Authorization=Basic YWRtaW46MTIzNDU2 (admin:123456)
+
+private boolean checkLoginAnDoSomething(HttpServletRequest httpRequest, HttpServletResponse httpResponse,
+    String token) throws IOException {
+    String authorization = httpRequest.getHeader(CacheConstant.AUTHORIZATION);
+    ReturnStatus result = null;
+    if (authorization != null) {
+        result = checkBasicAuthorization(authorization, httpRequest, httpResponse, token);
+    }
+
+    if (null == result) {
+        result = new ReturnStatus(false);
+        result.getErrors().add(new MError(MErrorCode.e9000));
+        result.setMessage(MErrorCode.e9000.desc());
+    }
+
+    String body;
+    try {
+        body = JsonUtils.toJson(result);// JsonParserFactory.getParser().toJson(result).toString();
+        httpResponse.setContentType(&quot;text/html;charset=UTF-8&quot;);
+        httpResponse.getWriter().write(body);
+    } catch (Exception e) {
+        throw new IOException(e);
+    }
+
+    return result.isSuccess();
+</code></pre><p> }</p>
+</li>
+<li><p>checkBasicAuthorization(authorization, httpRequest, httpResponse, token);</p>
+<pre><code>private ReturnStatus checkBasicAuthorization(String authorization, HttpServletRequest httpRequest,
+        HttpServletResponse httpResponse, String token) throws IOException {
+    StringTokenizer tokenizer = new StringTokenizer(authorization);
+    if (tokenizer.countTokens() &lt; 2) {
+        return null;
+    }
+    if (!tokenizer.nextToken().equalsIgnoreCase(CacheConstant.BASIC_AUTH_PREFIX)) {
+        return null;
+    }
+
+    String base64 = tokenizer.nextToken();
+    String loginPassword = new String(Base64.decode(base64.getBytes(StandardCharsets.UTF_8)));
+    tokenizer = new StringTokenizer(loginPassword, &quot;:&quot;);
+    String username = tokenizer.nextToken();
+    String pwd = tokenizer.nextToken();
+    String password = passwordEncoder.encodePassword(pwd, null);
+    ReturnStatus status = checkUsernameAndPassword(username, password, httpRequest, httpResponse, token);
+    // 登录成功后返回登录状态
+    return status;
+}
+</code></pre></li>
+<li><p>private ReturnStatus checkUsernameAndPassword(String username, String password, HttpServletRequest httpRequest,HttpServletResponse httpResponse, String oldtoken)</p>
+<pre><code>private ReturnStatus checkUsernameAndPassword(String username, String password, HttpServletRequest httpRequest,
+        HttpServletResponse httpResponse, String oldtoken) throws IOException {
+    ReturnStatus returnResult = new ReturnStatus(false);
+    TokenInfo tokenInfo = authenticationService.authenticate(username, password, httpRequest);
+    if (tokenInfo != null &amp;&amp; tokenInfo.getUserDetails() != null) {
+        VerifyContext verifyContext = (VerifyContext) tokenInfo.getUserDetails();
+        Account account = (Account) verifyContext.getUser().getEntity();
+        if (account.isLogin()) {
+            if (null != oldtoken &amp;&amp; !&quot;&quot;.equals(oldtoken) &amp;&amp; !&quot;null&quot;.equals(oldtoken)
+                    &amp;&amp; !&quot;undefined&quot;.equals(oldtoken)) {
+                logger.info(&quot;tokenInfo.setToken use the oldtoken Token :{}&quot;, tokenInfo.getToken());
+                tokenInfo.setToken(oldtoken);
+            }
+            logger.info(&quot;the new Token :{},entity:{}&quot;, tokenInfo.getToken(), tokenInfo);
+            this.cacheManager.saveObject(CacheEnum.TOKEN, tokenInfo.getToken(), tokenInfo.getUserDetails(),
+                    CacheConstant.USER_SESSION_TIME);
+            logger.info(&quot;the token:{}, save object:{}&quot;, tokenInfo.getToken(),
+                    this.cacheManager.getObject(CacheEnum.TOKEN, tokenInfo.getToken()));
+            returnResult.setEntity(account);
+            returnResult.setSuccess(true);
+        } else {
+            returnResult.getErrors().add(new MError(MErrorCode.e9001));
+            returnResult.setMessage(MErrorCode.e9001.desc());
+        }
+        httpResponse.setHeader(CacheConstant.HEADER_TOKEN, tokenInfo.getToken());
+    } else {
+        logger.error(&quot;User {} ,Password {} Unauthorized!&quot;, username, password);
+        returnResult.getErrors().add(new MError(MErrorCode.e9000));
+        returnResult.setMessage(MErrorCode.e9000.desc());
+    }
+    return returnResult;
+}
+</code></pre></li>
+</ol>
+
       
     </div>
     
@@ -395,6 +509,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
       
 
       
@@ -465,8 +585,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Airthink">
           <p class="site-author-name" itemprop="name">Airthink</p>
@@ -539,6 +668,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringSecurity"><span class="nav-number">1.</span> <span class="nav-text">SpringSecurity</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
