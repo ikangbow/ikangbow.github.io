@@ -317,7 +317,7 @@ Set<String> sets = mongoTemplage.getDb().getCollectionNames();
 	        Criteria.where("type").is(type),
 	        Criteria.where("typeId").is(typeId),
 	        Criteria.where("userId").is(user.get_id()),
-	        Criteria.where("createtime").gte(getStartTime())
+	        Criteria.where("createTime").gte(getStartTime())
 	                .lte(getEndTime()));
 	return mongoTemplate.exists(Query.query(criteria), Zan.class);
 # 其他

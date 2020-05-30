@@ -8,11 +8,13 @@ category: java
 ## SpringSecurity ##
 
 1. TokenAuthenticationFilter
-	if (httpRequest.getServletPath().equals(loginLink)) {
-		//如果是登录或注销的话，设置不沿着过滤器向下
-		doNotContinueWithRequestProcessing(httpRequest);
-		checkLoginAnDoSomething(httpRequest, httpResponse, token);
-	}
+ 
+		if (httpRequest.getServletPath().equals(loginLink)) {
+			//如果是登录或注销的话，设置不沿着过滤器向下
+			doNotContinueWithRequestProcessing(httpRequest);
+			checkLoginAnDoSomething(httpRequest, httpResponse, token);
+		}
+
 2. checkLoginAnDoSomething(httpRequest, httpResponse, token);
 
 		example: Authorization=Basic YWRtaW46MTIzNDU2 (admin:123456)
@@ -100,3 +102,64 @@ category: java
 			}
 			return returnResult;
 		}
+
+## 基于用户-角色-权限设计 ##
+
+	accountName//账号名
+	accountPwd//密码
+	status//状态
+	accountType//账号类型
+	entityID//实体id
+	lastLoginTime//最后一次登录时间
+	loginTimes//登录次数
+	roleIds//角色列表
+	
+	Function
+	
+	name//功能点名称
+	parentId//父级
+	memo//描述
+	action//资源url
+	order//排序
+	icon//图标
+	permissionCode//唯一权限标识
+	permissionName//权限名称
+
+	name//角色名称
+	parentId//父级
+	memo//描述
+	functionIds//功能点
+	order//排序
+
+## 递归菜单和角色 ##
+
+	// 获取标准JSON数据
+    public static List<Map<String, Object>> getStandardJSON() {
+        // 根据不同框架获取对应的List数据
+        List<Map<String, Object>> queryList = query.find();
+        List<Map<String, Object>> parentList = Lists.newArrayList();
+        for (Map<String, Object> map : queryList) {
+            if (map.get("pId").equals("0")) {
+                parentList.add(map);
+            }
+        }    
+        recursionChildren(parentList, queryList);
+        return parentList;
+    }
+    
+    // 递归获取子节点数据
+    public static void recursionChildren (List<Map<String, Object>> parentList, 
+	List<Map<String, Object>> allList) {
+        for (Map<String, Object> parentMap : parentList) {
+            List<Map<String, Object>> childrenList = Lists.newArrayList();
+            for (Map<String, Object> allMap : allList) {
+                if (allMap.get("pId").equals(parentMap.get("id"))) {
+                    childrenList.add(allMap);
+                }
+            }
+            if (!ParamValidUtils.isEmpty(childrenList)) {
+                parentMap.put("children", childrenList);
+                recursionChildren(childrenList, allList);
+            }
+        }
+    }
