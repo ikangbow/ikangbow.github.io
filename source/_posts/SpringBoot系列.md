@@ -1168,6 +1168,8 @@ SpringBoot修改默认日志配置
 
 可以按照slfj的日志适配图，进行相关的切换
 
+idea依赖分析-pom.xml-右键-Diagrams-Show Dependencies
+
 ## SpringBoot与Web开发
 
 ### 使用SpringBoot
@@ -1289,7 +1291,7 @@ Thymeleaf
 
 参考thymeleaf手册
 
-#### SpringMVC自动配置
+### SpringMVC自动配置
 
 #### Spring Boot自动配置好了SpringMVC
 
@@ -1301,7 +1303,9 @@ The auto-configuration adds the following features on top of Spring’s defaults
 
   - 自动配置了ViewResolver（视图解析器：根据方法的返回值得到视图对象（View）视图对象决定如何渲染，是转发还是重定向）
   - ContentNegotiatingViewResolver符合所有的视图解析器的
-  - 如何定制：我们可以给容器中添加一个视图解析器；自动将其组合进来
+  - 如何定制：我们可以给容器中添加一个视图解析器@Bean；自动将其组合进来
+  - 如何验证是否添加进来了-搜索DispatcherServlet-doDispatch-在这打断点，用debug方式运行
+  - 随便请求一个页面可以看到DispatcherServlet的viewResolvers里面已经包含了我们自定义的视图解析器
 
 - Support for serving static resources, including support for WebJars (covered [later in this document](https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/reference/htmlsingle/#boot-features-spring-mvc-static-content))).静态资源文件夹路径，webjars
 
@@ -1332,11 +1336,12 @@ The auto-configuration adds the following features on top of Spring’s defaults
 If you want to keep those Spring Boot MVC customizations and make more [MVC customizations](https://docs.spring.io/spring/docs/5.2.6.RELEASE/spring-framework-reference/web.html#mvc) (interceptors, formatters, view controllers, and other features), you can add your own `@Configuration` class of type `WebMvcConfigurer` but **without** `@EnableWebMvc`.
 
 
-
+#### 使用WebMvcConfigurerAdapter扩展SpringMVC的功能 ####
 编写一个配置类（@Configuration）,是WebMvcConfigurerAdapter类型；不能标注@EnableWebMvc。
 
 既保留了所有的自动配置，也能用我们扩展的配置
 
+	//作用：请求me的时候会到success页面
     @Configuration
 	public class MyConfig extends WebMvcConfigurerAdapter{
 	
@@ -1345,34 +1350,137 @@ If you want to keep those Spring Boot MVC customizations and make more [MVC cust
 	        registry.addViewController("/me").setViewName("success");
 	    }
 	}
+原理：
 
-	WebMvcAutoConfiguration 是SpringMVC的自动配置类
-	在做其他自动配置时会导入@Import(EnableWebMvcConfiguration.class)
-	@Configuration(proxyBeanMethods = false)
-	public static class EnableWebMvcConfiguration extends DelegatingWebMvcConfiguration implements ResourceLoaderAware {
+
+
+1. WebMvcAutoConfiguration 是SpringMVC的自动配置类
+
+2. 在做其他自动配置时会导入@Import(EnableWebMvcConfiguration.class)
+
+		@Configuration(proxyBeanMethods = false)
+		public static class EnableWebMvcConfiguration extends DelegatingWebMvcConfiguration implements ResourceLoaderAware {
+		
+		private final WebMvcConfigurerComposite configurers = new WebMvcConfigurerComposite();
 	
-	private final WebMvcConfigurerComposite configurers = new WebMvcConfigurerComposite();
-	//从容器中获取所有WebMVC的配置
-	@Autowired(required = false)
-	public void setConfigurers(List<WebMvcConfigurer> configurers) {
-	    if (!CollectionUtils.isEmpty(configurers)) {
-	    this.configurers.addWebMvcConfigurers(configurers);
-	    	//一个参考实现，将所有的WebMvcConfigurer相关配置都来一起调用
-	        @Override
-	        public void addViewControllers(ViewControllerRegistry registry) {
-	            for (WebMvcConfigurer delegate : this.delegates) {
-	                delegate.addViewControllers(registry);
-	            }
-	        }
-	    }
-	}
-	容器中所有的WebMvcConfigurer都会一起起作用，包括自己写的配置类
+		//从容器中获取所有WebMvcConfigurer的配置
+		@Autowired(required = false)
+		public void setConfigurers(List<WebMvcConfigurer> configurers) {
+		    if (!CollectionUtils.isEmpty(configurers)) {
+		    this.configurers.addWebMvcConfigurers(configurers);
+		    	//一个参考实现，将所有的WebMvcConfigurer相关配置都来一起调用
+		        @Override
+		        public void addViewControllers(ViewControllerRegistry registry) {
+		            for (WebMvcConfigurer delegate : this.delegates) {
+		                delegate.addViewControllers(registry);
+		            }
+		        }
+		    }
+		}
+
+3. 容器中所有的WebMvcConfigurer都会一起起作用，包括自己写的配置类
 
 
 #### 全面接管SpringMVC
 
 SpringBoot对SpringMVC的自动配置不需要，所有都是我们自己配，只需要在配置类中添加@EnableWebMvc
 
+
+	原理：
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	@Documented
+	@Import(DelegatingWebMvcConfiguration.class)
+	public @interface EnableWebMvc {//这个注解上导入了DelegatingWebMvcConfiguration
+	}
+
+	@Configuration(proxyBeanMethods = false)
+	public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {//DelegatingWebMvcConfiguration.class又继承了WebMvcConfigurationSupport
+
+	@Configuration(proxyBeanMethods = false)
+	@ConditionalOnWebApplication(type = Type.SERVLET)
+	@ConditionalOnClass({ Servlet.class, DispatcherServlet.class, WebMvcConfigurer.class })
+	//容器种没有（WebMvcConfigurationSupport）这个组件的时候，这个自动配置类才生效
+	@ConditionalOnMissingBean(WebMvcConfigurationSupport.class)
+	@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)
+	@AutoConfigureAfter({ DispatcherServletAutoConfiguration.class, TaskExecutionAutoConfiguration.class,
+			ValidationAutoConfiguration.class })
+	public class WebMvcAutoConfiguration {
+
+	@EnableWebMvc将WebMvcConfigurationSupport组件导入进来；
+	导入的WebMvcConfigurationSupport只是SpringMVC最基本的功能；
+
 #### 如何修改SpringBoot的默认配置
 
-1、SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean,@Component）如果有就用用户配置的，如果没有才自动配置；如果有些组件可以有多个，他是将用户配置的和自己默认的组合起来
+
+
+1. SpringBoot在自动配置很多组件的时候，先看容器中有没有用户自己配置的（@Bean,@Component）如果有就用用户配置的，如果没有才自动配置；如果有些组件可以有多个，他是将用户配置的和自己默认的组合起来
+2. 在SpringBoot种会有非常多的xxxConfigurer帮助我们进行扩展配置
+
+#### 登陆页面 ####
+
+	 //所有的WebMvcConfigurerAdapter组件都会一起起作用
+    @Bean//将组件注册到容器中
+    public WebMvcConfigurerAdapter webMvcConfigurerAdapter(){
+        WebMvcConfigurerAdapter adapter = new WebMvcConfigurerAdapter() {
+            @Override
+            public void addViewControllers(ViewControllerRegistry registry) {
+                registry.addViewController("/").setViewName("login");
+                registry.addViewController("/login.html").setViewName("login");
+            }
+        };
+        return adapter;
+    }
+
+#### 国际化 ####
+
+1. 编写国际化文件，抽取页面需要显示的国际化消息
+
+![](批注 2020-05-30 103915.png)
+
+2. SpringBoot自动配置好了管理国际化资源文件的组件
+
+	@Configuration(proxyBeanMethods = false)
+@ConditionalOnMissingBean(name = AbstractApplicationContext.MESSAGE_SOURCE_BEAN_NAME, search = SearchStrategy.CURRENT)
+@AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
+@Conditional(ResourceBundleCondition.class)
+@EnableConfigurationProperties
+public class MessageSourceAutoConfiguration {
+
+	private static final Resource[] NO_RESOURCES = {};
+
+	@Bean
+	@ConfigurationProperties(prefix = "spring.messages")
+	public MessageSourceProperties messageSourceProperties() {
+		return new MessageSourceProperties();
+	}
+
+	@Bean
+	public MessageSource messageSource(MessageSourceProperties properties) {
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		if (StringUtils.hasText(properties.getBasename())) {
+			//设置国际化资源文件的基础名
+			messageSource.setBasenames(StringUtils
+					.commaDelimitedListToStringArray(StringUtils.trimAllWhitespace(properties.getBasename())));
+		}
+		if (properties.getEncoding() != null) {
+			messageSource.setDefaultEncoding(properties.getEncoding().name());
+		}
+		messageSource.setFallbackToSystemLocale(properties.isFallbackToSystemLocale());
+		Duration cacheDuration = properties.getCacheDuration();
+		if (cacheDuration != null) {
+			messageSource.setCacheMillis(cacheDuration.toMillis());
+		}
+		messageSource.setAlwaysUseMessageFormat(properties.isAlwaysUseMessageFormat());
+		messageSource.setUseCodeAsDefaultMessage(properties.isUseCodeAsDefaultMessage());
+		return messageSource;
+	}
+
+3. 去页面获取国际化的值
+
+idea  file-setting-FileEncodings-fileEncodeing将properties编码改成UTF-8，让他自动转成ascii码（只对当前项目生效）
+要改默认的在file-Other Setting-DefaultSetting来修改全局默认设置
+
+![](批注 2020-05-30 114127.png)
+
