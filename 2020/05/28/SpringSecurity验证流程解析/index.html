@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="SpringSecurity TokenAuthenticationFilter if (httpRequest.getServletPath().equals(loginLink)) {     //如果是登录或注销的话，设置不沿着过滤器向下     doNotContinueWithRequestProcessing(httpRequest);     checkLoginAnDoSometh">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-30T00:31:31.718Z">
+<meta property="og:updated_time" content="2020-06-05T01:58:18.752Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringSecurity验证流程解析">
 <meta name="twitter:description" content="SpringSecurity TokenAuthenticationFilter if (httpRequest.getServletPath().equals(loginLink)) {     //如果是登录或注销的话，设置不沿着过滤器向下     doNotContinueWithRequestProcessing(httpRequest);     checkLoginAnDoSometh">
@@ -498,7 +498,9 @@ private boolean checkLoginAnDoSomething(HttpServletRequest httpRequest, HttpServ
 }
 </code></pre></li>
 </ol>
-<h2 id="基于用户-角色-权限设计"><a href="#基于用户-角色-权限设计" class="headerlink" title="基于用户-角色-权限设计"></a>基于用户-角色-权限设计</h2><pre><code>accountName//账号名
+<h2 id="基于用户-角色-权限设计"><a href="#基于用户-角色-权限设计" class="headerlink" title="基于用户-角色-权限设计"></a>基于用户-角色-权限设计</h2><pre><code>Account
+
+accountName//账号名
 accountPwd//密码
 status//状态
 accountType//账号类型
@@ -506,6 +508,7 @@ entityID//实体id
 lastLoginTime//最后一次登录时间
 loginTimes//登录次数
 roleIds//角色列表
+//一个账号可以关联角色，角色呈树状结构，可多选
 
 Function
 
@@ -518,11 +521,14 @@ icon//图标
 permissionCode//唯一权限标识
 permissionName//权限名称
 
+Role
+
 name//角色名称
 parentId//父级
 memo//描述
 functionIds//功能点
 order//排序
+//角色也是呈树状菜单的，角色里面有权限配置，所有的功能点以树状结构展示，通过角色去关联功能点
 </code></pre><h2 id="递归菜单和角色"><a href="#递归菜单和角色" class="headerlink" title="递归菜单和角色"></a>递归菜单和角色</h2><pre><code>// 获取标准JSON数据
 public static List&lt;Map&lt;String, Object&gt;&gt; getStandardJSON() {
     // 根据不同框架获取对应的List数据
@@ -592,6 +598,10 @@ List&lt;Map&lt;String, Object&gt;&gt; allList) {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/05/JSON对象和JSON字符串/" rel="prev" title="JSON对象和JSON字符串">
+                JSON对象和JSON字符串 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -666,7 +676,7 @@ List&lt;Map&lt;String, Object&gt;&gt; allList) {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

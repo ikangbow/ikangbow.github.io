@@ -315,6 +315,176 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/JSON对象和JSON字符串/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/05/JSON对象和JSON字符串/" itemprop="url">JSON对象和JSON字符串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-05T18:31:07+08:00">
+                2020-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/JS/" itemprop="url" rel="index">
+                    <span itemprop="name">JS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="JSON对象"><a href="#JSON对象" class="headerlink" title="JSON对象"></a>JSON对象</h1><h2 id="对象的概念"><a href="#对象的概念" class="headerlink" title="对象的概念"></a>对象的概念</h2><p>对象的属性是可以用： 对象.属性进行调用的。</p>
+<pre><code>var person={&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}//json对象
+console.log(person.name);//在控制台输出tom
+alert(typeof(person));//object
+</code></pre><p>以上就是json对象。是一个可以用person.name这种方式进行属性的调用。<br>第三行代码就是看person的类型为object类型</p>
+<h1 id="JSON字符串"><a href="#JSON字符串" class="headerlink" title="JSON字符串"></a>JSON字符串</h1><h2 id="字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下"><a href="#字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下" class="headerlink" title="字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下"></a>字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下</h2><pre><code>var b = &apos;{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}&apos;;//json字符串
+console.log(b);//{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;};
+alert(typeof(b));//string
+</code></pre><p>以上b就是一个字符串，是一个string类型</p>
+<h1 id="JSON字符串和JSON对象的转换"><a href="#JSON字符串和JSON对象的转换" class="headerlink" title="JSON字符串和JSON对象的转换"></a>JSON字符串和JSON对象的转换</h1><h2 id="JSON字符串转json对象，调用parse方法；"><a href="#JSON字符串转json对象，调用parse方法；" class="headerlink" title="JSON字符串转json对象，调用parse方法；"></a>JSON字符串转json对象，调用parse方法；</h2><pre><code>var b = &apos;{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}&apos;;//json字符串
+console.log(b);//{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;};
+alert(typeof(b));//string
+var objb = JSON.parse(b);
+console.log(objb.name);
+</code></pre><h2 id="JSON对象转JSON字符串"><a href="#JSON对象转JSON字符串" class="headerlink" title="JSON对象转JSON字符串"></a>JSON对象转JSON字符串</h2><pre><code>var person={&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}//json对象
+console.log(person.name);//在控制台输出tom
+alert(typeof(person));//object
+var personStr = JSON.stringify(person);
+alert(typeof(personStr));//string
+console.log(personStr);//{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}
+</code></pre><h2 id="字符串转json对象"><a href="#字符串转json对象" class="headerlink" title="字符串转json对象"></a>字符串转json对象</h2><pre><code>场景：
+    后台返回的person对象上有herf属性，是一个字符串
+href = {&apos;href&apos;:&apos;../juvenile/summerCamp/summerCamp.html&apos;,&apos;isLogined&apos;:&apos;1&apos;,&apos;param&apos;:{&apos;activityId&apos;:&apos;2141108450038362510&apos;}}
+
+要解析到herf
+
+var configData = eval(&apos;(&apos; + href + &apos;)&apos;);//由字符串转换为JSON对象
+
+console.log(configData.href)
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/SpringSecurity验证流程解析/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -502,7 +672,9 @@ private boolean checkLoginAnDoSomething(HttpServletRequest httpRequest, HttpServ
 }
 </code></pre></li>
 </ol>
-<h2 id="基于用户-角色-权限设计"><a href="#基于用户-角色-权限设计" class="headerlink" title="基于用户-角色-权限设计"></a>基于用户-角色-权限设计</h2><pre><code>accountName//账号名
+<h2 id="基于用户-角色-权限设计"><a href="#基于用户-角色-权限设计" class="headerlink" title="基于用户-角色-权限设计"></a>基于用户-角色-权限设计</h2><pre><code>Account
+
+accountName//账号名
 accountPwd//密码
 status//状态
 accountType//账号类型
@@ -510,6 +682,7 @@ entityID//实体id
 lastLoginTime//最后一次登录时间
 loginTimes//登录次数
 roleIds//角色列表
+//一个账号可以关联角色，角色呈树状结构，可多选
 
 Function
 
@@ -522,11 +695,14 @@ icon//图标
 permissionCode//唯一权限标识
 permissionName//权限名称
 
+Role
+
 name//角色名称
 parentId//父级
 memo//描述
 functionIds//功能点
 order//排序
+//角色也是呈树状菜单的，角色里面有权限配置，所有的功能点以树状结构展示，通过角色去关联功能点
 </code></pre><h2 id="递归菜单和角色"><a href="#递归菜单和角色" class="headerlink" title="递归菜单和角色"></a>递归菜单和角色</h2><pre><code>// 获取标准JSON数据
 public static List&lt;Map&lt;String, Object&gt;&gt; getStandardJSON() {
     // 根据不同框架获取对应的List数据
@@ -4082,448 +4258,11 @@ Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /AL
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/13/nginx/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/13/nginx/" itemprop="url">nginx</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-13T17:05:42+08:00">
-                2020-02-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">nginx</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="nginx介绍"><a href="#nginx介绍" class="headerlink" title="nginx介绍"></a>nginx介绍</h1><p>Nginx(“engine x”)是一款是由俄罗斯的程序设计师Igor Sysoev所开发高性能的 Web和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。</p>
-<p>在高连接并发的情况下，Nginx是Apache服务器不错的替代品。</p>
-<h1 id="Nginx-安装"><a href="#Nginx-安装" class="headerlink" title="Nginx 安装"></a>Nginx 安装</h1><h2 id="下载nginx"><a href="#下载nginx" class="headerlink" title="下载nginx"></a>下载nginx</h2><pre><code>下载地址：http://nginx.org/download/nginx-1.6.2.tar.gz
-[root@bogon src]# cd /usr/local/src/
-[root@bogon src]# wget http://nginx.org/download/nginx-1.6.2.tar.gz
-</code></pre><h2 id="解压安装包"><a href="#解压安装包" class="headerlink" title="解压安装包"></a>解压安装包</h2><pre><code>[root@bogon src]# tar zxvf nginx-1.6.2.tar.gz
-</code></pre><h2 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h2><pre><code>[root@bogon nginx-1.6.2]# ./configure --prefix=/usr/local/webserver/nginx --with-http_stub_status_module --with-http_ssl_module --with-pcre=/usr/local/src/pcre-8.35
-[root@bogon nginx-1.6.2]# make
-[root@bogon nginx-1.6.2]# make install
-</code></pre><h2 id="查看nginx版本"><a href="#查看nginx版本" class="headerlink" title="查看nginx版本"></a>查看nginx版本</h2><pre><code>[root@bogon nginx-1.6.2]# /usr/local/webserver/nginx/sbin/nginx -v
-</code></pre><h1 id="Nginx-配置"><a href="#Nginx-配置" class="headerlink" title="Nginx 配置"></a>Nginx 配置</h1><h2 id="创建-Nginx-运行使用的用户-www"><a href="#创建-Nginx-运行使用的用户-www" class="headerlink" title="创建 Nginx 运行使用的用户 www"></a>创建 Nginx 运行使用的用户 www</h2><pre><code>[root@bogon conf]# /usr/sbin/groupadd www 
-[root@bogon conf]# /usr/sbin/useradd -g www www
-</code></pre><h2 id="配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容"><a href="#配置nginx-conf-，将-usr-local-webserver-nginx-conf-nginx-conf替换为以下内容" class="headerlink" title="配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容"></a>配置nginx.conf ，将/usr/local/webserver/nginx/conf/nginx.conf替换为以下内容</h2><pre><code>[root@bogon conf]#  cat /usr/local/webserver/nginx/conf/nginx.conf
-
-user www www;
-worker_processes 2; #设置值和CPU核心数一致
-error_log /usr/local/webserver/nginx/logs/nginx_error.log crit; #日志位置和日志级别
-pid /usr/local/webserver/nginx/nginx.pid;
-#Specifies the value for maximum file descriptors that can be opened by this process.
-worker_rlimit_nofile 65535;
-events
-{
-  use epoll;
-  worker_connections 65535;
-}
-http
-{
-  include mime.types;
-  default_type application/octet-stream;
-  log_format main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;
-               &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;
-               &apos;&quot;$http_user_agent&quot; $http_x_forwarded_for&apos;;
-
-#charset gb2312;
-
-  server_names_hash_bucket_size 128;
-  client_header_buffer_size 32k;
-  large_client_header_buffers 4 32k;
-  client_max_body_size 8m;
-
-  sendfile on;
-  tcp_nopush on;
-  keepalive_timeout 60;
-  tcp_nodelay on;
-  fastcgi_connect_timeout 300;
-  fastcgi_send_timeout 300;
-  fastcgi_read_timeout 300;
-  fastcgi_buffer_size 64k;
-  fastcgi_buffers 4 64k;
-  fastcgi_busy_buffers_size 128k;
-  fastcgi_temp_file_write_size 128k;
-  gzip on; 
-  gzip_min_length 1k;
-  gzip_buffers 4 16k;
-  gzip_http_version 1.0;
-  gzip_comp_level 2;
-  gzip_types text/plain application/x-javascript text/css application/xml;
-  gzip_vary on;
-
-  #limit_zone crawler $binary_remote_addr 10m;
- #下面是server虚拟主机的配置
- server
-  {
-    listen 80;#监听端口
-    server_name localhost;#域名
-    index index.html index.htm index.php;
-    root /usr/local/webserver/nginx/html;#站点目录
-      location ~ .*\.(php|php5)?$
-    {
-      #fastcgi_pass unix:/tmp/php-cgi.sock;
-      fastcgi_pass 127.0.0.1:9000;
-      fastcgi_index index.php;
-      include fastcgi.conf;
-    }
-    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|ico)$
-    {
-      expires 30d;
-  # access_log off;
-    }
-    location ~ .*\.(js|css)?$
-    {
-      expires 15d;
-   # access_log off;
-    }
-    access_log off;
-  }
-
-}
-</code></pre><h2 id="检查配置文件nginx-conf的正确性命令"><a href="#检查配置文件nginx-conf的正确性命令" class="headerlink" title="检查配置文件nginx.conf的正确性命令"></a>检查配置文件nginx.conf的正确性命令</h2><pre><code>[root@bogon conf]# /usr/local/webserver/nginx/sbin/nginx -t
-</code></pre><h1 id="启动-Nginx"><a href="#启动-Nginx" class="headerlink" title="启动 Nginx"></a>启动 Nginx</h1><pre><code>[root@bogon conf]# /usr/local/webserver/nginx/sbin/nginx
-</code></pre><h1 id="Nginx-其他命令"><a href="#Nginx-其他命令" class="headerlink" title="Nginx 其他命令"></a>Nginx 其他命令</h1><pre><code>/usr/local/webserver/nginx/sbin/nginx -s reload            # 重新载入配置文件
-/usr/local/webserver/nginx/sbin/nginx -s reopen            # 重启 Nginx
-/usr/local/webserver/nginx/sbin/nginx -s stop              # 停止 Nginx
-</code></pre><h1 id="详细配置"><a href="#详细配置" class="headerlink" title="详细配置"></a>详细配置</h1><pre><code>#user  nobody; #配置用户或者组，默认为nobody nobody。
-worker_processes  auto; #number | auto;默认为1，最好配置成auto,自动匹配进程数
-
- #制定日志路径，级别。这个设置可以放入全局块，http块，server块，级别以此为：debug|info|notice|warn|error|crit|alert|emerg
-#error_log  logs/error.log;
-#error_log  logs/error.log  notice;
-#error_log  logs/error.log  info;
-
-#pid        logs/nginx.pid; #指定nginx进程运行文件存放地址
-
-
-events {
-    worker_connections  1024; #最大连接数，默认为512
-}
-
-
-http {
-    include       mime.types; #文件扩展名与文件类型映射表
-    default_type  application/octet-stream;  #默认文件类型，默认为text/plain
-
-    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;
-    #                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;
-    #                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;
-
-    #access_log  logs/access.log  main;
-
-    sendfile        on; #允许sendfile方式传输文件，默认为off
-    #tcp_nopush     on;
-
-    #keepalive_timeout  0;
-    keepalive_timeout  65; #连接超时时间，默认为75s
-
-    #gzip  on; #启用Gizp压缩
-
-    #include /usr/local/nginx/conf/vhost/*;
-
-    server {
-            listen       80;
-            server_name  #监听地址;
-
-            #charset koi8-r;
-
-            #access_log  logs/host.access.log  main;
-
-            location / { #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            deny 127.0.0.1;  #拒绝的ip
-               allow 172.18.5.54; #允许的ip
-            }
-
-            location /material/ {
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            }
-     }
-
-     server {
-            listen       80;
-            server_name  #监听地址;
-
-            #charset koi8-r;
-
-            #access_log  logs/host.access.log  main;
-
-            location / { #请求的url过滤，正则匹配，~为区分大小写，~*为不区分大小写。
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            deny 127.0.0.1;  #拒绝的ip
-               allow 172.18.5.54; #允许的ip
-            }
-
-            location /material/ {
-               proxy_pass http://mysvr;  #请求转向mysvr 定义的服务器列表
-               #设置禁止浏览器缓存，每次都从服务器请求
-               add_header Cache-Control no-cache;
-               add_header Cache-Control private;#表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容。响应只作为私有的缓存，不能在用户间共享。如果要求HTTP认证，响应会自动设置为private。
-            }
-     }
-
-
-    #server {
-    #    listen       80;
-    #    server_name  xxx.com;
-    #
-    #    #charset koi8-r;
-    #
-    #    #access_log  logs/host.access.log  main;
-    #
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #
-    #    #error_page  404              /404.html;
-    #
-    #    # redirect server error pages to the static page /50x.html
-    #    #
-    #    error_page   500 502 503 504  /50x.html;
-    #    location = /50x.html {
-    #        root   html;
-    #    }
-    #
-    #    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
-    #    #
-    #    #location ~ \.php$ {
-    #    #    proxy_pass   http://127.0.0.1;
-    #    #}
-    #
-    #    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-    #    #
-    #    #location ~ \.php$ {
-    #    #    root           html;
-    #    #    fastcgi_pass   127.0.0.1:9000;
-    #    #    fastcgi_index  index.php;
-    #    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-    #    #    include        fastcgi_params;
-    #    #}
-    #
-    #    # deny access to .htaccess files, if Apache&apos;s document root
-    #    # concurs with nginx&apos;s one
-    #    #
-    #    #location ~ /\.ht {
-    #    #    deny  all;
-    #    #}
-    #}
-
-
-    # another virtual host using mix of IP-, name-, and port-based configuration
-    #
-    #server {
-    #    listen       8000;
-    #    listen       somename:8080;
-    #    server_name  somename  alias  another.alias;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
-
-    # HTTPS server
-    #
-    #server {
-    #    listen       443 ssl;
-    #    server_name  localhost;
-
-    #    ssl_certificate      cert.pem;
-    #    ssl_certificate_key  cert.key;
-
-    #    ssl_session_cache    shared:SSL:1m;
-    #    ssl_session_timeout  5m;
-
-    #    ssl_ciphers  HIGH:!aNULL:!MD5;
-    #    ssl_prefer_server_ciphers  on;
-
-    #    location / {
-    #        root   html;
-    #        index  index.html index.htm;
-    #    }
-    #}
-
-}
-</code></pre><h1 id="NGINX之反向代理与负载均衡"><a href="#NGINX之反向代理与负载均衡" class="headerlink" title="NGINX之反向代理与负载均衡"></a>NGINX之反向代理与负载均衡</h1><p>反向代理：</p>
-<p><img src="/2020/02/13/nginx/nginx01.png" alt=""></p>
-<p>从图中，我们可以知道，对于浏览器来说，他会发一个<a href="http://www.a.com/uri请求到Nginx服务器，对于他来说，他认为数据就是从http://www.a.com/uri域中返回的，事实上，当http://www.a.com/uri到达Nginx服务器后，Nginx服务器会将其转发给http://www.b.com/uri,从http://www.b.com/uri域中取得数据并将其返回给浏览器，这个步骤浏览器是不知道的，也就是说，浏览器并不知道http://www.b.com/uri该域的存在，同理，http://www.b.com/uri所在的域（图中的Tomcat）也并不知道浏览器的存在，他也只对Nginx负责。Nginx的这么一个过程便称为反向代理。" target="_blank" rel="noopener">http://www.a.com/uri请求到Nginx服务器，对于他来说，他认为数据就是从http://www.a.com/uri域中返回的，事实上，当http://www.a.com/uri到达Nginx服务器后，Nginx服务器会将其转发给http://www.b.com/uri,从http://www.b.com/uri域中取得数据并将其返回给浏览器，这个步骤浏览器是不知道的，也就是说，浏览器并不知道http://www.b.com/uri该域的存在，同理，http://www.b.com/uri所在的域（图中的Tomcat）也并不知道浏览器的存在，他也只对Nginx负责。Nginx的这么一个过程便称为反向代理。</a></p>
-<p>那么，Nginx服务器是如何实现这一步的呢，事实上也很简单，只需要在location中做一下简单的配置即可，命令大概如下图所示：（配置完命令记得reload重新加载才能生效）</p>
-<p><img src="/2020/02/13/nginx/nginx02.png" alt=""></p>
-<p>重点在于location处，这样的配置代表的是，所有来自浏览器的请求，在Nginx收到之后，都会代理到<a href="http://192.168.1.62:8080所在的地方" target="_blank" rel="noopener">http://192.168.1.62:8080所在的地方</a></p>
-<p>比如，我浏览器上发起<a href="http://192.168.1.61/a/index.html；Nginx收到之后，将会发出http://" target="_blank" rel="noopener">http://192.168.1.61/a/index.html；Nginx收到之后，将会发出http://</a> 192.168.1.62:8080/a/index.html这么一个请求到所连接的服务器上，如上图的Tomcat。</p>
-<p>接下来我们做这样一个假设，假如后端连接着几台。几十台服务器呢，这个时候Nginx也是做同样的代理吗，答案是肯定的。图示如下：那么，在这么多台服务器上，Nginx的转发又是基于怎样的策略呢？这个时候就涉及在负载均衡了，说白了就是，应该怎样的分发，才能做到资源的最大限度的利用？</p>
-<p><img src="/2020/02/13/nginx/nginx03.png" alt=""></p>
-<p>负载均衡策略</p>
-<pre><code>（
-
-我们这里假设三台服务器的IP地址分别为
-
-http:// 192.168.1.62:8080
-
-http:// 192.168.1.63:8080
-
-http:// 192.168.1.64:8080
-
-）
-</code></pre><p><img src="/2020/02/13/nginx/nginx04.png" alt=""></p>
-<p>这里我们把后台所有的服务器放入upstream中，并在代理中进行引用。</p>
-<p><img src="/2020/02/13/nginx/nginx05.png" alt=""></p>
-<p><img src="/2020/02/13/nginx/nginx06.png" alt=""></p>
-<p><img src="/2020/02/13/nginx/nginx07.png" alt=""></p>
-<p>其他的配置<br>备份与停机状态：<br>server 192.168.1.64 backup;//备份，不参与转发，只有当所有服务器都挂掉时才参与转发；</p>
-<p>server 192.168.1.65 down;//临时停机维护，不参与任何转发，是关闭状态，</p>
-<p>down存在的意义在于，有时我们需要对服务器做临时停机更新维护，假如我们直接关闭服务器的话，那么对于Nginx来说，他还是会把请求发到该服务器上的，因为他并不知道服务器已关，而设置down后，Nginx则不会再发到该服务器上了，避免造成无用的请求浪费。</p>
-<p>max_fails:        达到指定次数后认为服务器挂掉</p>
-<p> fail_timeout：挂掉多久后再次测试是否已经挂掉</p>
-<p>配置命令</p>
-<p>server 192.168.1.66 max_fails=2 fail_timeout=60s;</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -4567,7 +4306,7 @@ http:// 192.168.1.64:8080
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
