@@ -105,6 +105,8 @@ category: java
 
 ## 基于用户-角色-权限设计 ##
 
+	Account
+
 	accountName//账号名
 	accountPwd//密码
 	status//状态
@@ -113,6 +115,7 @@ category: java
 	lastLoginTime//最后一次登录时间
 	loginTimes//登录次数
 	roleIds//角色列表
+	//一个账号可以关联角色，角色呈树状结构，可多选
 	
 	Function
 	
@@ -125,11 +128,14 @@ category: java
 	permissionCode//唯一权限标识
 	permissionName//权限名称
 
+	Role
+
 	name//角色名称
 	parentId//父级
 	memo//描述
 	functionIds//功能点
 	order//排序
+	//角色也是呈树状菜单的，角色里面有权限配置，所有的功能点以树状结构展示，通过角色去关联功能点
 
 ## 递归菜单和角色 ##
 
