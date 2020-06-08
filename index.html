@@ -315,6 +315,436 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/08/JAVA的map/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/08/JAVA的map/" itemprop="url">JAVA的map</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-08T11:45:45+08:00">
+                2020-06-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Map的用法"><a href="#Map的用法" class="headerlink" title="Map的用法"></a>Map的用法</h1><h2 id="类型介绍"><a href="#类型介绍" class="headerlink" title="类型介绍"></a>类型介绍</h2><ul>
+<li><p>HashMap</p>
+<p>  最常用的Map,它根据键的HashCode值存储数据，根据键可以直接获取它的值，具有很快的访问速度。HashMap最多只允许一条记录的键为null（多条会覆盖）；允许多条记录的值为null。非同步的。</p>
+</li>
+<li><p>TreeMap</p>
+<p>  能够把它保存的记录根据键（key）排序，默认是按升序排序，也可指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。TreeMap不允许key的值为null。非同步的。</p>
+</li>
+<li><p>Hashtable</p>
+<p>  与HashMap类似，不同的是：key和value的值均不允许为null;它支持线程同步，即任一时刻只有一个线程能写HashTable,因此也导致了HashTable在写入时会比较慢。</p>
+</li>
+<li><p>LinkedHashMap</p>
+<p>  保存了记录的插入顺序，在使用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的，在遍历的时候会比HashMap慢。key和value均允许为空。非同步的。</p>
+</li>
+</ul>
+<h2 id="Map用法"><a href="#Map用法" class="headerlink" title="Map用法"></a>Map用法</h2><pre><code>用法
+Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();
+
+插入元素
+
+map.put(&quot;key1&quot;,&quot;value1&quot;);
+
+获取元素
+
+map.get(&quot;key1&quot;);
+
+移除元素
+
+map.remove(&quot;key1&quot;)
+</code></pre><h2 id="四种常用Map插入与读取性能比较"><a href="#四种常用Map插入与读取性能比较" class="headerlink" title="四种常用Map插入与读取性能比较"></a>四种常用Map插入与读取性能比较</h2><p><img src="/2020/06/08/JAVA的map/批注 2020-06-08 124807.png" alt=""></p>
+<pre><code>测试代码
+
+package net.xsoftlab.baike;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
+import java.util.UUID;
+public class Test {
+    static int hashMapW = 0;
+    static int hashMapR = 0;
+    static int linkMapW = 0;
+    static int linkMapR = 0;
+    static int treeMapW = 0;
+    static int treeMapR = 0;
+    static int hashTableW = 0;
+    static int hashTableR = 0;
+    public static void main(String[] args) {
+        for (int i = 0; i &lt; 10; i++) {
+            Test test = new Test();
+            test.test(100 * 10000);
+            System.out.println();
+        }
+        System.out.println(&quot;hashMapW = &quot; + hashMapW / 10);
+        System.out.println(&quot;hashMapR = &quot; + hashMapR / 10);
+        System.out.println(&quot;linkMapW = &quot; + linkMapW / 10);
+        System.out.println(&quot;linkMapR = &quot; + linkMapR / 10);
+        System.out.println(&quot;treeMapW = &quot; + treeMapW / 10);
+        System.out.println(&quot;treeMapR = &quot; + treeMapR / 10);
+        System.out.println(&quot;hashTableW = &quot; + hashTableW / 10);
+        System.out.println(&quot;hashTableR = &quot; + hashTableR / 10);
+    }
+    public void test(int size) {
+        int index;
+        Random random = new Random();
+        String[] key = new String[size];
+        // HashMap 插入
+        Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+        long start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            key[i] = UUID.randomUUID().toString();
+            map.put(key[i], UUID.randomUUID().toString());
+        }
+        long end = System.currentTimeMillis();
+        hashMapW += (end - start);
+        System.out.println(&quot;HashMap插入耗时 = &quot; + (end - start) + &quot; ms&quot;);
+        // HashMap 读取
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            index = random.nextInt(size);
+            map.get(key[index]);
+        }
+        end = System.currentTimeMillis();
+        hashMapR += (end - start);
+        System.out.println(&quot;HashMap读取耗时 = &quot; + (end - start) + &quot; ms&quot;);
+        // LinkedHashMap 插入
+        map = new LinkedHashMap&lt;String, String&gt;();
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            key[i] = UUID.randomUUID().toString();
+            map.put(key[i], UUID.randomUUID().toString());
+        }
+        end = System.currentTimeMillis();
+        linkMapW += (end - start);
+        System.out.println(&quot;LinkedHashMap插入耗时 = &quot; + (end - start) + &quot; ms&quot;);
+        // LinkedHashMap 读取
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            index = random.nextInt(size);
+            map.get(key[index]);
+        }
+        end = System.currentTimeMillis();
+        linkMapR += (end - start);
+        System.out.println(&quot;LinkedHashMap读取耗时 = &quot; + (end - start) + &quot; ms&quot;);
+        // TreeMap 插入
+        key = new String[size];
+        map = new TreeMap&lt;String, String&gt;();
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            key[i] = UUID.randomUUID().toString();
+            map.put(key[i], UUID.randomUUID().toString());
+        }
+        end = System.currentTimeMillis();
+        treeMapW += (end - start);
+        System.out.println(&quot;TreeMap插入耗时 = &quot; + (end - start) + &quot; ms&quot;);
+        // TreeMap 读取
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            index = random.nextInt(size);
+            map.get(key[index]);
+        }
+        end = System.currentTimeMillis();
+        treeMapR += (end - start);
+        System.out.println(&quot;TreeMap读取耗时 = &quot; + (end - start) + &quot; ms&quot;);
+        // Hashtable 插入
+        key = new String[size];
+        map = new Hashtable&lt;String, String&gt;();
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            key[i] = UUID.randomUUID().toString();
+            map.put(key[i], UUID.randomUUID().toString());
+        }
+        end = System.currentTimeMillis();
+        hashTableW += (end - start);
+        System.out.println(&quot;Hashtable插入耗时 = &quot; + (end - start) + &quot; ms&quot;);
+        // Hashtable 读取
+        start = System.currentTimeMillis();
+        for (int i = 0; i &lt; size; i++) {
+            index = random.nextInt(size);
+            map.get(key[index]);
+        }
+        end = System.currentTimeMillis();
+        hashTableR += (end - start);
+        System.out.println(&quot;Hashtable读取耗时 = &quot; + (end - start) + &quot; ms&quot;);
+    }
+}
+</code></pre><h2 id="Map遍历"><a href="#Map遍历" class="headerlink" title="Map遍历"></a>Map遍历</h2><h3 id="初始化数据"><a href="#初始化数据" class="headerlink" title="初始化数据"></a>初始化数据</h3><pre><code>Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();
+map.put(&quot;key1&quot;,&quot;value1&quot;);
+map.put(&quot;key2&quot;,&quot;value2&quot;);
+</code></pre><h3 id="增强for循环遍历"><a href="#增强for循环遍历" class="headerlink" title="增强for循环遍历"></a>增强for循环遍历</h3><p>使用keySet()遍历</p>
+<pre><code>for(String key:map.keySet()){
+    System.out.println(key+&quot;:&quot;+map.get(key))
+}
+</code></pre><p>使用entrySet()遍历</p>
+<pre><code>for(Map.Entry&lt;String,String&gt; entry:map.entrySet()){
+    System.out.println(entry.getKey()+&quot;:&quot;+entry.getValue());
+}
+</code></pre><h3 id="迭代器遍历"><a href="#迭代器遍历" class="headerlink" title="迭代器遍历"></a>迭代器遍历</h3><p>使用keySet()遍历</p>
+<pre><code>Iterator&lt;String&gt; iterator = map.keySet().iterator();
+while(iterator.hasNext()){
+    String key = iterator.next();
+    System.out.println(key+&quot;:&quot;+map.get(key));
+}
+</code></pre><p>使用entrySet()遍历</p>
+<pre><code>Iterator&lt;Map.Entry&lt;String,String&gt;&gt; iterator = map.entrySet().iterator();
+while(iterator.hasNext()){
+    Map.Entry&lt;String,String&gt; entry = iterator.next();
+    System.out.println(entry.getKey()+&quot;:&quot;+entry.getValue());
+}
+</code></pre><h2 id="HashMap四种遍历方式性能比较"><a href="#HashMap四种遍历方式性能比较" class="headerlink" title="HashMap四种遍历方式性能比较"></a>HashMap四种遍历方式性能比较</h2><pre><code>package net.xsoftlab.baike;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+public class TestMap {
+    public static void main(String[] args) {
+        // 初始化，10W次赋值
+        Map&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+        for (int i = 0; i &lt; 100000; i++)
+            map.put(i, i);
+        /** 增强for循环，keySet迭代 **/
+        long start = System.currentTimeMillis();
+        for (Integer key : map.keySet()) {
+            map.get(key);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(&quot;增强for循环，keySet迭代 -&gt; &quot; + (end - start) + &quot; ms&quot;);
+        /** 增强for循环，entrySet迭代 */
+        start = System.currentTimeMillis();
+        for (Entry&lt;Integer, Integer&gt; entry : map.entrySet()) {
+            entry.getKey();
+            entry.getValue();
+        }
+        end = System.currentTimeMillis();
+        System.out.println(&quot;增强for循环，entrySet迭代 -&gt; &quot; + (end - start) + &quot; ms&quot;);
+        /** 迭代器，keySet迭代 **/
+        start = System.currentTimeMillis();
+        Iterator&lt;Integer&gt; iterator = map.keySet().iterator();
+        Integer key;
+        while (iterator.hasNext()) {
+            key = iterator.next();
+            map.get(key);
+        }
+        end = System.currentTimeMillis();
+        System.out.println(&quot;迭代器，keySet迭代 -&gt; &quot; + (end - start) + &quot; ms&quot;);
+        /** 迭代器，entrySet迭代 **/
+        start = System.currentTimeMillis();
+        Iterator&lt;Map.Entry&lt;Integer, Integer&gt;&gt; iterator1 = map.entrySet().iterator();
+        Map.Entry&lt;Integer, Integer&gt; entry;
+        while (iterator1.hasNext()) {
+            entry = iterator1.next();
+            entry.getKey();
+            entry.getValue();
+        }
+        end = System.currentTimeMillis();
+        System.out.println(&quot;迭代器，entrySet迭代 -&gt; &quot; + (end - start) + &quot; ms&quot;);
+    }
+}
+
+运行三次，比较结果 第一次
+增强for循环，keySet迭代 -&gt; 37 ms
+增强for循环，entrySet迭代 -&gt; 19 ms
+迭代器，keySet迭代 -&gt; 14 ms
+迭代器，entrySet迭代 -&gt; 9 ms
+
+增强for循环，keySet迭代 -&gt; 29 ms
+增强for循环，entrySet迭代 -&gt; 22 ms
+迭代器，keySet迭代 -&gt; 19 ms
+迭代器，entrySet迭代 -&gt; 12 ms
+
+增强for循环，keySet迭代 -&gt; 27 ms
+增强for循环，entrySet迭代 -&gt; 19 ms
+迭代器，keySet迭代 -&gt; 18 ms
+迭代器，entrySet迭代 -&gt; 10 ms
+</code></pre><p>总结：</p>
+<ol>
+<li>增强for循环使用方便，但性能较差，不适合处理超大量级的数据。</li>
+<li>迭代器的遍历速度要比增强for循环快很多，是增强for循环的2倍左右。</li>
+<li>使用entrySet遍历的速度比keySet快很多，是keySet的1.5倍左右。</li>
+</ol>
+<h2 id="Map排序"><a href="#Map排序" class="headerlink" title="Map排序"></a>Map排序</h2><p>HashMap、HashTable、LinkedHashMap排序</p>
+<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><pre><code>Map&lt;String,String&gt; map = new HashMap&lt;String,String&gt;();
+map.put(&quot;b&quot;,&quot;b&quot;);
+map.put(&quot;a&quot;,&quot;c&quot;);
+map.put(&quot;c&quot;,&quot;a&quot;);
+//排序
+List&lt;Map.Entry&lt;String,String&gt;&gt; list = new ArrayList&lt;Map.Entry&lt;String, String&gt;&gt;(map.entrySet().size());
+Collections.sort(list, new Comparator&lt;Map.Entry&lt;String, String&gt;&gt;() {
+    @Override
+    public int compare(Map.Entry&lt;String, String&gt; o1, Map.Entry&lt;String, String&gt; o2) {
+        return o1.getKey().compareTo(o2.getKey());
+    }
+});
+
+for (Map.Entry&lt;String,String&gt; mapping:
+list) {
+    System.out.println(mapping.getKey()+&quot;:&quot;+mapping.getValue());
+}
+</code></pre><h3 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h3><pre><code>Map&lt;String, String&gt; map = new TreeMap&lt;String, String&gt;(new Comparator&lt;String&gt;() {
+    @Override
+    public int compare(String o1, String o2) {
+        // 降序排序
+        return o1.compareTo(o2);
+    }
+});
+map.put(&quot;b&quot;, &quot;b&quot;);
+map.put(&quot;a&quot;, &quot;c&quot;);
+map.put(&quot;c&quot;, &quot;a&quot;);
+for (String key : map.keySet()) {
+    System.out.println(key + &quot; ：&quot; + map.get(key));
+}
+</code></pre><h3 id="按value排序-通用"><a href="#按value排序-通用" class="headerlink" title="按value排序(通用)"></a>按value排序(通用)</h3><pre><code>Map&lt;String, String&gt; map = new TreeMap&lt;String, String&gt;();
+map.put(&quot;b&quot;, &quot;b&quot;);
+map.put(&quot;a&quot;, &quot;c&quot;);
+map.put(&quot;c&quot;, &quot;a&quot;);
+// 通过ArrayList构造函数把map.entrySet()转换成list
+List&lt;Map.Entry&lt;String, String&gt;&gt; list = new ArrayList&lt;Map.Entry&lt;String, String&gt;&gt;(map.entrySet());
+// 通过比较器实现比较排序
+Collections.sort(list, new Comparator&lt;Map.Entry&lt;String, String&gt;&gt;() {
+    @Override
+    public int compare(Map.Entry&lt;String, String&gt; mapping1, Map.Entry&lt;String, String&gt; mapping2) {
+        return mapping1.getValue().compareTo(mapping2.getValue());
+    }
+});
+for (String key : map.keySet()) {
+    System.out.println(key + &quot; ：&quot; + map.get(key));
+}
+</code></pre><h2 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h2><p><img src="/2020/06/08/JAVA的map/批注 2020-06-08 141629.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/JSON对象和JSON字符串/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -4104,160 +4534,6 @@ JAVA_OPTS=&quot;-Xms128m -Xmx256m&quot;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/win10学linux/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/16/win10学linux/" itemprop="url">win10学linux</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-16T10:36:20+08:00">
-                2020-02-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Linux环境"><a href="#Linux环境" class="headerlink" title="Linux环境"></a>Linux环境</h1><h2 id="win10家庭版自带虚拟机Hyper-V的设置"><a href="#win10家庭版自带虚拟机Hyper-V的设置" class="headerlink" title="win10家庭版自带虚拟机Hyper-V的设置"></a>win10家庭版自带虚拟机Hyper-V的设置</h2><p>一般win10家庭版并不带Hyper-V虚拟机，解决方法：</p>
-<p>新建Hyper-V.bat文件，内容为</p>
-<pre><code>pushd &quot;%~dp0&quot;
-
-dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &gt;hyper-v.txt
-
-for /f %%i in (&apos;findstr /i . hyper-v.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;%SystemRoot%\servicing\Packages\%%i&quot;
-
-del hyper-v.txt
-
-Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL
-</code></pre><p>右键-以管理员身份运行，这时就会自动的安装虚拟机功能。</p>
-<h2 id="下载linux镜像"><a href="#下载linux镜像" class="headerlink" title="下载linux镜像"></a>下载linux镜像</h2><p>下载linux镜像，运行Hyper-V管理器，并加载linux镜像</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -4306,7 +4582,7 @@ Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /AL
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
