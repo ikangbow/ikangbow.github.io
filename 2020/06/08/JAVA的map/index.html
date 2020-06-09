@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/06/08/JAVA的map/批注%202020-06-08%20124807.png">
 <meta property="og:image" content="http://yoursite.com/2020/06/08/JAVA的map/批注%202020-06-08%20141629.png">
-<meta property="og:updated_time" content="2020-06-08T06:18:11.795Z">
+<meta property="og:updated_time" content="2020-06-09T07:02:44.144Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JAVA的map">
 <meta name="twitter:description" content="Map的用法类型介绍 HashMap   最常用的Map,它根据键的HashCode值存储数据，根据键可以直接获取它的值，具有很快的访问速度。HashMap最多只允许一条记录的键为null（多条会覆盖）；允许多条记录的值为null。非同步的。  TreeMap   能够把它保存的记录根据键（key）排序，默认是按升序排序，也可指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是">
@@ -696,7 +696,72 @@ for (String key : map.keySet()) {
     System.out.println(key + &quot; ：&quot; + map.get(key));
 }
 </code></pre><h2 id="常用API"><a href="#常用API" class="headerlink" title="常用API"></a>常用API</h2><p><img src="/2020/06/08/JAVA的map/批注 2020-06-08 141629.png" alt=""></p>
+<h2 id="扩展List如何一边遍历一边删除"><a href="#扩展List如何一边遍历一边删除" class="headerlink" title="扩展List如何一边遍历一边删除"></a>扩展List如何一边遍历一边删除</h2><pre><code>public static void main(String[] args) {
+    List&lt;String&gt; platformList = new ArrayList&lt;&gt;();
+    platformList.add(&quot;博客园&quot;);
+    platformList.add(&quot;CSDN&quot;);
+    platformList.add(&quot;掘金&quot;);
 
+    for (String platform : platformList) {
+        if (platform.equals(&quot;博客园&quot;)) {
+            platformList.remove(platform);
+        }
+    }
+
+    System.out.println(platformList);
+}
+
+java.util.ConcurrentModificationException异常了，翻译成中文就是：并发修改异常
+</code></pre><h3 id="使用Iterator的remove-方法"><a href="#使用Iterator的remove-方法" class="headerlink" title="使用Iterator的remove()方法"></a>使用Iterator的remove()方法</h3><pre><code>public static void main(String[] args) {
+    List&lt;String&gt; platformList = new ArrayList&lt;&gt;();
+    platformList.add(&quot;博客园&quot;);
+    platformList.add(&quot;CSDN&quot;);
+    platformList.add(&quot;掘金&quot;);
+
+    Iterator&lt;String&gt; iterator = platformList.iterator();
+    while (iterator.hasNext()) {
+        String platform = iterator.next();
+        if (platform.equals(&quot;博客园&quot;)) {
+            iterator.remove();
+        }
+    }
+
+    System.out.println(platformList);
+}
+</code></pre><h3 id="使用for循环正序遍历"><a href="#使用for循环正序遍历" class="headerlink" title="使用for循环正序遍历"></a>使用for循环正序遍历</h3><pre><code>public static void main(String[] args) {
+    List&lt;String&gt; platformList = new ArrayList&lt;&gt;();
+    platformList.add(&quot;博客园&quot;);
+    platformList.add(&quot;CSDN&quot;);
+    platformList.add(&quot;掘金&quot;);
+
+    for (int i = 0; i &lt; platformList.size(); i++) {
+        String item = platformList.get(i);
+
+        if (item.equals(&quot;博客园&quot;)) {
+            platformList.remove(i);
+            i = i - 1;
+        }
+    }
+
+    System.out.println(platformList);
+}
+</code></pre><h3 id="使用for循环倒序遍历"><a href="#使用for循环倒序遍历" class="headerlink" title="使用for循环倒序遍历"></a>使用for循环倒序遍历</h3><pre><code>public static void main(String[] args) {
+    List&lt;String&gt; platformList = new ArrayList&lt;&gt;();
+    platformList.add(&quot;博客园&quot;);
+    platformList.add(&quot;CSDN&quot;);
+    platformList.add(&quot;掘金&quot;);
+
+    for (int i = platformList.size() - 1; i &gt;= 0; i--) {
+        String item = platformList.get(i);
+
+        if (item.equals(&quot;掘金&quot;)) {
+            platformList.remove(i);
+        }
+    }
+
+    System.out.println(platformList);
+}
+</code></pre>
       
     </div>
     
@@ -735,6 +800,10 @@ for (String key : map.keySet()) {
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/06/08/消息队列5个应用场景/" rel="prev" title="消息队列5个应用场景">
+                消息队列5个应用场景 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -809,7 +878,7 @@ for (String key : map.keySet()) {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -879,7 +948,7 @@ for (String key : map.keySet()) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Map的用法"><span class="nav-number">1.</span> <span class="nav-text">Map的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类型介绍"><span class="nav-number">1.1.</span> <span class="nav-text">类型介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map用法"><span class="nav-number">1.2.</span> <span class="nav-text">Map用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四种常用Map插入与读取性能比较"><span class="nav-number">1.3.</span> <span class="nav-text">四种常用Map插入与读取性能比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map遍历"><span class="nav-number">1.4.</span> <span class="nav-text">Map遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化数据"><span class="nav-number">1.4.1.</span> <span class="nav-text">初始化数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增强for循环遍历"><span class="nav-number">1.4.2.</span> <span class="nav-text">增强for循环遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器遍历"><span class="nav-number">1.4.3.</span> <span class="nav-text">迭代器遍历</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap四种遍历方式性能比较"><span class="nav-number">1.5.</span> <span class="nav-text">HashMap四种遍历方式性能比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map排序"><span class="nav-number">1.6.</span> <span class="nav-text">Map排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap"><span class="nav-number">1.6.1.</span> <span class="nav-text">HashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TreeMap"><span class="nav-number">1.6.2.</span> <span class="nav-text">TreeMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按value排序-通用"><span class="nav-number">1.6.3.</span> <span class="nav-text">按value排序(通用)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用API"><span class="nav-number">1.7.</span> <span class="nav-text">常用API</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Map的用法"><span class="nav-number">1.</span> <span class="nav-text">Map的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#类型介绍"><span class="nav-number">1.1.</span> <span class="nav-text">类型介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map用法"><span class="nav-number">1.2.</span> <span class="nav-text">Map用法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四种常用Map插入与读取性能比较"><span class="nav-number">1.3.</span> <span class="nav-text">四种常用Map插入与读取性能比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map遍历"><span class="nav-number">1.4.</span> <span class="nav-text">Map遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化数据"><span class="nav-number">1.4.1.</span> <span class="nav-text">初始化数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增强for循环遍历"><span class="nav-number">1.4.2.</span> <span class="nav-text">增强for循环遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器遍历"><span class="nav-number">1.4.3.</span> <span class="nav-text">迭代器遍历</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap四种遍历方式性能比较"><span class="nav-number">1.5.</span> <span class="nav-text">HashMap四种遍历方式性能比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map排序"><span class="nav-number">1.6.</span> <span class="nav-text">Map排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap"><span class="nav-number">1.6.1.</span> <span class="nav-text">HashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TreeMap"><span class="nav-number">1.6.2.</span> <span class="nav-text">TreeMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按value排序-通用"><span class="nav-number">1.6.3.</span> <span class="nav-text">按value排序(通用)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用API"><span class="nav-number">1.7.</span> <span class="nav-text">常用API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展List如何一边遍历一边删除"><span class="nav-number">1.8.</span> <span class="nav-text">扩展List如何一边遍历一边删除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Iterator的remove-方法"><span class="nav-number">1.8.1.</span> <span class="nav-text">使用Iterator的remove()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用for循环正序遍历"><span class="nav-number">1.8.2.</span> <span class="nav-text">使用for循环正序遍历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用for循环倒序遍历"><span class="nav-number">1.8.3.</span> <span class="nav-text">使用for循环倒序遍历</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
