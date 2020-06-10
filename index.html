@@ -446,7 +446,73 @@
 <h3 id="消息通讯"><a href="#消息通讯" class="headerlink" title="消息通讯"></a>消息通讯</h3><p>消息通讯是指，消息队列一般都内置了高效的通信机制，因此也可以用在纯的消息通讯，比如实现点对点消息队列，或者聊天室等。</p>
 <p><img src="/2020/06/08/消息队列5个应用场景/批注 2020-06-08 163623.png" alt=""></p>
 <p>客户端A，客户端B，客户端N订阅同一主题，进行消息发布和接收。实现类似聊天室效果。</p>
+<h2 id="实战用redis实现简单的发布-订阅"><a href="#实战用redis实现简单的发布-订阅" class="headerlink" title="实战用redis实现简单的发布/订阅"></a>实战用redis实现简单的发布/订阅</h2><p>场景：两台tomcat做集群，配置文件不同时生效的问题</p>
+<pre><code>&lt;bean id=&quot;messageContainer&quot;
+    class=&quot;org.springframework.data.redis.listener.RedisMessageListenerContainer&quot;
+    destroy-method=&quot;destroy&quot;&gt;
+    &lt;property name=&quot;connectionFactory&quot; ref=&quot;jedisConnectionFactory&quot; /&gt;
+    &lt;property name=&quot;messageListeners&quot;&gt;
+        &lt;map&gt;
+            &lt;entry key-ref=&quot;subService&quot;&gt;
+                &lt;ref bean=&quot;channelTopic&quot; /&gt;
+            &lt;/entry&gt;
+        &lt;/map&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+&lt;bean id=&quot;channelTopic&quot; class=&quot;org.springframework.data.redis.listener.ChannelTopic&quot;&gt;
+    &lt;constructor-arg value=&quot;server:topic&quot; /&gt;
+&lt;/bean&gt;
 
+@Service
+public class PubServiceImpl implements PubService {
+
+    private static final Logger logger = Logger.getLogger(PubService.class);
+
+    @Autowired
+    private RedisTemplate&lt;String, String&gt; redisTemplate;
+
+    private String channelTopic = &quot;server:topic&quot;;
+
+    public void publish(String str) {
+        //String str = JsonUtils.toJson(message);
+        logger.error(&quot;Publish message:&quot; + str + &quot;, topic:&quot; + channelTopic);
+        redisTemplate.convertAndSend(channelTopic, str);
+    }
+
+    public void publish(Map&lt;String, Object&gt; message) {
+        String str = JsonUtils.toJson(message);
+        logger.error(&quot;Publish message:&quot; + str + &quot;, topic:&quot; + channelTopic);
+        redisTemplate.convertAndSend(channelTopic, str);
+    }
+}
+
+@Service(&quot;subService&quot;)
+public class SubServiceImpl implements MessageListener {
+
+    private static final Logger logger = Logger.getLogger(SubServiceImpl.class);
+
+    @Autowired
+    private ChannelTopic channelTopic;
+
+    @Override
+    public void onMessage(Message message, byte[] pattern) {
+        String str = message.toString();
+        logger.error(&quot;Subscribe message:&quot; + str + &quot;, topic:&quot; + channelTopic.getTopic());
+        try {
+            String type =  m.getType();
+            if (&quot;config&quot;.equals(type)) {
+                System.out.println(&quot;接收到消息，doSomething========&quot;);
+            }else if(&quot;me&quot;.equals(type)){
+                System.out.println(&quot;接收到消息，doSomething========&quot;);
+            }else{
+                System.out.println(&quot;接收到消息，doSomething========&quot;);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
           
         
       
