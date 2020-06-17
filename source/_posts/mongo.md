@@ -253,7 +253,7 @@ bschool.setProvinces(provinces);
 ## 查找并所有排序
 
 ```
-mongoTemplate.find(new Query().with(new Sort("order", "DESC")), Bschool.class);
+mongoTemplate.find(new Query().with(new Sort(Direction.ASC, "order","createTime")), Bschool.class);
 ```
 
 ## in查询
