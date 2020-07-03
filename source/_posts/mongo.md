@@ -651,3 +651,76 @@ Aggregation agg = Aggregation.newAggregation(
                 );
 ```
 
+# 翻页
+
+项目当中模拟插入了120W条数据，在同一个文档当中单纯查询数据的速度还不错，主要是对查询的文档字段添加了索引，但是对查询结果的前台分页确有问题。具体来说是不设置任何查询条件的时候，会查询出来将近120W条满足条件的结果，使用mongodb的limit()和skip() 来取出来 第一页前20条数据，这样在后台的java程序当中只是这20条数据占用内存。
+代码具体形式类似于用mongodb客户端执行db.feedbackInfo.find(criteria).skip(0).limit(20) 获得第一页0-20条数据db.feedbackInfo.find(criteria).skip(20).limit(20) 获得第二页20-40条数据……db.feedbackInfo.find(criteria).skip(N).limit(20) 获得第二页N-N+20条数据但问题在于随着不断翻页，skip的值N会越来越大，前台的反应越来越慢。很直接的一个表现就是在前台从第一页直接跳转进入最后一页根本反应不过来。对于这个实际问题，原因就是本书这里所言的skip略过大量结果会带来性能问题，再根源地说是mongodb还不够完善，索引本身还比较简单。具体的这个分页效率的问题，有两种思路：第一，等mongodb升级，优化这个skip的执行效率。第二，不用skip()而实现分页效果。这个思路的基础就是mongodb本身对于where查询和limit()的效率还比较不错，也就是本来分页的那个查询用where和limit速度还可以的前提（一般就是需要建立必要的索引）。假如这个前提不成立，那没法讨论。本书接下来具体讨论了不使用skip对结果分页的实现例子，这个本质是对信息系统增加一个查询中间量——上次查询的业务数值，在逻辑上承担起跟skip相对等价的功能。比如说是第一页查询是按照一个日期date值查询，第一次用db.foo.find().sort({"date",-1}).limit(20)而点击下一页的时候，事先将上次查询的date的边界值给传递过去，第二页查询的时候就使用新的find条件查询db.foo.find({"date":{"$gt":latest.date}}); 而后再对查询结果排序即可这种绕过skip的方式评价：第一，很难比较方便地解决所有的分页问题，简单来说 对于使用正则表达式的查询，根本无法通过记录边界条件来实现。第二，不得不多传递上次查询的那个边界条件，增加了工作量，不够优雅。第三，只能够解决一页一页往下翻页的问题，如果我要从第1页直接跳到100页，就束手无策
+
+## 翻页的实现一
+
+### skip实现跳页（比较简单，数据量大了不行）
+
+     /**
+	 *db.getCollection('user').find({})是指查询全部。
+	 *sort()设置排序，本示例是指以_id作为条件，正序排序。若将数字1改为-1，则为倒序。
+	 *skip()设置跳页，本示例是指跳过前10条，从第11条开始显示。
+	 *limit()设置每页的显示数量，本例是指每页限制显示10条。
+	 */
+	db.getCollection('user').find({}).sort({"ID":1}).skip(10).limit(10)
+
+### 非skip实现跳页
+
+	原理：以自增_id作为主条件，获取前一页的最后一条记录，查询之后的指定条记录
+	
+	//根据_id，查询前10条
+	var a = db. getCollection('user').find({}).sort("_id",1).limit(10)
+	//定义变量last
+	var last  = null
+	//循环遍历
+	while(a.hasNext()){
+	    last=a.next;//循环到最后，last接收的是最后一条的信息
+	}
+	//核心是"_id":{"$gt":last._id}，即查询大于最后一条的_id的后10条信息
+	db.getCollection('slt').find({"_id":{"$gt":last._id}}).sort({_id:1}).limit(10)
+
+## 翻页的实现二（非skip实现跳页，以自增_id作为主条件）
+
+    private List<JSONObject> findOrderList(Map<String,Object> paramOptions,int page,int size,String sidx,String sord) throws Exception {
+                //连接数据库
+        MongoCollection<Document> mongoCollection = getMdbCollection();
+        //进行第一次查询，条件中没有skip
+        MongoCursor<Document> iterable = mongoCollection.find().limit(size).sort(new BasicDBObject("_id", 1)).iterator(); 
+        //定义orderItems，用以接收查询的信息
+        List<JSONObject> orderItems = new ArrayList<JSONObject>();
+                
+        //如果只有一页或第一页，则走此条件，否，则走else
+	        if(page == 1){     
+	　　　　  //遍历        
+	            while (iterable.hasNext()) {
+	              Document next = iterable.next();
+	              JSONObject a =JSONObject.parseObject(next.toJson());
+	              orderItems.add(a);
+	            }
+	　　　　　}else{ 
+	　　　　　　MongoCursor<Document> iterable2 = mongoCollection.find().limit(size*(page-1)).sort(new BasicDBObject("_id", 1)).iterator(); 
+	         //定义变量last，用以存储每页的最后一条记录 
+	　　　　　Document last = null; 
+	　　　　　while (iterable2.hasNext()) { 
+	　　　　　　　　last = iterable2.next(); 
+	　　　　　} 
+	         //定义condition，用以添加【$gt:每页最后一条记录的_id值】，作为查询条件 
+	　　　　　　Map<String, Object> condition = new HashMap<>(); 
+	　　　　　　if (null != last.get("_id")) { 
+	　　　　　　　　condition.put("$gt",last.get("_id")); 
+	 　　　　　 } 
+	　　　　　 MongoCursor<Document> iterable3 = mongoCollection.find(condition).limit(size).sort(new BasicDBObject("_id", 1)).iterator(); 
+	　　　　　　//遍历 
+	　　　　　　while (iterable.hasNext()) { 
+	　　　　　　　　　　Document next = iterable.next(); 
+	　　　　　　　　　　JSONObject a =JSONObject.parseObject(next.toJson()); 
+	　　　　　　　　　　orderItems.add(a);
+	　　　　　　} 
+	　　　　　　return orderItems; 
+	}
+	 注：上面是按_id正序排列的，如果想要按照倒序排列，则需要将condition.put("$gt",last.get("_id"))改为condition.put("$lt",last.get("_id"))，将sort(new BasicDBObject("_id", 1)改为sort(new BasicDBObject("_id", -1)。
+
