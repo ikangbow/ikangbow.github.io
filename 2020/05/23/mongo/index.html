@@ -103,7 +103,7 @@
 <meta property="og:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2020/05/23/mongo/aggregation.png">
-<meta property="og:updated_time" content="2020-07-03T00:08:53.297Z">
+<meta property="og:updated_time" content="2020-07-30T13:13:26.043Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mongo">
 <meta name="twitter:description" content="什么是MongoDB ?MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。在高负载的情况下，添加更多的节点，可以保证服务器性能。MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。MongoDB 将数据存储为一个文档，数据结构由键值(key=&amp;gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。">
@@ -596,7 +596,344 @@ db.getCollection(&apos;slt&apos;).find({&quot;_id&quot;:{&quot;$gt&quot;:last._i
 　　　　　　return orderItems; 
 }
  注：上面是按_id正序排列的，如果想要按照倒序排列，则需要将condition.put(&quot;$gt&quot;,last.get(&quot;_id&quot;))改为condition.put(&quot;$lt&quot;,last.get(&quot;_id&quot;))，将sort(new BasicDBObject(&quot;_id&quot;, 1)改为sort(new BasicDBObject(&quot;_id&quot;, -1)。
-</code></pre>
+</code></pre><h1 id="mongo高级"><a href="#mongo高级" class="headerlink" title="mongo高级"></a>mongo高级</h1><h2 id="本地搭建副本集"><a href="#本地搭建副本集" class="headerlink" title="本地搭建副本集"></a>本地搭建副本集</h2><h3 id="mongo的版本"><a href="#mongo的版本" class="headerlink" title="mongo的版本"></a>mongo的版本</h3><p> version 3.6.5</p>
+<h3 id="副本集文件夹准备"><a href="#副本集文件夹准备" class="headerlink" title="副本集文件夹准备"></a>副本集文件夹准备</h3><pre><code>mongodb3.6 同目录下建立文件夹，存放数据
+data/mongo/27017,data/mongo/27018,data/mongo/27019
+同目录下建立文件夹存放日志数据
+data/mongo/27017log,data/mongo/27018log,data/mongo/27019log
+</code></pre><h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><pre><code>mongod --port 27017 --dbpath /data/mongo/27017 --logpath /data/mongo/27017log/27017.log --replSet rs-local-test --logappend
+mongod --port 27018 --dbpath /data/mongo/27018 --logpath /data/mongo/27018log/27018.log --replSet rs-local-test --logappend
+mongod --port 27019 --dbpath /data/mongo/27019 --logpath /data/mongo/27019log/27019.log --replSet rs-local-test --logappend
+</code></pre><p>三个服务器启动完毕之后，不要关闭。另开一个cmd窗口，连接到27017端口的服务器（连接其他端口也可以），每次启动，主服务器可能会不一样，如果连接的是主服务器，前缀会变成如下PRIMARY，如果是从服务器，前缀会变成SECONDARY</p>
+<h3 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h3><p>创建一个配置文件，在配置文件中列出每一个成员，知道彼此的存在(第二次启动就不需要再配置)</p>
+<pre><code>use test
+witched to db test
+     rs.initiate({
+      &quot;_id&quot;:&quot;rs-local-test01&quot;,
+      &quot;members&quot;:[
+     {&quot;_id&quot;:0,&quot;host&quot;:&quot;127.0.0.1:27017&quot;},
+      {&quot;_id&quot;:1,&quot;host&quot;:&quot;127.0.0.1:27018&quot;},
+      {&quot;_id&quot;:2,&quot;host&quot;:&quot;127.0.0.1:27019&quot;}
+    ]
+})
+
+{
+&quot;ok&quot; : 1,
+&quot;operationTime&quot; : Timestamp(1596076771, 1),
+&quot;$clusterTime&quot; : {
+    &quot;clusterTime&quot; : Timestamp(1596076771, 1),
+        &quot;signature&quot; : {
+            &quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;
+            &quot;keyId&quot; : NumberLong(0)
+        }
+    }
+}
+</code></pre><p>查看状态信息</p>
+<pre><code>rs-local-test:OTHER&gt; rs.status()
+{
+&quot;set&quot; : &quot;rs-local-test&quot;,
+&quot;date&quot; : ISODate(&quot;2020-07-30T02:40:29.243Z&quot;),
+&quot;myState&quot; : 1,
+&quot;term&quot; : NumberLong(1),
+&quot;heartbeatIntervalMillis&quot; : NumberLong(2000),
+&quot;optimes&quot; : {
+&quot;lastCommittedOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;readConcernMajorityOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;appliedOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;durableOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+}
+},
+&quot;members&quot; : [
+{
+&quot;_id&quot; : 0,
+&quot;name&quot; : &quot;127.0.0.1:27017&quot;,
+&quot;health&quot; : 1,
+&quot;state&quot; : 1,
+&quot;stateStr&quot; : &quot;PRIMARY&quot;,
+&quot;uptime&quot; : 286,
+&quot;optime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDate&quot; : ISODate(&quot;2020-07-30T02:40:23Z&quot;),
+&quot;infoMessage&quot; : &quot;could not find member to sync fr
+&quot;electionTime&quot; : Timestamp(1596076782, 1),
+&quot;electionDate&quot; : ISODate(&quot;2020-07-30T02:39:42Z&quot;),
+&quot;configVersion&quot; : 1,
+&quot;self&quot; : true
+},
+{
+&quot;_id&quot; : 1,
+&quot;name&quot; : &quot;127.0.0.1:27018&quot;,
+&quot;health&quot; : 1,
+&quot;state&quot; : 2,
+&quot;stateStr&quot; : &quot;SECONDARY&quot;,
+&quot;uptime&quot; : 57,
+&quot;optime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDurable&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDate&quot; : ISODate(&quot;2020-07-30T02:40:23Z&quot;),
+&quot;optimeDurableDate&quot; : ISODate(&quot;2020-07-30T02:40:2
+&quot;lastHeartbeat&quot; : ISODate(&quot;2020-07-30T02:40:28.47
+&quot;lastHeartbeatRecv&quot; : ISODate(&quot;2020-07-30T02:40:2
+),
+&quot;pingMs&quot; : NumberLong(0),
+&quot;syncingTo&quot; : &quot;127.0.0.1:27017&quot;,
+&quot;configVersion&quot; : 1
+},
+{
+&quot;_id&quot; : 2,
+&quot;name&quot; : &quot;127.0.0.1:27019&quot;,
+&quot;health&quot; : 1,
+&quot;state&quot; : 2,
+&quot;stateStr&quot; : &quot;SECONDARY&quot;,
+&quot;uptime&quot; : 57,
+&quot;optime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDurable&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDate&quot; : ISODate(&quot;2020-07-30T02:40:23Z&quot;),
+&quot;optimeDurableDate&quot; : ISODate(&quot;2020-07-30T02:40:2
+&quot;lastHeartbeat&quot; : ISODate(&quot;2020-07-30T02:40:28.47
+&quot;lastHeartbeatRecv&quot; : ISODate(&quot;2020-07-30T02:40:2
+),
+&quot;pingMs&quot; : NumberLong(0),
+&quot;syncingTo&quot; : &quot;127.0.0.1:27018&quot;,
+&quot;configVersion&quot; : 1
+}
+],
+&quot;ok&quot; : 1,
+&quot;operationTime&quot; : Timestamp(1596076823, 1),
+&quot;$clusterTime&quot; : {
+&quot;clusterTime&quot; : Timestamp(1596076823, 1),
+&quot;signature&quot; : {
+&quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;
+&quot;keyId&quot; : NumberLong(0)
+}
+}
+}
+</code></pre><p>如果是第二次启动，可以直接查看状态信息，不需要在设置配置文件。<br>查看状态信息，可以看到主服务器和备份服务器：</p>
+<pre><code>rs-local-test:SECONDARY&gt;use test
+switched to db test
+rs-local-test:SECONDARY&gt; db.isMaster()
+{
+&quot;hosts&quot; : [
+&quot;127.0.0.1:27017&quot;,
+&quot;127.0.0.1:27018&quot;,
+&quot;127.0.0.1:27019&quot;
+],
+&quot;setName&quot; : &quot;rs-local-test&quot;,
+&quot;setVersion&quot; : 1,
+&quot;ismaster&quot; : false,
+&quot;secondary&quot; : true,
+&quot;primary&quot; : &quot;127.0.0.1:27019&quot;,
+&quot;me&quot; : &quot;127.0.0.1:27017&quot;,
+&quot;lastWrite&quot; : {
+&quot;opTime&quot; : {
+&quot;ts&quot; : Timestamp(1596079583, 1),
+&quot;t&quot; : NumberLong(5)
+},
+&quot;lastWriteDate&quot; : ISODate(&quot;2020-07-30T03:26:23Z&quot;),
+&quot;majorityOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596079583, 1),
+&quot;t&quot; : NumberLong(5)
+},
+&quot;majorityWriteDate&quot; : ISODate(&quot;2020-07-30T03:26:23Z&quot;)
+},
+&quot;maxBsonObjectSize&quot; : 16777216,
+&quot;maxMessageSizeBytes&quot; : 48000000,
+&quot;maxWriteBatchSize&quot; : 100000,
+&quot;localTime&quot; : ISODate(&quot;2020-07-30T03:26:25.289Z&quot;),
+&quot;logicalSessionTimeoutMinutes&quot; : 30,
+&quot;minWireVersion&quot; : 0,
+&quot;maxWireVersion&quot; : 6,
+&quot;readOnly&quot; : false,
+&quot;ok&quot; : 1,
+&quot;operationTime&quot; : Timestamp(1596079583, 1),
+&quot;$clusterTime&quot; : {
+&quot;clusterTime&quot; : Timestamp(1596079583, 1),
+&quot;signature&quot; : {
+&quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;),
+&quot;keyId&quot; : NumberLong(0)
+}
+}
+}
+</code></pre><h3 id="读写测试"><a href="#读写测试" class="headerlink" title="读写测试"></a>读写测试</h3><p>连接主服务器后，可以写入数据：<br>重新启动一个cmd,连接一个备份服务器，查看是否数据被复制：<br>备份节点可能会落后于主节点，可能没有最新写入数据，所以备份节点默认情况下会拒绝读取请求，这是为了保护应用程序，以免意外连接到备份节点，读取到过期数据：</p>
+<pre><code>rs-local-test:SECONDARY&gt; db.foo.find()
+Error: error: {
+        &quot;operationTime&quot; : Timestamp(1596079503, 1),
+        &quot;ok&quot; : 0,
+        &quot;errmsg&quot; : &quot;not master and slaveOk=false&quot;,
+        &quot;code&quot; : 13435,
+        &quot;codeName&quot; : &quot;NotMasterNoSlaveOk&quot;,
+        &quot;$clusterTime&quot; : {
+                &quot;clusterTime&quot; : Timestamp(1596079503, 1),
+                &quot;signature&quot; : {
+                        &quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;),
+                        &quot;keyId&quot; : NumberLong(0)
+                }
+        }
+}
+
+从备份节点读取数据，需要设置标识：
+db.getMongo().setSlaveOk();
+</code></pre><h3 id="节点变更"><a href="#节点变更" class="headerlink" title="节点变更"></a>节点变更</h3><p>在主节点插入数据后，如果有备份节点服务器没有启动，当在该备份启动后，也可以查询到写入的数据：<br>不能对备份节点执行写入操作，备份节点只能通过复制功能写入数据，不接受客户端的写入请求：<br>rs-local-test:SECONDARY&gt;</p>
+<p>可以随时添加或删除成员,先按之前的方法创建一个备用服务器，再添加进去：<br>rs.add(‘127.0.0.1’:4444)<br>rs是一个全局变量，其中包含与复制相关的辅助函数。<br>删除成员：<br>rs.remove(‘127.0.0.1’:4444)</p>
+<p>添加或删除完可通过 db.isMaster()查看修改结果<br>也可rs.config();</p>
+<pre><code>rs-local-test:SECONDARY&gt; rs.config()
+{
+        &quot;_id&quot; : &quot;rs-local-test&quot;,
+        &quot;version&quot; : 1,
+        &quot;protocolVersion&quot; : NumberLong(1),
+        &quot;members&quot; : [
+                {
+                        &quot;_id&quot; : 0,
+                        &quot;host&quot; : &quot;127.0.0.1:27017&quot;,
+                        &quot;arbiterOnly&quot; : false,
+                        &quot;buildIndexes&quot; : true,
+                        &quot;hidden&quot; : false,
+                        &quot;priority&quot; : 1,
+                        &quot;tags&quot; : {
+
+                        },
+                        &quot;slaveDelay&quot; : NumberLong(0),
+                        &quot;votes&quot; : 1
+                },
+                {
+                        &quot;_id&quot; : 1,
+                        &quot;host&quot; : &quot;127.0.0.1:27018&quot;,
+                        &quot;arbiterOnly&quot; : false,
+                        &quot;buildIndexes&quot; : true,
+                        &quot;hidden&quot; : false,
+                        &quot;priority&quot; : 1,
+                        &quot;tags&quot; : {
+
+                        },
+                        &quot;slaveDelay&quot; : NumberLong(0),
+                        &quot;votes&quot; : 1
+                },
+                {
+                        &quot;_id&quot; : 2,
+                        &quot;host&quot; : &quot;127.0.0.1:27019&quot;,
+                        &quot;arbiterOnly&quot; : false,
+                        &quot;buildIndexes&quot; : true,
+                        &quot;hidden&quot; : false,
+                        &quot;priority&quot; : 1,
+                        &quot;tags&quot; : {
+
+                        },
+                        &quot;slaveDelay&quot; : NumberLong(0),
+                        &quot;votes&quot; : 1
+                }
+        ],
+        &quot;settings&quot; : {
+                &quot;chainingAllowed&quot; : true,
+                &quot;heartbeatIntervalMillis&quot; : 2000,
+                &quot;heartbeatTimeoutSecs&quot; : 10,
+                &quot;electionTimeoutMillis&quot; : 10000,
+                &quot;catchUpTimeoutMillis&quot; : -1,
+                &quot;catchUpTakeoverDelayMillis&quot; : 30000,
+                &quot;getLastErrorModes&quot; : {
+
+                },
+                &quot;getLastErrorDefaults&quot; : {
+                        &quot;w&quot; : 1,
+                        &quot;wtimeout&quot; : 0
+                },
+                &quot;replicaSetId&quot; : ObjectId(&quot;5f2232e3b3ef9f7db4cb682d&quot;)
+        }
+}
+</code></pre><p>以上参考自 <a href="https://www.cnblogs.com/a-horse-mosaic/p/9284297.html" target="_blank" rel="noopener">https://www.cnblogs.com/a-horse-mosaic/p/9284297.html</a></p>
+<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><h3 id="如何开启读写分离"><a href="#如何开启读写分离" class="headerlink" title="如何开启读写分离"></a>如何开启读写分离</h3><p>默认情况下驱动是从Replica Set 集群中的 Primary 上进行读写的，应用可以在读多写少的场景下开启读写分离，提高效率。</p>
+<p>读取偏好(Read Preference)参数</p>
+<p>primary  主节点，默认模式，读操作只在主节点，如果主节点不可用，报错或者抛异常。</p>
+<p>primaryPreferred 首选主节点，如果主节点不可用，如故障转移，读操作在从节点。</p>
+<p>secondary 从节点，读操作只在从节点，如果从节点不可用，报错或者抛异常。</p>
+<p>secondaryPreferred 首选从节点，大多情况下读操作在从节点，特殊情况（如单主节点架构）读操作在主节点。</p>
+<p>nearest 最邻近节点，读操作在最邻近的成员，可能是主节点或者从节点</p>
+<h3 id="在Mongodb中最多能创建多少集合？"><a href="#在Mongodb中最多能创建多少集合？" class="headerlink" title="在Mongodb中最多能创建多少集合？"></a>在Mongodb中最多能创建多少集合？</h3><p>默认情况下，MongoDB 的每个数据库的命名空间保存在一个 16MB 的 .ns 文件中，平均每个命名占用约 628 字节，也即整个数据库的命名空间的上限约为 24000。<br>每一个集合、索引都将占用一个命名空间。所以，如果每个集合有一个索引（比如默认的 _id 索引），那么最多可以创建 12000 个集合。如果索引数更多，则可创建的集合数就更少了。同时，如果集合数太多，一些操作也会变慢。甚至使得MongoDB集群无法服务的情况发生！</p>
+<h3 id="MongoDB有传统数据库的事务和事务回滚么？"><a href="#MongoDB有传统数据库的事务和事务回滚么？" class="headerlink" title="MongoDB有传统数据库的事务和事务回滚么？"></a>MongoDB有传统数据库的事务和事务回滚么？</h3><p>没有，请不要把它当成关系型数据库来使用，对于MongoDB集群来说，默认情况下数据也不是强一致性的，而是最终一致性。如果对数据一致性比较敏感建议更改WriteConcern级别，但后果是降低了性能，请酌情考虑。</p>
+<h3 id="MongoDB有命名规范么？"><a href="#MongoDB有命名规范么？" class="headerlink" title="MongoDB有命名规范么？"></a>MongoDB有命名规范么？</h3><ul>
+<li>不能是空字符串</li>
+<li>不能含有.、’’、*、/、\、&lt;、&gt;、:、?、$、\0。建议只使用ASCII码中字母和数字</li>
+<li>数据库名区分大小写</li>
+<li>数据库名长度最多为64字节</li>
+<li>集合名不能包含\0字符，这个字符表示集合名的结束</li>
+<li>集合名不能是空字符串””</li>
+<li>集合名不能使用系统集合的保留前缀”system.”</li>
+<li>集名名中不建议包含字符’$’，虽然很多驱动程序可以支持包含此字符的集合名</li>
+</ul>
+<h3 id="MongoDB有系统保留库名么？"><a href="#MongoDB有系统保留库名么？" class="headerlink" title="MongoDB有系统保留库名么？"></a>MongoDB有系统保留库名么？</h3><ul>
+<li>admin</li>
+<li>local</li>
+<li>config</li>
+</ul>
+<h3 id="MongoDB有连接池么？"><a href="#MongoDB有连接池么？" class="headerlink" title="MongoDB有连接池么？"></a>MongoDB有连接池么？</h3><p>MongoDB驱动中其实已经是一个现成的连接池了，而且线程安全。这个内置的连接池默认初始了100个连接，每一个操作（增删改查等）都会获取一个连接，执行操作后释放连接。<br>【题外话】请务必记得关闭资源，并且设置合理的池子连接数和超时时间。</p>
+<h3 id="内置连接池有多个重要参数，分别是"><a href="#内置连接池有多个重要参数，分别是" class="headerlink" title="内置连接池有多个重要参数，分别是"></a>内置连接池有多个重要参数，分别是</h3><ul>
+<li>connectionsPerHost：每个主机答应的连接数（每个主机的连接池大小），当连接池被用光时，会被阻塞住，默认值为100</li>
+<li>threadsAllowedToBlockForConnectionMultiplier：线程队列数，它和上面connectionsPerHost值相乘的结果就是线程队列最大值。如果连接线程排满了队列就会抛出“Out of semaphores to get db”错误，默认值为5，则最多有500个线程可以等待获取连接</li>
+<li>maxWaitTime: 被阻塞线程从连接池获取连接的最长等待时间(ms)。默认值为120,000</li>
+<li>connectTimeout：在建立（打开）套接字连接时的超时时间（ms）。默认值为10,000</li>
+<li>socketTimeout：套接字超时时间（ms）。默认值为0，无限制（infinite）</li>
+<li>autoConnectRetry：这个控制是否在连接时，会自动重试，2.13驱动已经【废弃】，请使用connectTimeout代替它</li>
+</ul>
+<p>连接池的MaximumPoolSize要有个合理值，否则这个值数据量的连接都被占用，后面再有新的连接创建时就要等待了，而不能超出池上限新建连接。除此之外还要设置合理的连接等待，连接超时时间，以防止一个连接占用时间过长，影响其它连接请求。</p>
+<h3 id="connectTimeout-和-socketTimeout-的区别"><a href="#connectTimeout-和-socketTimeout-的区别" class="headerlink" title="connectTimeout 和 socketTimeout 的区别"></a>connectTimeout 和 socketTimeout 的区别</h3><p>一次完整的请求包括三个阶段：</p>
+<ul>
+<li>建立连接</li>
+<li>数据传输</li>
+<li>断开连接</li>
+</ul>
+<p>如果与服务器(这里指数据库)请求建立连接的时间超过ConnectTimeout，就会抛 ConnectionTimeOutException，即服务器连接超时，没有在规定的时间内建立连接。<br>如果与服务器连接成功，就开始数据传输了。<br>如果服务器处理数据用时过长，超过了SocketTimeOut，就会抛出SocketTimeOutExceptin，即服务器响应超时，服务器没有在规定的时间内返回给客户端数据。</p>
+<p>所以这该死的超时该怎么配？<br>这里有一份国外写的关于超时的建议：<br><a href="http://blog.mongolab.com/2013/10/do-you-want-a-timeout/" target="_blank" rel="noopener">http://blog.mongolab.com/2013/10/do-you-want-a-timeout/</a><br>上文给出的通常情况下：connectTimeout=5000，socketTimeout=0</p>
+<h3 id="关于WriteConcern"><a href="#关于WriteConcern" class="headerlink" title="关于WriteConcern"></a>关于WriteConcern</h3><p>MongoDB提供了一个配置参数：write concern 来让用户自己衡量性能和写安全。分布式数据库中这样的参数比较常见，记得Cassandra中也有一个类似参数，不过那个好像是要写入几个节点返回成功。其实道理都一样分布式的集群环境考虑到性能因素不能确保每个成员都写入后在返回成功，所以只能交给用户根据实际场景衡量。</p>
+<ul>
+<li>Unacknowledged</li>
+<li>这个级别也属于比较低的级别，以前这个级别是驱动配置的默认级别，不过后来调整成Acknowledged级别。在这个级别下，这个驱动会根据当前系统的网络配置进行网络问题的检测，不等待Mongd的返回。代码测试：本地网络问题是否有异常？本地网络无问题是远程server问题是否异常？</li>
+<li>Acknowledged</li>
+<li>这个级别算是中等级别的配置，这个级别能够拿到mongod的返回信息：dupkey Error，以及一些其他的问题。现在这个级别是驱动的默认级别，估计是10gen公司发现好多人评价Mongodb不靠谱后改的。一般系统这个级别也就够用了。由于默认级别是Acknowledged，内部用getLastError方法检查是否写入成功的时候是也不用设置任何参数，对与Replset来说可以在配置中进行getLastErrorDefaults的配置，如果没有的话默认则是Master收到就ok。</li>
+<li>Journaled</li>
+<li>等到操作记录到Journal Log中才返回操作结果，也就是下一次JournaledLog提交。这种情况可以容忍服务器突然宕机，断电等意外的恢复。出去上边的配置还要在启动mongod的时候加上journaling 参数确保可以使用。commitlog提交间隔时间是可以配置的，单磁盘设备（physical volume, RAID device, or LVM volume）每100ms提交一次，和数据文件刷出相同频率，日志和数据分开磁盘设备的30ms提交一次。在插入数据是如果使用{j:true}则会缩短到已配置的默认设置1/3的时间。</li>
+<li>Replica Acknowledged</li>
+<li>在副本集中如果w设置为2的话则至少已经吸入到一个secondary中，我猜测写入secondary这个级别是Acknowledged级别，majority是多个secondary已经写入。如果手贱设置w参数大于replset中需要复制的secondarys的话，操作就一直等待直到达到已写入数据的服务器数量符合要求，也可以设置timeout值来指明最长等待时间。{ getLastError: 1, w: 2, wtimeout:5000 }</li>
+</ul>
+<h3 id="MongoDB的锁机制"><a href="#MongoDB的锁机制" class="headerlink" title="MongoDB的锁机制"></a>MongoDB的锁机制</h3><p>MongoDB的锁机制和一般关系数据库如 MySQL（InnoDB）, Oracle 有很大的差异，InnoDB 和 Oracle 能提供行级粒度锁，而 MongoDB v2 只能提供库级粒度锁，这意味着当 MongoDB 一个写锁处于占用状态时，其它的读写操作都得干等。</p>
+<p>初看起来库级锁在大并发环境下有严重的问题，但是 MongoDB 依然能够保持大并发量和高性能，这是因为 MongoDB 的锁粒度虽然很粗放，但是在锁处理机制和关系数据库锁有很大差异，主要表现在</p>
+<ul>
+<li>MongoDB 没有完整事务支持，操作原子性只到单个 document 级别，所以通常操作粒度比较小；</li>
+<li>MongoDB 锁实际占用时间是内存数据计算和变更时间，通常很快；</li>
+<li>MongoDB 锁有一种临时放弃机制，当出现需要等待慢速 IO 读写数据时，可以先临时放弃，等 IO 完成之后再重新获取锁。</li>
+</ul>
+<p>通常不出问题不等于没有问题，如果数据操作不当，依然会导致长时间占用写锁，比如下面提到的前台建索引操作，当出现这种情况的时候，整个数据库就处于完全阻塞状态，无法进行任何读写操作，情况十分严重。</p>
+<p>解决问题的方法，尽量避免长时间占用写锁操作，如果有一些集合操作实在难以避免，可以考虑把这个集合放到一个单独的 MongoDB 库里，因为 MongoDB 不同库锁是相互隔离的，分离集合可以避免某一个集合操作引发全局阻塞问题。</p>
+<h3 id="建索引导致数据库阻塞"><a href="#建索引导致数据库阻塞" class="headerlink" title="建索引导致数据库阻塞"></a>建索引导致数据库阻塞</h3><p>上面提到了 MongoDB 库级锁的问题，建索引就是一个容易引起长时间写锁的问题，MongoDB 在前台建索引时需要占用一个写锁（而且不会临时放弃），如果集合的数据量很大，建索引通常要花比较长时间，特别容易引起问题。</p>
+<p>解决的方法很简单，MongoDB 提供了两种建索引的访问，一种是 background 方式，不需要长时间占用写锁，另一种是非 background 方式，需要长时间占用锁。使用 background 方式就可以解决问题。<br>例如，为超大表 posts 建立索引</p>
+<pre><code>//千万不用使用
+db.posts.ensureIndex({user_id: 1})
+//而应该使用
+db.posts.ensureIndex({user_id: 1}, {background: 1})
+</code></pre><p><a href="http://www.111com.net/database/165981.htm" target="_blank" rel="noopener">http://www.111com.net/database/165981.htm</a></p>
+
       
     </div>
     
@@ -783,7 +1120,7 @@ db.getCollection(&apos;slt&apos;).find({&quot;_id&quot;:{&quot;$gt&quot;:last._i
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是MongoDB"><span class="nav-number">1.</span> <span class="nav-text">什么是MongoDB ?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主要特点"><span class="nav-number">2.</span> <span class="nav-text">主要特点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MongoDB用户角色配置"><span class="nav-number">4.</span> <span class="nav-text">MongoDB用户角色配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本知识介绍"><span class="nav-number">4.1.</span> <span class="nav-text">基本知识介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接到MongoDB服务器"><span class="nav-number">4.2.</span> <span class="nav-text">连接到MongoDB服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java程序连接MongoDB"><span class="nav-number">4.3.</span> <span class="nav-text">Java程序连接MongoDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令介绍"><span class="nav-number">4.4.</span> <span class="nav-text">命令介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mongoTemplate使用示例"><span class="nav-number">5.</span> <span class="nav-text">mongoTemplate使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对匹配到的数据进行更新-inc"><span class="nav-number">5.1.</span> <span class="nav-text">对匹配到的数据进行更新(inc)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询一条记录和保存（findOne-save）"><span class="nav-number">5.2.</span> <span class="nav-text">查询一条记录和保存（findOne/save）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（并的关系）"><span class="nav-number">5.3.</span> <span class="nav-text">多条件匹配（并的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（或的关系）"><span class="nav-number">5.4.</span> <span class="nav-text">多条件匹配（或的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据id查找并删除"><span class="nav-number">5.5.</span> <span class="nav-text">根据id查找并删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数"><span class="nav-number">5.6.</span> <span class="nav-text">计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊匹配并排序"><span class="nav-number">5.7.</span> <span class="nav-text">模糊匹配并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distinct查询"><span class="nav-number">5.8.</span> <span class="nav-text">distinct查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找并所有排序"><span class="nav-number">5.9.</span> <span class="nav-text">查找并所有排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in查询"><span class="nav-number">5.10.</span> <span class="nav-text">in查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置唯一字段"><span class="nav-number">5.11.</span> <span class="nav-text">设置唯一字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入多条数据"><span class="nav-number">5.12.</span> <span class="nav-text">插入多条数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取数据库所有集合名称"><span class="nav-number">5.13.</span> <span class="nav-text">获取数据库所有集合名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询当天数据"><span class="nav-number">5.14.</span> <span class="nav-text">查询当天数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">6.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聚合操作"><span class="nav-number">7.</span> <span class="nav-text">聚合操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#翻页"><span class="nav-number">8.</span> <span class="nav-text">翻页</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#翻页的实现一"><span class="nav-number">8.1.</span> <span class="nav-text">翻页的实现一</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#skip实现跳页（比较简单，数据量大了不行）"><span class="nav-number">8.1.1.</span> <span class="nav-text">skip实现跳页（比较简单，数据量大了不行）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非skip实现跳页"><span class="nav-number">8.1.2.</span> <span class="nav-text">非skip实现跳页</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#翻页的实现二（非skip实现跳页，以自增-id作为主条件）"><span class="nav-number">8.2.</span> <span class="nav-text">翻页的实现二（非skip实现跳页，以自增_id作为主条件）</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是MongoDB"><span class="nav-number">1.</span> <span class="nav-text">什么是MongoDB ?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主要特点"><span class="nav-number">2.</span> <span class="nav-text">主要特点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MongoDB用户角色配置"><span class="nav-number">4.</span> <span class="nav-text">MongoDB用户角色配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本知识介绍"><span class="nav-number">4.1.</span> <span class="nav-text">基本知识介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接到MongoDB服务器"><span class="nav-number">4.2.</span> <span class="nav-text">连接到MongoDB服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java程序连接MongoDB"><span class="nav-number">4.3.</span> <span class="nav-text">Java程序连接MongoDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令介绍"><span class="nav-number">4.4.</span> <span class="nav-text">命令介绍</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mongoTemplate使用示例"><span class="nav-number">5.</span> <span class="nav-text">mongoTemplate使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对匹配到的数据进行更新-inc"><span class="nav-number">5.1.</span> <span class="nav-text">对匹配到的数据进行更新(inc)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询一条记录和保存（findOne-save）"><span class="nav-number">5.2.</span> <span class="nav-text">查询一条记录和保存（findOne/save）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（并的关系）"><span class="nav-number">5.3.</span> <span class="nav-text">多条件匹配（并的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件匹配（或的关系）"><span class="nav-number">5.4.</span> <span class="nav-text">多条件匹配（或的关系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#根据id查找并删除"><span class="nav-number">5.5.</span> <span class="nav-text">根据id查找并删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计数"><span class="nav-number">5.6.</span> <span class="nav-text">计数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊匹配并排序"><span class="nav-number">5.7.</span> <span class="nav-text">模糊匹配并排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#distinct查询"><span class="nav-number">5.8.</span> <span class="nav-text">distinct查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找并所有排序"><span class="nav-number">5.9.</span> <span class="nav-text">查找并所有排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in查询"><span class="nav-number">5.10.</span> <span class="nav-text">in查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置唯一字段"><span class="nav-number">5.11.</span> <span class="nav-text">设置唯一字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入多条数据"><span class="nav-number">5.12.</span> <span class="nav-text">插入多条数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取数据库所有集合名称"><span class="nav-number">5.13.</span> <span class="nav-text">获取数据库所有集合名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询当天数据"><span class="nav-number">5.14.</span> <span class="nav-text">查询当天数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">6.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聚合操作"><span class="nav-number">7.</span> <span class="nav-text">聚合操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#翻页"><span class="nav-number">8.</span> <span class="nav-text">翻页</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#翻页的实现一"><span class="nav-number">8.1.</span> <span class="nav-text">翻页的实现一</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#skip实现跳页（比较简单，数据量大了不行）"><span class="nav-number">8.1.1.</span> <span class="nav-text">skip实现跳页（比较简单，数据量大了不行）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非skip实现跳页"><span class="nav-number">8.1.2.</span> <span class="nav-text">非skip实现跳页</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#翻页的实现二（非skip实现跳页，以自增-id作为主条件）"><span class="nav-number">8.2.</span> <span class="nav-text">翻页的实现二（非skip实现跳页，以自增_id作为主条件）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mongo高级"><span class="nav-number">9.</span> <span class="nav-text">mongo高级</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#本地搭建副本集"><span class="nav-number">9.1.</span> <span class="nav-text">本地搭建副本集</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mongo的版本"><span class="nav-number">9.1.1.</span> <span class="nav-text">mongo的版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#副本集文件夹准备"><span class="nav-number">9.1.2.</span> <span class="nav-text">副本集文件夹准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动"><span class="nav-number">9.1.3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建配置文件"><span class="nav-number">9.1.4.</span> <span class="nav-text">创建配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写测试"><span class="nav-number">9.1.5.</span> <span class="nav-text">读写测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#节点变更"><span class="nav-number">9.1.6.</span> <span class="nav-text">节点变更</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题汇总"><span class="nav-number">9.2.</span> <span class="nav-text">问题汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何开启读写分离"><span class="nav-number">9.2.1.</span> <span class="nav-text">如何开启读写分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Mongodb中最多能创建多少集合？"><span class="nav-number">9.2.2.</span> <span class="nav-text">在Mongodb中最多能创建多少集合？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB有传统数据库的事务和事务回滚么？"><span class="nav-number">9.2.3.</span> <span class="nav-text">MongoDB有传统数据库的事务和事务回滚么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB有命名规范么？"><span class="nav-number">9.2.4.</span> <span class="nav-text">MongoDB有命名规范么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB有系统保留库名么？"><span class="nav-number">9.2.5.</span> <span class="nav-text">MongoDB有系统保留库名么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB有连接池么？"><span class="nav-number">9.2.6.</span> <span class="nav-text">MongoDB有连接池么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内置连接池有多个重要参数，分别是"><span class="nav-number">9.2.7.</span> <span class="nav-text">内置连接池有多个重要参数，分别是</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connectTimeout-和-socketTimeout-的区别"><span class="nav-number">9.2.8.</span> <span class="nav-text">connectTimeout 和 socketTimeout 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于WriteConcern"><span class="nav-number">9.2.9.</span> <span class="nav-text">关于WriteConcern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB的锁机制"><span class="nav-number">9.2.10.</span> <span class="nav-text">MongoDB的锁机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建索引导致数据库阻塞"><span class="nav-number">9.2.11.</span> <span class="nav-text">建索引导致数据库阻塞</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
