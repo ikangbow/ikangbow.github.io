@@ -724,3 +724,435 @@ Aggregation agg = Aggregation.newAggregation(
 	}
 	 注：上面是按_id正序排列的，如果想要按照倒序排列，则需要将condition.put("$gt",last.get("_id"))改为condition.put("$lt",last.get("_id"))，将sort(new BasicDBObject("_id", 1)改为sort(new BasicDBObject("_id", -1)。
 
+# mongo高级
+
+## 本地搭建副本集
+
+### mongo的版本
+
+ version 3.6.5
+
+### 副本集文件夹准备
+
+    mongodb3.6 同目录下建立文件夹，存放数据
+	data/mongo/27017,data/mongo/27018,data/mongo/27019
+	同目录下建立文件夹存放日志数据
+	data/mongo/27017log,data/mongo/27018log,data/mongo/27019log
+
+### 启动
+
+    mongod --port 27017 --dbpath /data/mongo/27017 --logpath /data/mongo/27017log/27017.log --replSet rs-local-test --logappend
+	mongod --port 27018 --dbpath /data/mongo/27018 --logpath /data/mongo/27018log/27018.log --replSet rs-local-test --logappend
+	mongod --port 27019 --dbpath /data/mongo/27019 --logpath /data/mongo/27019log/27019.log --replSet rs-local-test --logappend
+
+三个服务器启动完毕之后，不要关闭。另开一个cmd窗口，连接到27017端口的服务器（连接其他端口也可以），每次启动，主服务器可能会不一样，如果连接的是主服务器，前缀会变成如下PRIMARY，如果是从服务器，前缀会变成SECONDARY
+
+### 创建配置文件
+
+创建一个配置文件，在配置文件中列出每一个成员，知道彼此的存在(第二次启动就不需要再配置)
+
+    use test
+    witched to db test
+    	 rs.initiate({
+    	  "_id":"rs-local-test01",
+    	  "members":[
+    	 {"_id":0,"host":"127.0.0.1:27017"},
+    	  {"_id":1,"host":"127.0.0.1:27018"},
+    	  {"_id":2,"host":"127.0.0.1:27019"}
+    	]
+    })
+    
+    {
+    "ok" : 1,
+    "operationTime" : Timestamp(1596076771, 1),
+    "$clusterTime" : {
+	    "clusterTime" : Timestamp(1596076771, 1),
+		    "signature" : {
+			    "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="
+			    "keyId" : NumberLong(0)
+		    }
+	    }
+    }
+
+查看状态信息
+
+	rs-local-test:OTHER> rs.status()
+	{
+	"set" : "rs-local-test",
+	"date" : ISODate("2020-07-30T02:40:29.243Z"),
+	"myState" : 1,
+	"term" : NumberLong(1),
+	"heartbeatIntervalMillis" : NumberLong(2000),
+	"optimes" : {
+	"lastCommittedOpTime" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"readConcernMajorityOpTime" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"appliedOpTime" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"durableOpTime" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	}
+	},
+	"members" : [
+	{
+	"_id" : 0,
+	"name" : "127.0.0.1:27017",
+	"health" : 1,
+	"state" : 1,
+	"stateStr" : "PRIMARY",
+	"uptime" : 286,
+	"optime" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"optimeDate" : ISODate("2020-07-30T02:40:23Z"),
+	"infoMessage" : "could not find member to sync fr
+	"electionTime" : Timestamp(1596076782, 1),
+	"electionDate" : ISODate("2020-07-30T02:39:42Z"),
+	"configVersion" : 1,
+	"self" : true
+	},
+	{
+	"_id" : 1,
+	"name" : "127.0.0.1:27018",
+	"health" : 1,
+	"state" : 2,
+	"stateStr" : "SECONDARY",
+	"uptime" : 57,
+	"optime" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"optimeDurable" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"optimeDate" : ISODate("2020-07-30T02:40:23Z"),
+	"optimeDurableDate" : ISODate("2020-07-30T02:40:2
+	"lastHeartbeat" : ISODate("2020-07-30T02:40:28.47
+	"lastHeartbeatRecv" : ISODate("2020-07-30T02:40:2
+	),
+	"pingMs" : NumberLong(0),
+	"syncingTo" : "127.0.0.1:27017",
+	"configVersion" : 1
+	},
+	{
+	"_id" : 2,
+	"name" : "127.0.0.1:27019",
+	"health" : 1,
+	"state" : 2,
+	"stateStr" : "SECONDARY",
+	"uptime" : 57,
+	"optime" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"optimeDurable" : {
+	"ts" : Timestamp(1596076823, 1),
+	"t" : NumberLong(1)
+	},
+	"optimeDate" : ISODate("2020-07-30T02:40:23Z"),
+	"optimeDurableDate" : ISODate("2020-07-30T02:40:2
+	"lastHeartbeat" : ISODate("2020-07-30T02:40:28.47
+	"lastHeartbeatRecv" : ISODate("2020-07-30T02:40:2
+	),
+	"pingMs" : NumberLong(0),
+	"syncingTo" : "127.0.0.1:27018",
+	"configVersion" : 1
+	}
+	],
+	"ok" : 1,
+	"operationTime" : Timestamp(1596076823, 1),
+	"$clusterTime" : {
+	"clusterTime" : Timestamp(1596076823, 1),
+	"signature" : {
+	"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="
+	"keyId" : NumberLong(0)
+	}
+	}
+	}
+
+如果是第二次启动，可以直接查看状态信息，不需要在设置配置文件。
+查看状态信息，可以看到主服务器和备份服务器：
+
+    	rs-local-test:SECONDARY>use test
+    	switched to db test
+    	rs-local-test:SECONDARY> db.isMaster()
+    	{
+    	"hosts" : [
+    	"127.0.0.1:27017",
+    	"127.0.0.1:27018",
+    	"127.0.0.1:27019"
+    	],
+    	"setName" : "rs-local-test",
+    	"setVersion" : 1,
+    	"ismaster" : false,
+    	"secondary" : true,
+    	"primary" : "127.0.0.1:27019",
+    	"me" : "127.0.0.1:27017",
+    	"lastWrite" : {
+    	"opTime" : {
+    	"ts" : Timestamp(1596079583, 1),
+    	"t" : NumberLong(5)
+    	},
+    	"lastWriteDate" : ISODate("2020-07-30T03:26:23Z"),
+    	"majorityOpTime" : {
+    	"ts" : Timestamp(1596079583, 1),
+    	"t" : NumberLong(5)
+    	},
+    	"majorityWriteDate" : ISODate("2020-07-30T03:26:23Z")
+    	},
+    	"maxBsonObjectSize" : 16777216,
+    	"maxMessageSizeBytes" : 48000000,
+    	"maxWriteBatchSize" : 100000,
+    	"localTime" : ISODate("2020-07-30T03:26:25.289Z"),
+    	"logicalSessionTimeoutMinutes" : 30,
+    	"minWireVersion" : 0,
+    	"maxWireVersion" : 6,
+    	"readOnly" : false,
+    	"ok" : 1,
+    	"operationTime" : Timestamp(1596079583, 1),
+    	"$clusterTime" : {
+    	"clusterTime" : Timestamp(1596079583, 1),
+    	"signature" : {
+    	"hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+    	"keyId" : NumberLong(0)
+    	}
+    	}
+    	}
+
+### 读写测试
+
+连接主服务器后，可以写入数据：
+重新启动一个cmd,连接一个备份服务器，查看是否数据被复制：
+备份节点可能会落后于主节点，可能没有最新写入数据，所以备份节点默认情况下会拒绝读取请求，这是为了保护应用程序，以免意外连接到备份节点，读取到过期数据：
+
+	rs-local-test:SECONDARY> db.foo.find()
+	Error: error: {
+	        "operationTime" : Timestamp(1596079503, 1),
+	        "ok" : 0,
+	        "errmsg" : "not master and slaveOk=false",
+	        "code" : 13435,
+	        "codeName" : "NotMasterNoSlaveOk",
+	        "$clusterTime" : {
+	                "clusterTime" : Timestamp(1596079503, 1),
+	                "signature" : {
+	                        "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+	                        "keyId" : NumberLong(0)
+	                }
+	        }
+	}
+
+	从备份节点读取数据，需要设置标识：
+    db.getMongo().setSlaveOk();
+
+### 节点变更
+
+在主节点插入数据后，如果有备份节点服务器没有启动，当在该备份启动后，也可以查询到写入的数据：
+不能对备份节点执行写入操作，备份节点只能通过复制功能写入数据，不接受客户端的写入请求：
+rs-local-test:SECONDARY>
+
+可以随时添加或删除成员,先按之前的方法创建一个备用服务器，再添加进去：
+rs.add('127.0.0.1':4444)
+rs是一个全局变量，其中包含与复制相关的辅助函数。
+删除成员：
+rs.remove('127.0.0.1':4444)
+
+添加或删除完可通过 db.isMaster()查看修改结果
+也可rs.config();
+
+	rs-local-test:SECONDARY> rs.config()
+	{
+	        "_id" : "rs-local-test",
+	        "version" : 1,
+	        "protocolVersion" : NumberLong(1),
+	        "members" : [
+	                {
+	                        "_id" : 0,
+	                        "host" : "127.0.0.1:27017",
+	                        "arbiterOnly" : false,
+	                        "buildIndexes" : true,
+	                        "hidden" : false,
+	                        "priority" : 1,
+	                        "tags" : {
+	
+	                        },
+	                        "slaveDelay" : NumberLong(0),
+	                        "votes" : 1
+	                },
+	                {
+	                        "_id" : 1,
+	                        "host" : "127.0.0.1:27018",
+	                        "arbiterOnly" : false,
+	                        "buildIndexes" : true,
+	                        "hidden" : false,
+	                        "priority" : 1,
+	                        "tags" : {
+	
+	                        },
+	                        "slaveDelay" : NumberLong(0),
+	                        "votes" : 1
+	                },
+	                {
+	                        "_id" : 2,
+	                        "host" : "127.0.0.1:27019",
+	                        "arbiterOnly" : false,
+	                        "buildIndexes" : true,
+	                        "hidden" : false,
+	                        "priority" : 1,
+	                        "tags" : {
+	
+	                        },
+	                        "slaveDelay" : NumberLong(0),
+	                        "votes" : 1
+	                }
+	        ],
+	        "settings" : {
+	                "chainingAllowed" : true,
+	                "heartbeatIntervalMillis" : 2000,
+	                "heartbeatTimeoutSecs" : 10,
+	                "electionTimeoutMillis" : 10000,
+	                "catchUpTimeoutMillis" : -1,
+	                "catchUpTakeoverDelayMillis" : 30000,
+	                "getLastErrorModes" : {
+	
+	                },
+	                "getLastErrorDefaults" : {
+	                        "w" : 1,
+	                        "wtimeout" : 0
+	                },
+	                "replicaSetId" : ObjectId("5f2232e3b3ef9f7db4cb682d")
+	        }
+	}
+
+以上参考自 https://www.cnblogs.com/a-horse-mosaic/p/9284297.html
+
+
+## 问题汇总
+
+### 如何开启读写分离
+
+默认情况下驱动是从Replica Set 集群中的 Primary 上进行读写的，应用可以在读多写少的场景下开启读写分离，提高效率。
+
+读取偏好(Read Preference)参数
+
+primary  主节点，默认模式，读操作只在主节点，如果主节点不可用，报错或者抛异常。
+
+primaryPreferred 首选主节点，如果主节点不可用，如故障转移，读操作在从节点。
+
+secondary 从节点，读操作只在从节点，如果从节点不可用，报错或者抛异常。
+
+secondaryPreferred 首选从节点，大多情况下读操作在从节点，特殊情况（如单主节点架构）读操作在主节点。
+
+nearest 最邻近节点，读操作在最邻近的成员，可能是主节点或者从节点
+
+### 在Mongodb中最多能创建多少集合？
+
+默认情况下，MongoDB 的每个数据库的命名空间保存在一个 16MB 的 .ns 文件中，平均每个命名占用约 628 字节，也即整个数据库的命名空间的上限约为 24000。
+每一个集合、索引都将占用一个命名空间。所以，如果每个集合有一个索引（比如默认的 _id 索引），那么最多可以创建 12000 个集合。如果索引数更多，则可创建的集合数就更少了。同时，如果集合数太多，一些操作也会变慢。甚至使得MongoDB集群无法服务的情况发生！
+
+### MongoDB有传统数据库的事务和事务回滚么？
+
+没有，请不要把它当成关系型数据库来使用，对于MongoDB集群来说，默认情况下数据也不是强一致性的，而是最终一致性。如果对数据一致性比较敏感建议更改WriteConcern级别，但后果是降低了性能，请酌情考虑。
+
+### MongoDB有命名规范么？
+
+- 不能是空字符串
+- 不能含有.、''、*、/、\、<、>、:、?、$、\0。建议只使用ASCII码中字母和数字
+- 数据库名区分大小写
+- 数据库名长度最多为64字节
+- 集合名不能包含\0字符，这个字符表示集合名的结束
+- 集合名不能是空字符串""
+- 集合名不能使用系统集合的保留前缀"system."
+- 集名名中不建议包含字符'$'，虽然很多驱动程序可以支持包含此字符的集合名
+
+### MongoDB有系统保留库名么？
+
+- admin
+- local
+- config
+
+### MongoDB有连接池么？
+
+MongoDB驱动中其实已经是一个现成的连接池了，而且线程安全。这个内置的连接池默认初始了100个连接，每一个操作（增删改查等）都会获取一个连接，执行操作后释放连接。
+【题外话】请务必记得关闭资源，并且设置合理的池子连接数和超时时间。
+
+### 内置连接池有多个重要参数，分别是
+
+- connectionsPerHost：每个主机答应的连接数（每个主机的连接池大小），当连接池被用光时，会被阻塞住，默认值为100
+- threadsAllowedToBlockForConnectionMultiplier：线程队列数，它和上面connectionsPerHost值相乘的结果就是线程队列最大值。如果连接线程排满了队列就会抛出“Out of semaphores to get db”错误，默认值为5，则最多有500个线程可以等待获取连接
+- maxWaitTime: 被阻塞线程从连接池获取连接的最长等待时间(ms)。默认值为120,000
+- connectTimeout：在建立（打开）套接字连接时的超时时间（ms）。默认值为10,000
+- socketTimeout：套接字超时时间（ms）。默认值为0，无限制（infinite）
+- autoConnectRetry：这个控制是否在连接时，会自动重试，2.13驱动已经【废弃】，请使用connectTimeout代替它
+
+连接池的MaximumPoolSize要有个合理值，否则这个值数据量的连接都被占用，后面再有新的连接创建时就要等待了，而不能超出池上限新建连接。除此之外还要设置合理的连接等待，连接超时时间，以防止一个连接占用时间过长，影响其它连接请求。
+
+### connectTimeout 和 socketTimeout 的区别
+
+一次完整的请求包括三个阶段：
+
+- 建立连接
+- 数据传输
+- 断开连接
+
+如果与服务器(这里指数据库)请求建立连接的时间超过ConnectTimeout，就会抛 ConnectionTimeOutException，即服务器连接超时，没有在规定的时间内建立连接。
+如果与服务器连接成功，就开始数据传输了。
+如果服务器处理数据用时过长，超过了SocketTimeOut，就会抛出SocketTimeOutExceptin，即服务器响应超时，服务器没有在规定的时间内返回给客户端数据。
+
+所以这该死的超时该怎么配？
+这里有一份国外写的关于超时的建议：
+http://blog.mongolab.com/2013/10/do-you-want-a-timeout/
+上文给出的通常情况下：connectTimeout=5000，socketTimeout=0
+
+### 关于WriteConcern
+
+MongoDB提供了一个配置参数：write concern 来让用户自己衡量性能和写安全。分布式数据库中这样的参数比较常见，记得Cassandra中也有一个类似参数，不过那个好像是要写入几个节点返回成功。其实道理都一样分布式的集群环境考虑到性能因素不能确保每个成员都写入后在返回成功，所以只能交给用户根据实际场景衡量。
+
+- Unacknowledged
+- 这个级别也属于比较低的级别，以前这个级别是驱动配置的默认级别，不过后来调整成Acknowledged级别。在这个级别下，这个驱动会根据当前系统的网络配置进行网络问题的检测，不等待Mongd的返回。代码测试：本地网络问题是否有异常？本地网络无问题是远程server问题是否异常？
+- Acknowledged
+- 这个级别算是中等级别的配置，这个级别能够拿到mongod的返回信息：dupkey Error，以及一些其他的问题。现在这个级别是驱动的默认级别，估计是10gen公司发现好多人评价Mongodb不靠谱后改的。一般系统这个级别也就够用了。由于默认级别是Acknowledged，内部用getLastError方法检查是否写入成功的时候是也不用设置任何参数，对与Replset来说可以在配置中进行getLastErrorDefaults的配置，如果没有的话默认则是Master收到就ok。
+- Journaled
+- 等到操作记录到Journal Log中才返回操作结果，也就是下一次JournaledLog提交。这种情况可以容忍服务器突然宕机，断电等意外的恢复。出去上边的配置还要在启动mongod的时候加上journaling 参数确保可以使用。commitlog提交间隔时间是可以配置的，单磁盘设备（physical volume, RAID device, or LVM volume）每100ms提交一次，和数据文件刷出相同频率，日志和数据分开磁盘设备的30ms提交一次。在插入数据是如果使用{j:true}则会缩短到已配置的默认设置1/3的时间。
+- Replica Acknowledged
+- 在副本集中如果w设置为2的话则至少已经吸入到一个secondary中，我猜测写入secondary这个级别是Acknowledged级别，majority是多个secondary已经写入。如果手贱设置w参数大于replset中需要复制的secondarys的话，操作就一直等待直到达到已写入数据的服务器数量符合要求，也可以设置timeout值来指明最长等待时间。{ getLastError: 1, w: 2, wtimeout:5000 }
+
+### MongoDB的锁机制
+
+MongoDB的锁机制和一般关系数据库如 MySQL（InnoDB）, Oracle 有很大的差异，InnoDB 和 Oracle 能提供行级粒度锁，而 MongoDB v2 只能提供库级粒度锁，这意味着当 MongoDB 一个写锁处于占用状态时，其它的读写操作都得干等。
+
+初看起来库级锁在大并发环境下有严重的问题，但是 MongoDB 依然能够保持大并发量和高性能，这是因为 MongoDB 的锁粒度虽然很粗放，但是在锁处理机制和关系数据库锁有很大差异，主要表现在
+
+- MongoDB 没有完整事务支持，操作原子性只到单个 document 级别，所以通常操作粒度比较小；
+- MongoDB 锁实际占用时间是内存数据计算和变更时间，通常很快；
+- MongoDB 锁有一种临时放弃机制，当出现需要等待慢速 IO 读写数据时，可以先临时放弃，等 IO 完成之后再重新获取锁。
+
+通常不出问题不等于没有问题，如果数据操作不当，依然会导致长时间占用写锁，比如下面提到的前台建索引操作，当出现这种情况的时候，整个数据库就处于完全阻塞状态，无法进行任何读写操作，情况十分严重。
+
+解决问题的方法，尽量避免长时间占用写锁操作，如果有一些集合操作实在难以避免，可以考虑把这个集合放到一个单独的 MongoDB 库里，因为 MongoDB 不同库锁是相互隔离的，分离集合可以避免某一个集合操作引发全局阻塞问题。
+
+### 建索引导致数据库阻塞
+
+上面提到了 MongoDB 库级锁的问题，建索引就是一个容易引起长时间写锁的问题，MongoDB 在前台建索引时需要占用一个写锁（而且不会临时放弃），如果集合的数据量很大，建索引通常要花比较长时间，特别容易引起问题。
+
+解决的方法很简单，MongoDB 提供了两种建索引的访问，一种是 background 方式，不需要长时间占用写锁，另一种是非 background 方式，需要长时间占用锁。使用 background 方式就可以解决问题。
+例如，为超大表 posts 建立索引
+
+    //千万不用使用
+	db.posts.ensureIndex({user_id: 1})
+	//而应该使用
+	db.posts.ensureIndex({user_id: 1}, {background: 1})
+
+
+http://www.111com.net/database/165981.htm
+
+
