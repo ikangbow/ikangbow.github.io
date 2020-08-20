@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[QUANTAXIS]]></title>
+    <url>%2F2020%2F08%2F20%2FQUANTAXIS%2F</url>
+    <content type="text"><![CDATA[环境准备安装cmder 官网下载地址 http://cmder.net/ 下载好解压包可直接使用 环境变量配置 在系统属性里面配置环境变量，将Cmder.exe所在文件路径添加至path里 win+R,输入cmder,确定，即可运行cmder 配置右键快捷启动 // 设置任意地方鼠标右键启动Cmder Cmder.exe /REGISTER ALL 快捷键 Tab 自动路径补全 Ctrl+T 建立新页签 Ctrl+W 关闭页签 Ctrl+Tab 切换页签 Alt+F4 关闭所有页签 Alt+Shift+1 开启cmd.exe Alt+Shift+2 开启powershell.exe Alt+Shift+3 开启powershell.exe (系统管理员权限) Ctrl+1 快速切换到第1个页签 Ctrl+n 快速切换到第n个页签( n值无上限) Alt + enter 切换到全屏状态 Ctr+r 历史命令搜索 Tab 自动路径补全 Ctrl+T 建立新页签 Ctrl+W 关闭页签 Ctrl+Tab 切换页签 Alt+F4 关闭所有页签 Alt+Shift+1 开启cmd.exe Alt+Shift+2 开启powershell.exe Alt+Shift+3 开启powershell.exe (系统管理员权限) Ctrl+1 快速切换到第1个页签 Ctrl+n 快速切换到第n个页签( n值无上限) Alt + enter 切换到全屏状态 Ctr+r 历史命令搜索 Win+Alt+P 开启工具选项视窗 中文乱码问题 将下面的4行命令添加到cmder/config/aliases文件末尾。 l=ls --show-control-chars la=ls -aF --show-control-chars ll=ls -alF --show-control-chars ls=ls --show-control-chars -F 安装docker桌面版下载https://www.docker.com/ 下载Docker Desktop 安装可能遇到的问题Installation failed:one pre-requisite is not fullfilled 提示我们系统版本低，解决办法，伪装成专业版系统。用管理员权限开启运行[cmd]命令开启命令行，输入如下指令 REG ADD &quot;HKEY_LOCAL_MACHINE\software\Microsoft\Windows NT\CurrentVersion&quot; /v EditionId /T REG_EXPAND_SZ /d Professional /F 再次安装docker可以成功 下载QUANTAXIS的docker-compose.yaml文件`https://github.com/QUANTAXIS/QUANTAXIS` 如果你是股票方向的 ==&gt; 选择 qa-service 下的docker-compose.yaml 如果你是期货方向的 ==&gt; 选择 qa-service-future 下的docker-compose.yaml 你可以理解 docker的构成类似搭积木的模式, 你需要这个功能的积木, 就选择他放在你的docker-compose.yaml里面 期货方向的yaml 比股票多一个 QACTPBEE的docker-container [这是用于分发期货的tick行情所需的 股票则无需此积木] 可通过git拉取全部代码到本地，从本地拷贝出需要的dockerfile文件 docker部署quantaxis 选取一个空间较大的盘，最好不放c盘，新建quantaxis文件夹，将docker-compose.yaml拷贝到quantaxis文件夹 cd到quantaxis文件夹，运行如下命令 docker-compose up -d 意思在后台启动这个docker环境，如果需要控制台打印输出，则把-d去掉 在无报错的情况下，打开浏览器输入localhost:81即可看到 在上方随意点击栏目，都可进入登陆界面，默认密码是quantaxis]]></content>
+      <categories>
+        <category>投资</category>
+      </categories>
+      <tags>
+        <tag>投资</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Git使用详解]]></title>
     <url>%2F2020%2F06%2F17%2FGIT%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3%2F</url>
     <content type="text"><![CDATA[Git的安装和使用下载安装Git[https://git-scm.com/download/win](https://git-scm.com/download/win &quot;下载Git&quot;) 下载完成后双击安装检验是否安装完成鼠标右击如果看到有两个git单词则安装成功 Git基本工作流程Git的工作区域 向仓库中添加文件流程 Git初始化及仓库创建和操作Git安装之后需要进行一些基本信息设置 设置用户名：git config – global user.name ‘你再github上注册的用户名’; 设置用户邮箱：git config – global user.email ‘注册时候的邮箱’; 注意：该配置会在github主页上显示谁提交了该文件 配置ok之后，我们用如下命令来看看是否配置成功 git config –list 注意：git config –global 参数，有了这个参数表示你这台机器上所有的git仓库都会使用这个配置，当然你也可以对某个仓库指定不同的用户名和邮箱 初始化一个新的git仓库 创建文件夹 方法一：可以鼠标右击-》点击新建文件夹test1 方法二：使用git新建：$ mkdir test1 在文件内初始化git（创建git仓库） 方法一：直接输入 $ cd test1 方法一：点击test1文件下进去之后-》鼠标右击选择Git Bash Here-&gt;输入$ git int 向仓库中添加文件 方法一：用打开编辑器新建index.html文件 方法二：使用git命令。$ touch ‘文件名’，然后把文件通过$ git add ‘文件名’添加到暂存区，最后提交操作 修改仓库文件 方法一：用编辑器打开index.html进行修改 方法二：使用git命令。$ vi ‘文件名’，然后在中间写内容，最后提交操作 删除仓库文件 方法一：在编辑器中直接把要删除的文件删除掉 方法二：使用git删除：$ git rm ‘文件名’，然后提交操作 Git管理远程仓库 Git克隆操作目的：将远程仓库（github上对应的项目）复制到本地 代码：git clone 仓库地址仓库地址由来如下： 克隆项目 将本地仓库同步到git远程仓库中：git push 注意 解决：这是通过Git GUI进行提交时发生的错误，由 .git 文件夹中的文件被设为“只读”所致，将 .git 文件夹下的所有文件、文件夹及其子文件的只读属性去掉即可。]]></content>
