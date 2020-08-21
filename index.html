@@ -453,7 +453,9 @@ ls=ls --show-control-chars -F
 <h2 id="docker部署quantaxis"><a href="#docker部署quantaxis" class="headerlink" title="docker部署quantaxis"></a>docker部署quantaxis</h2><ol>
 <li>选取一个空间较大的盘，最好不放c盘，新建quantaxis文件夹，将docker-compose.yaml拷贝到quantaxis文件夹</li>
 <li><p>cd到quantaxis文件夹，运行如下命令</p>
-<pre><code>docker-compose up -d
+<pre><code>docker volume create --name=qamg
+docker volume create --name=qacode
+docker-compose up -d
 </code></pre></li>
 </ol>
 <p>意思在后台启动这个docker环境，如果需要控制台打印输出，则把-d去掉</p>
@@ -462,6 +464,245 @@ ls=ls --show-control-chars -F
 </ol>
 <p><img src="/2020/08/20/QUANTAXIS/3.jpg" alt=""></p>
 <p>在上方随意点击栏目，都可进入登陆界面，默认密码是quantaxis</p>
+<ol start="4">
+<li>docker做了什么</li>
+</ol>
+<p>帮你直接开启你需要的服务</p>
+<ul>
+<li>27017 mongodb</li>
+<li>8888 jupyter</li>
+<li>8010 quantaxis_webserver</li>
+<li>81 quantaxis_community 社区版界面</li>
+<li>61208 系统监控</li>
+<li>15672 qa-eventmq</li>
+</ul>
+<ol start="5">
+<li><p>日志查看</p>
+<pre><code>docker logs cron容器名
+</code></pre></li>
+<li><p>其他命令</p>
+<pre><code>docker ps
+
+docker stats
+
+docker-compose top （必须到dockerfile文件夹目录下）
+
+docker-compose ps （必须到dockerfile文件夹目录下）
+
+docker stop $(docker ps -a -q)停止容器
+
+docker rm $(docker ps -a -q)删除容器
+
+docker-compose pull 更新（必须到dockerfile文件夹目录下）
+docker-compose up -d 重启服务（必须到dockerfile文件夹目录下）
+docker-compose stop 停止服务（必须到dockerfile文件夹目录下）
+
+docker run  --rm -v qamg:/data/db \ -v $(pwd):/backup alpine \tar zcvf /backup/dbbackup.tar /data/db  备份数据库到当前目录下
+docker run  --rm -v qamg:/data/db \
+-v $(pwd):/backup alpine \
+sh -c &quot;cd /data/db \
+&amp;&amp; rm -rf diagnostic.data \
+&amp;&amp; rm -rf journal \
+&amp;&amp; rm -rf configdb \
+&amp;&amp; cd / \
+&amp;&amp; tar xvf /backup/dbbackup.tar&quot; 还原当前目录下的dbbackup.tar到mongod数据库
+</code></pre></li>
+</ol>
+<h2 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h2><ol>
+<li>先进入到jupyter的登陆页登陆，找到terminal</li>
+</ol>
+<p><img src="/2020/08/20/QUANTAXIS/4.jpg" alt=""></p>
+<ol start="2">
+<li>在点开的terminal界面中，输入quantaxis 回车, 进入quantaxis cli的命令行界面</li>
+</ol>
+<p><img src="/2020/08/20/QUANTAXIS/5.jpg" alt=""></p>
+<ol start="3">
+<li>在命令行界面 输入 save  按回车, 你可以看到许多命令行选项</li>
+</ol>
+<p><img src="/2020/08/20/QUANTAXIS/6.jpg" alt=""></p>
+<ol start="4">
+<li><p>参考</p>
+<pre><code>save all  (股票/指数 的日线数据 | 权息数据 | 板块数据)  
+save x   (股票/指数的 日线/分钟线数据  | 权息数据| 板块数据)
+
+save future_min_all  (期货的全部合约的分钟线数据)
+save future_min  (q期货主连的分钟线数据)
+
+save future_day_all (期货全部合约的日线数据)
+save future_day (期货主连的日线数据)
+
+save index_day    (指数数据  此处也要存, 因为在做回测的时候, 需要沪深300作为标的对照物)
+</code></pre></li>
+<li><p>存完数据后可以打开notebook,做一个回测</p>
+<pre><code>import QUANTAXIS as QA
+import numpy as np
+import pandas as pd
+import datetime
+st1=datetime.datetime.now()
+# define the MACD strategy
+def MACD_JCSC(dataframe, SHORT=12, LONG=26, M=9):
+    &quot;&quot;&quot;
+    1.DIF向上突破DEA，买入信号参考。
+    2.DIF向下跌破DEA，卖出信号参考。
+    &quot;&quot;&quot;
+    CLOSE = dataframe.close
+    DIFF = QA.EMA(CLOSE, SHORT) - QA.EMA(CLOSE, LONG)
+    DEA = QA.EMA(DIFF, M)
+    MACD = 2*(DIFF-DEA)
+
+    CROSS_JC = QA.CROSS(DIFF, DEA)
+    CROSS_SC = QA.CROSS(DEA, DIFF)
+    ZERO = 0
+    return pd.DataFrame({&apos;DIFF&apos;: DIFF, &apos;DEA&apos;: DEA, &apos;MACD&apos;: MACD, &apos;CROSS_JC&apos;: CROSS_JC, &apos;CROSS_SC&apos;: CROSS_SC, &apos;ZERO&apos;: ZERO})
+</code></pre></li>
+</ol>
+<pre><code># create account
+user = QA.QA_User(username=&apos;quantaxis&apos;, password=&apos;quantaxis&apos;)
+portfolio = user.new_portfolio(&apos;qatestportfolio&apos;)
+
+
+Account = portfolio.new_account(account_cookie=&apos;macd_stock&apos;, init_cash=1000000)
+Broker = QA.QA_BacktestBroker()
+
+QA.QA_SU_save_strategy(&apos;MACD_JCSC&apos;,&apos;Indicator&apos;,Account.account_cookie)
+# get data from mongodb
+QA.QA_SU_save_strategy(&apos;MACD_JCSC&apos;, &apos;Indicator&apos;,
+                       Account.account_cookie, if_save=True)
+data = QA.QA_fetch_stock_day_adv(
+    [&apos;000001&apos;, &apos;000002&apos;, &apos;000004&apos;, &apos;600000&apos;], &apos;2017-09-01&apos;, &apos;2018-05-20&apos;)
+data = data.to_qfq()
+
+# add indicator
+ind = data.add_func(MACD_JCSC)
+# ind.xs(&apos;000001&apos;,level=1)[&apos;2018-01&apos;].plot()
+
+data_forbacktest=data.select_time(&apos;2018-01-01&apos;,&apos;2018-05-01&apos;)
+
+
+for items in data_forbacktest.panel_gen:
+    for item in items.security_gen:
+        ###################
+        daily_ind=ind.loc[item.index]
+
+        if daily_ind.CROSS_JC.iloc[0]&gt;0:
+            order=Account.send_order(
+                code=item.code[0], 
+                time=item.date[0], 
+                amount=1000, 
+                towards=QA.ORDER_DIRECTION.BUY, 
+                price=0, 
+                order_model=QA.ORDER_MODEL.CLOSE, 
+                amount_model=QA.AMOUNT_MODEL.BY_AMOUNT
+                )
+            #print(item.to_json()[0])
+            Broker.receive_order(QA.QA_Event(order=order,market_data=item))
+            trade_mes=Broker.query_orders(Account.account_cookie,&apos;filled&apos;)
+            res=trade_mes.loc[order.account_cookie,order.realorder_id]
+            order.trade(res.trade_id,res.trade_price,res.trade_amount,res.trade_time)
+        elif daily_ind.CROSS_SC.iloc[0]&gt;0:
+            #print(item.code)
+            if Account.sell_available.get(item.code[0], 0)&gt;0:
+                order=Account.send_order(
+                    code=item.code[0], 
+                    time=item.date[0], 
+                    amount=Account.sell_available.get(item.code[0], 0), 
+                    towards=QA.ORDER_DIRECTION.SELL, 
+                    price=0, 
+                    order_model=QA.ORDER_MODEL.MARKET, 
+                    amount_model=QA.AMOUNT_MODEL.BY_AMOUNT
+                    )
+                #print
+                Broker.receive_order(QA.QA_Event(order=order,market_data=item))
+                trade_mes=Broker.query_orders(Account.account_cookie,&apos;filled&apos;)
+                res=trade_mes.loc[order.account_cookie,order.realorder_id]
+                order.trade(res.trade_id,res.trade_price,res.trade_amount,res.trade_time)
+    Account.settle()
+
+print(&apos;TIME -- {}&apos;.format(datetime.datetime.now()-st1))
+print(Account.history)
+print(Account.history_table)
+print(Account.daily_hold)
+
+# create Risk analysis
+Risk = QA.QA_Risk(Account)
+
+Account.save()
+Risk.save()
+</code></pre><ol start="6">
+<li>推荐的做法</li>
+</ol>
+<p>使用最新的QAStrategy来做回测/模拟</p>
+<p>首先 打开terminal (上面有讲), 输入</p>
+<pre><code>pip install qastrategy
+</code></pre><p>然后 新建一个notebook, 输入</p>
+<pre><code>from QAStrategy import QAStrategyCTABase
+import QUANTAXIS as QA
+import pprint
+
+
+class CCI(QAStrategyCTABase):
+
+    def on_bar(self, bar):
+
+        res = self.cci()
+
+        print(res.iloc[-1])
+
+        if res.CCI[-1] &lt; -100:
+
+            print(&apos;LONG&apos;)
+
+            if self.positions.volume_long == 0:
+                self.send_order(&apos;BUY&apos;, &apos;OPEN&apos;, price=bar[&apos;close&apos;], volume=1)
+
+            if self.positions.volume_short &gt; 0:
+                self.send_order(&apos;SELL&apos;, &apos;CLOSE&apos;, price=bar[&apos;close&apos;], volume=1)
+
+        elif res.CCI[-1] &gt; 100:
+            print(&apos;SHORT&apos;)
+            if self.positions.volume_short == 0:
+                self.send_order(&apos;SELL&apos;, &apos;OPEN&apos;, price=bar[&apos;close&apos;], volume=1)
+            if self.positions.volume_long &gt; 0:
+                self.send_order(&apos;BUY&apos;, &apos;CLOSE&apos;, price=bar[&apos;close&apos;], volume=1)
+
+    def cci(self,):
+        return QA.QA_indicator_CCI(self.market_data, 61)
+
+    def risk_check(self):
+        pass
+        # pprint.pprint(self.qifiacc.message)
+</code></pre><p>然后 你可以自由指定回测/模拟</p>
+<p>首先实例化这个类</p>
+<pre><code>strategy =CCI(code=&apos;RB2005&apos;, frequence=&apos;1min&apos;,strategy_id=&apos;a3916de0-bd28-4b9c-bea1-94d91f1744ac&apos;, start=‘2020-01-01‘, end=‘2020-02-07’)
+</code></pre><p>如果你需要测试这个策略</p>
+<pre><code>strategy.debug()
+</code></pre><p>如果你需要做回测</p>
+<pre><code>strategy.run_backtest()
+</code></pre><p>如果你需要让他直接挂模拟</p>
+<p>在挂模拟的时候, 你需要注意一些东西</p>
+<p>挂模拟的标的需要和真实标的一致<br>挂模拟的时候, 你的行情必须是有推送的, 并且申请了你所需要的的分钟线级别的数据</p>
+<p>(如何申请行情数据? 你可以看这里 )<br><a href="https://github.com/yutiansut/QUANTAXIS_RealtimeCollector" target="_blank" rel="noopener">https://github.com/yutiansut/QUANTAXIS_RealtimeCollector</a></p>
+<pre><code># 期货订阅请求
+  curl -X POST &quot;http://127.0.0.1:8011?action=new_handler&amp;market_type=future_cn&amp;code=au1911&quot;
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 股票订阅请求</span></span><br><span class="line">curl -X POST <span class="string">"http://127.0.0.1:8011?action=new_handler&amp;market_type=stock_cn&amp;code=000001"</span></span><br><span class="line"><span class="comment"># 二次采样请求</span></span><br><span class="line">curl -X POST <span class="string">"http://127.0.0.1:8011?action=new_resampler&amp;market_type=future_cn&amp;code=au1911&amp;frequence=2min"</span></span><br><span class="line"></span><br><span class="line">对于小白可能难以理解curl是个啥, 此处给出一个简单易懂的代码</span><br><span class="line"></span><br><span class="line">import requests</span><br><span class="line">requests.post(<span class="string">"http://127.0.0.1:8011?action=new_handler&amp;market_type=future_cn&amp;code=&#123;&#125;"</span>.format(<span class="string">"rb2001"</span>)</span><br><span class="line">以此类推其他的请求都可以这么做</span><br></pre></td></tr></table></figure>
+
+像 螺纹2001 合约, 你需要改成 rb2001  注意此处是小写
+
+strategy =CCI(code=&apos;rb2001&apos;, frequence=&apos;1min&apos;,strategy_id=&apos;a3916de0-bd28-4b9c-bea1-94d91f1744ac&apos;)
+strategy.debug_sim()
+</code></pre><p>做完了这些操作以后, 你可以点击 回测 你就可以看到类似这样的结果</p>
+<p><img src="/2020/08/20/QUANTAXIS/7.jpg" alt=""></p>
+<ol start="7">
+<li><p>更多参考</p>
+<p> <a href="http://www.yutiansut.com:3000/topic/5dc5da7dc466af76e9e3bc5d" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5dc5da7dc466af76e9e3bc5d</a></p>
+<p> 如何修改期货的实盘行情地址   <a href="http://www.yutiansut.com:3000/topic/5dfade9efe01257b44740e70" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5dfade9efe01257b44740e70</a></p>
+<p> 实时如何申请行情  <a href="http://www.yutiansut.com:3000/topic/5dd1be9b0c8e672840f3fea7" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5dd1be9b0c8e672840f3fea7</a></p>
+<p> 如何接入你的实盘期货账户  <a href="http://www.yutiansut.com:3000/topic/5dc865e8c466af76e9e3bdd1" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5dc865e8c466af76e9e3bdd1</a></p>
+<p> 如何实现模拟盘/实盘的跟单  <a href="http://www.yutiansut.com:3000/topic/5ddb5ba8fe01257b4474080a" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5ddb5ba8fe01257b4474080a</a></p>
+<p> docker 如何访问外部数据库  <a href="https://github.com/QUANTAXIS/QUANTAXIS/issues/1346" target="_blank" rel="noopener">https://github.com/QUANTAXIS/QUANTAXIS/issues/1346</a>   <a href="http://www.yutiansut.com:3000/topic/5e4531c96d3b182e88b4ebb4" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5e4531c96d3b182e88b4ebb4</a></p>
+<p> docker小白用户的推荐 <a href="http://www.yutiansut.com:3000/topic/5e4cb13f6d3b182e88b4ef64" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5e4cb13f6d3b182e88b4ef64</a></p>
+</li>
+</ol>
 
           
         
