@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="Backtrader安装python环境 (anaconda)pip install backtrader[plotting]新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter策略的生命周期init任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。  Birth: start  star">
+<meta name="description" content="Backtrader安装python环境 (anaconda)pip install backtrader[plotting]新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyterstrategy策略的生命周期init任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。  Birth: sta">
 <meta name="keywords" content="投资">
 <meta property="og:type" content="article">
 <meta property="og:title" content="backtrader">
 <meta property="og:url" content="http://yoursite.com/2020/09/05/backtrader/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="Backtrader安装python环境 (anaconda)pip install backtrader[plotting]新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter策略的生命周期init任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。  Birth: start  star">
+<meta property="og:description" content="Backtrader安装python环境 (anaconda)pip install backtrader[plotting]新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyterstrategy策略的生命周期init任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。  Birth: sta">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-09-06T03:25:59.355Z">
+<meta property="og:updated_time" content="2020-09-06T03:39:16.651Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="backtrader">
-<meta name="twitter:description" content="Backtrader安装python环境 (anaconda)pip install backtrader[plotting]新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter策略的生命周期init任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。  Birth: start  star">
+<meta name="twitter:description" content="Backtrader安装python环境 (anaconda)pip install backtrader[plotting]新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyterstrategy策略的生命周期init任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。  Birth: sta">
 
 
 
@@ -404,7 +404,7 @@
       
 
       
-        <h1 id="Backtrader"><a href="#Backtrader" class="headerlink" title="Backtrader"></a>Backtrader</h1><h2 id="安装python环境-anaconda"><a href="#安装python环境-anaconda" class="headerlink" title="安装python环境 (anaconda)"></a>安装python环境 (anaconda)</h2><h2 id="pip-install-backtrader-plotting"><a href="#pip-install-backtrader-plotting" class="headerlink" title="pip install backtrader[plotting]"></a>pip install backtrader[plotting]</h2><h2 id="新建jupyterProject文件夹，在其路径栏输入-jupyter-lab-按enter键-等待启用jupyter"><a href="#新建jupyterProject文件夹，在其路径栏输入-jupyter-lab-按enter键-等待启用jupyter" class="headerlink" title="新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter"></a>新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter</h2><h2 id="策略的生命周期"><a href="#策略的生命周期" class="headerlink" title="策略的生命周期"></a>策略的生命周期</h2><h3 id="init"><a href="#init" class="headerlink" title="init"></a><strong>init</strong></h3><p>任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。</p>
+        <h1 id="Backtrader"><a href="#Backtrader" class="headerlink" title="Backtrader"></a>Backtrader</h1><h2 id="安装python环境-anaconda"><a href="#安装python环境-anaconda" class="headerlink" title="安装python环境 (anaconda)"></a>安装python环境 (anaconda)</h2><h2 id="pip-install-backtrader-plotting"><a href="#pip-install-backtrader-plotting" class="headerlink" title="pip install backtrader[plotting]"></a>pip install backtrader[plotting]</h2><h2 id="新建jupyterProject文件夹，在其路径栏输入-jupyter-lab-按enter键-等待启用jupyter"><a href="#新建jupyterProject文件夹，在其路径栏输入-jupyter-lab-按enter键-等待启用jupyter" class="headerlink" title="新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter"></a>新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter</h2><h2 id="strategy策略的生命周期"><a href="#strategy策略的生命周期" class="headerlink" title="strategy策略的生命周期"></a>strategy策略的生命周期</h2><h3 id="init"><a href="#init" class="headerlink" title="init"></a><strong>init</strong></h3><p>任何类在生成的时候都是先调用这一初始化构造函数。也就是说，在实例生成的时候，这个函数将被调用。</p>
 <ol>
 <li><p>Birth: start</p>
 <p> start方法在cerebro告诉strategy，是时候开始行动了，也就是说，通知策略激活的时候被调用。</p>
@@ -521,6 +521,33 @@ order.executed.comm
     self.sma = bt.indicators.SimpleMovingAverage(
         self.datas[0], period=self.params.maperiod)
 </code></pre><p> 这里的最后，我们使用了一个backtrader内置的indicator，后续我们将尝试自己编写一个indicator。</p>
+<h2 id="数据的获取"><a href="#数据的获取" class="headerlink" title="数据的获取"></a>数据的获取</h2><p>datafeed，也就是cerebro的本源，数据</p>
+<pre><code>dataframe = pd.read_csv(&apos;dfqc.csv&apos;, index_col=0, parse_dates=True)
+dataframe[&apos;openinterest&apos;] = 0
+data = bt.feeds.PandasData(dataname=dataframe,
+                        fromdate = datetime.datetime(2015, 1, 1),
+                        todate = datetime.datetime(2016, 12, 31)
+                        )
+# Add the Data Feed to Cerebro
+cerebro.adddata(data)
+
+2014-03-13 00:00:00.005,1.425,1.434,1.449,1.418,457767208.0
+2014-03-14 00:00:00.005,1.429,1.422,1.436,1.416,196209439.0
+2014-03-17 00:00:00.005,1.433,1.434,1.437,1.422,250946201.0
+2014-03-18 00:00:00.005,1.434,1.425,1.437,1.424,245516577.0
+2014-03-19 00:00:00.005,1.423,1.419,1.423,1.406,331866195.0
+2014-03-20 00:00:00.005,1.412,1.408,1.434,1.407,379443759.0
+2014-03-21 00:00:00.005,1.406,1.463,1.468,1.403,825467935.0
+
+dataframe = pd.read_csv(&apos;dfqc.csv&apos;, index_col=0, parse_dates=True)
+</code></pre><p>把csv读入pandas的参数，index_col=0表示第一列时间数据是作为pandas 的index的，parse_dates=Ture是自动把数据中的符合日期的格式变成datetime类型。为什么要这样呢？其实读入后的pandas长怎么样都是由backtrader规定的</p>
+<p>pandas的要求的结构，我们就知道，不仅仅有self.datas[0].close,还会有self.datas[0].open。也确实如此。只是我们通常拿close作为一个价格基准</p>
+<pre><code>self.datas[0].close
+</code></pre><p>返回的是一个lines。lines是backtrader一个很重要的概念，可以理解为时间序列流，这类数据，后面可以跟index，也就是说，可以有</p>
+<pre><code>self.datas[0].close[0]
+self.datas[0].close[-1]
+</code></pre><p>这里的index是有意义的，0代表当前时刻，-1代表前一时刻，1代表后一时刻，以此类推</p>
+<p>所以在next中使用self.dataclose[0],self.dataclose[-1]</p>
 
       
     </div>
@@ -704,7 +731,7 @@ order.executed.comm
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Backtrader"><span class="nav-number">1.</span> <span class="nav-text">Backtrader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装python环境-anaconda"><span class="nav-number">1.1.</span> <span class="nav-text">安装python环境 (anaconda)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pip-install-backtrader-plotting"><span class="nav-number">1.2.</span> <span class="nav-text">pip install backtrader[plotting]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建jupyterProject文件夹，在其路径栏输入-jupyter-lab-按enter键-等待启用jupyter"><span class="nav-number">1.3.</span> <span class="nav-text">新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略的生命周期"><span class="nav-number">1.4.</span> <span class="nav-text">策略的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#init"><span class="nav-number">1.4.1.</span> <span class="nav-text">init</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略当中的回调函数"><span class="nav-number">1.5.</span> <span class="nav-text">策略当中的回调函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Backtrader的indicator"><span class="nav-number">1.6.</span> <span class="nav-text">Backtrader的indicator</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Backtrader"><span class="nav-number">1.</span> <span class="nav-text">Backtrader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装python环境-anaconda"><span class="nav-number">1.1.</span> <span class="nav-text">安装python环境 (anaconda)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pip-install-backtrader-plotting"><span class="nav-number">1.2.</span> <span class="nav-text">pip install backtrader[plotting]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建jupyterProject文件夹，在其路径栏输入-jupyter-lab-按enter键-等待启用jupyter"><span class="nav-number">1.3.</span> <span class="nav-text">新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#strategy策略的生命周期"><span class="nav-number">1.4.</span> <span class="nav-text">strategy策略的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#init"><span class="nav-number">1.4.1.</span> <span class="nav-text">init</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略当中的回调函数"><span class="nav-number">1.5.</span> <span class="nav-text">策略当中的回调函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Backtrader的indicator"><span class="nav-number">1.6.</span> <span class="nav-text">Backtrader的indicator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据的获取"><span class="nav-number">1.7.</span> <span class="nav-text">数据的获取</span></a></li></ol></li></ol></div>
             
 
           </div>
