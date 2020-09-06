@@ -122,11 +122,11 @@ win+R,输入cmder,确定，即可运行cmder
 
     
 - 27017 mongodb
-- 8888 jupyter
+- 8888 jupyter   （密码）quantaxis
 - 8010 quantaxis_webserver
 - 81 quantaxis_community 社区版界面
 - 61208 系统监控
-- 15672 qa-eventmq
+- 15672 qa-eventmq （密码）admin admin
 
 5. 日志查看
 
@@ -160,6 +160,7 @@ win+R,输入cmder,确定，即可运行cmder
 		&& cd / \
 		&& tar xvf /backup/dbbackup.tar" 还原当前目录下的dbbackup.tar到mongod数据库
 
+		当更新了dockerfile后重启服务，之前保存的数据不会被清除
 		
 ## 保存数据
 
@@ -396,4 +397,88 @@ https://github.com/yutiansut/QUANTAXIS_RealtimeCollector
 	
 	docker小白用户的推荐 http://www.yutiansut.com:3000/topic/5e4cb13f6d3b182e88b4ef64
 
+## 整个环境一览
 
+![](8.jpg)
+
+配置的一些备忘
+
+![](9.jpg)
+
+![](10.jpg)
+
+![](11.jpg)
+
+8. 安装vscode可以调试docker
+
+## 修改定时保存数据的时间
+
+使用vscode进入qa-cron的容器中，进入目录 /etc/cron.d 修改daily_update里的时间即可，如果只需要保存期货数据，要改掉脚本里的  update_future.py
+
+    部署
+	crontab daily_update
+	crontab -l
+	检查
+	/etc/init.d/cron start
+	/etc/init.d/cron status
+
+	解决在执行时提示 cron: can’t lock /var/run/crond.pid, otherpid may be 2699: Resource temporarily unavailable
+	
+	解决方案： 
+	
+	    rm -rf /var/run/crond.pid
+	
+	    /etc/init.d/cron reload
+	
+	    sudo /usr/sbin/service cron restart
+
+	如果定时不启用，可以在本地save保存数据，save不会覆盖之前已经下载好的数据
+
+## 在界面安装包
+
+	!ls
+	!pip -v
+	!pip install
+	!pip install qastrategy -U
+	在terminal界面也可以安装
+	
+	from QUANTAXIS.QAARP.QAAccountPro import QA_AccountPRO
+	QA_AccountPRO?
+
+## docker-compose常用命令
+
+	docker-compose up -d nginx                     构建建启动nignx容器
+	
+	docker-compose exec nginx bash            登录到nginx容器中
+	
+	docker-compose down                              删除所有nginx容器,镜像
+	
+	docker-compose ps                                   显示所有容器
+	
+	docker-compose restart nginx                   重新启动nginx容器
+	
+	docker-compose run --no-deps --rm php-fpm php -v  在php-fpm中不启动关联容器，并容器执行php -v 执行完成后删除容器
+	
+	docker-compose build nginx                     构建镜像 。        
+	
+	docker-compose build --no-cache nginx   不带缓存的构建。
+	
+	docker-compose logs  nginx                     查看nginx的日志 
+	
+	docker-compose logs -f nginx                   查看nginx的实时日志
+	
+	 
+	
+	docker-compose config  -q                        验证（docker-compose.yml）文件配置，当配置正确时，不输出任何内容，当文件配置错误，输出错误信息。 
+	
+	docker-compose events --json nginx       以json的形式输出nginx的docker日志
+	
+	docker-compose pause nginx                 暂停nignx容器
+	
+	docker-compose unpause nginx             恢复ningx容器
+	
+	docker-compose rm nginx                       删除容器（删除前必须关闭容器）
+	
+	docker-compose stop nginx                    停止nignx容器
+	
+	docker-compose start nginx                    启动nignx容器
