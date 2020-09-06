@@ -109,7 +109,11 @@
 <meta property="og:image" content="http://yoursite.com/2020/08/20/QUANTAXIS/5.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/08/20/QUANTAXIS/6.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/08/20/QUANTAXIS/7.jpg">
-<meta property="og:updated_time" content="2020-08-21T14:36:02.877Z">
+<meta property="og:image" content="http://yoursite.com/2020/08/20/QUANTAXIS/8.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/08/20/QUANTAXIS/9.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/08/20/QUANTAXIS/10.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/08/20/QUANTAXIS/11.jpg">
+<meta property="og:updated_time" content="2020-09-05T12:32:41.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="QUANTAXIS">
 <meta name="twitter:description" content="环境准备安装cmder 官网下载地址  http://cmder.net/  下载好解压包可直接使用  环境变量配置  在系统属性里面配置环境变量，将Cmder.exe所在文件路径添加至path里    win+R,输入cmder,确定，即可运行cmder  配置右键快捷启动 // 设置任意地方鼠标右键启动Cmder Cmder.exe /REGISTER ALL     快捷键  Tab">
@@ -474,11 +478,11 @@ docker-compose up -d
 <p>帮你直接开启你需要的服务</p>
 <ul>
 <li>27017 mongodb</li>
-<li>8888 jupyter</li>
+<li>8888 jupyter   （密码）quantaxis</li>
 <li>8010 quantaxis_webserver</li>
 <li>81 quantaxis_community 社区版界面</li>
 <li>61208 系统监控</li>
-<li>15672 qa-eventmq</li>
+<li>15672 qa-eventmq （密码）admin admin</li>
 </ul>
 <ol start="5">
 <li><p>日志查看</p>
@@ -510,6 +514,8 @@ sh -c &quot;cd /data/db \
 &amp;&amp; rm -rf configdb \
 &amp;&amp; cd / \
 &amp;&amp; tar xvf /backup/dbbackup.tar&quot; 还原当前目录下的dbbackup.tar到mongod数据库
+
+当更新了dockerfile后重启服务，之前保存的数据不会被清除
 </code></pre></li>
 </ol>
 <h2 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h2><ol>
@@ -707,7 +713,77 @@ strategy.debug_sim()
 <p> docker小白用户的推荐 <a href="http://www.yutiansut.com:3000/topic/5e4cb13f6d3b182e88b4ef64" target="_blank" rel="noopener">http://www.yutiansut.com:3000/topic/5e4cb13f6d3b182e88b4ef64</a></p>
 </li>
 </ol>
+<h2 id="整个环境一览"><a href="#整个环境一览" class="headerlink" title="整个环境一览"></a>整个环境一览</h2><p><img src="/2020/08/20/QUANTAXIS/8.jpg" alt=""></p>
+<p>配置的一些备忘</p>
+<p><img src="/2020/08/20/QUANTAXIS/9.jpg" alt=""></p>
+<p><img src="/2020/08/20/QUANTAXIS/10.jpg" alt=""></p>
+<p><img src="/2020/08/20/QUANTAXIS/11.jpg" alt=""></p>
+<ol start="8">
+<li>安装vscode可以调试docker</li>
+</ol>
+<h2 id="修改定时保存数据的时间"><a href="#修改定时保存数据的时间" class="headerlink" title="修改定时保存数据的时间"></a>修改定时保存数据的时间</h2><p>使用vscode进入qa-cron的容器中，进入目录 /etc/cron.d 修改daily_update里的时间即可，如果只需要保存期货数据，要改掉脚本里的  update_future.py</p>
+<pre><code>部署
+crontab daily_update
+crontab -l
+检查
+/etc/init.d/cron start
+/etc/init.d/cron status
 
+解决在执行时提示 cron: can’t lock /var/run/crond.pid, otherpid may be 2699: Resource temporarily unavailable
+
+解决方案： 
+
+    rm -rf /var/run/crond.pid
+
+    /etc/init.d/cron reload
+
+    sudo /usr/sbin/service cron restart
+
+如果定时不启用，可以在本地save保存数据，save不会覆盖之前已经下载好的数据
+</code></pre><h2 id="在界面安装包"><a href="#在界面安装包" class="headerlink" title="在界面安装包"></a>在界面安装包</h2><pre><code>!ls
+!pip -v
+!pip install
+!pip install qastrategy -U
+在terminal界面也可以安装
+
+from QUANTAXIS.QAARP.QAAccountPro import QA_AccountPRO
+QA_AccountPRO?
+</code></pre><h2 id="docker-compose常用命令"><a href="#docker-compose常用命令" class="headerlink" title="docker-compose常用命令"></a>docker-compose常用命令</h2><pre><code>docker-compose up -d nginx                     构建建启动nignx容器
+
+docker-compose exec nginx bash            登录到nginx容器中
+
+docker-compose down                              删除所有nginx容器,镜像
+
+docker-compose ps                                   显示所有容器
+
+docker-compose restart nginx                   重新启动nginx容器
+
+docker-compose run --no-deps --rm php-fpm php -v  在php-fpm中不启动关联容器，并容器执行php -v 执行完成后删除容器
+
+docker-compose build nginx                     构建镜像 。        
+
+docker-compose build --no-cache nginx   不带缓存的构建。
+
+docker-compose logs  nginx                     查看nginx的日志 
+
+docker-compose logs -f nginx                   查看nginx的实时日志
+
+
+
+docker-compose config  -q                        验证（docker-compose.yml）文件配置，当配置正确时，不输出任何内容，当文件配置错误，输出错误信息。 
+
+docker-compose events --json nginx       以json的形式输出nginx的docker日志
+
+docker-compose pause nginx                 暂停nignx容器
+
+docker-compose unpause nginx             恢复ningx容器
+
+docker-compose rm nginx                       删除容器（删除前必须关闭容器）
+
+docker-compose stop nginx                    停止nignx容器
+
+docker-compose start nginx                    启动nignx容器
+</code></pre>
       
     </div>
     
@@ -746,6 +822,10 @@ strategy.debug_sim()
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/08/29/qa函数/" rel="prev" title="'qa函数'">
+                'qa函数' <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -820,7 +900,7 @@ strategy.debug_sim()
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -890,7 +970,7 @@ strategy.debug_sim()
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装cmder"><span class="nav-number">1.1.</span> <span class="nav-text">安装cmder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker桌面版"><span class="nav-number">1.2.</span> <span class="nav-text">安装docker桌面版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载"><span class="nav-number">1.2.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装可能遇到的问题"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装可能遇到的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载QUANTAXIS的docker-compose-yaml文件"><span class="nav-number">1.3.</span> <span class="nav-text">下载QUANTAXIS的docker-compose.yaml文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker部署quantaxis"><span class="nav-number">1.4.</span> <span class="nav-text">docker部署quantaxis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保存数据"><span class="nav-number">1.5.</span> <span class="nav-text">保存数据</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装cmder"><span class="nav-number">1.1.</span> <span class="nav-text">安装cmder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装docker桌面版"><span class="nav-number">1.2.</span> <span class="nav-text">安装docker桌面版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载"><span class="nav-number">1.2.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装可能遇到的问题"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装可能遇到的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载QUANTAXIS的docker-compose-yaml文件"><span class="nav-number">1.3.</span> <span class="nav-text">下载QUANTAXIS的docker-compose.yaml文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker部署quantaxis"><span class="nav-number">1.4.</span> <span class="nav-text">docker部署quantaxis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保存数据"><span class="nav-number">1.5.</span> <span class="nav-text">保存数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整个环境一览"><span class="nav-number">1.6.</span> <span class="nav-text">整个环境一览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改定时保存数据的时间"><span class="nav-number">1.7.</span> <span class="nav-text">修改定时保存数据的时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在界面安装包"><span class="nav-number">1.8.</span> <span class="nav-text">在界面安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-compose常用命令"><span class="nav-number">1.9.</span> <span class="nav-text">docker-compose常用命令</span></a></li></ol></li></ol></div>
             
 
           </div>

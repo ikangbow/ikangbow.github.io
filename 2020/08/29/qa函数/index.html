@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="投资,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="数据下单QA_Account()QA_Account() 是quantaxis的核心类, 其作用是一个可以使用规则兼容各种市场的账户类1.3.0以后, QA_Account需要由组合来进行创建(推荐) 调用方式 import QUANTAXIS as QA user = QA.QA_User(username =&amp;apos;quantaxis&amp;apos;, password = &amp;apos;qua">
+<meta name="keywords" content="投资">
+<meta property="og:type" content="article">
+<meta property="og:title" content="&#39;qa函数&#39;">
+<meta property="og:url" content="http://yoursite.com/2020/08/29/qa函数/index.html">
+<meta property="og:site_name" content="Airthink">
+<meta property="og:description" content="数据下单QA_Account()QA_Account() 是quantaxis的核心类, 其作用是一个可以使用规则兼容各种市场的账户类1.3.0以后, QA_Account需要由组合来进行创建(推荐) 调用方式 import QUANTAXIS as QA user = QA.QA_User(username =&amp;apos;quantaxis&amp;apos;, password = &amp;apos;qua">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-08-29T04:52:04.414Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="&#39;qa函数&#39;">
+<meta name="twitter:description" content="数据下单QA_Account()QA_Account() 是quantaxis的核心类, 其作用是一个可以使用规则兼容各种市场的账户类1.3.0以后, QA_Account需要由组合来进行创建(推荐) 调用方式 import QUANTAXIS as QA user = QA.QA_User(username =&amp;apos;quantaxis&amp;apos;, password = &amp;apos;qua">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/08/29/qa函数/">
+
+
+
+
+
+  <title>'qa函数' | Airthink</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Airthink</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/29/qa函数/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">'qa函数'</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-29T11:08:26+08:00">
+                2020-08-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/投资/" itemprop="url" rel="index">
+                    <span itemprop="name">投资</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h2 id="下单"><a href="#下单" class="headerlink" title="下单"></a>下单</h2><h3 id="QA-Account"><a href="#QA-Account" class="headerlink" title="QA_Account()"></a>QA_Account()</h3><p>QA_Account() 是quantaxis的核心类, 其作用是一个可以使用规则兼容各种市场的账户类<br>1.3.0以后, QA_Account需要由组合来进行创建(推荐)</p>
+<pre><code>调用方式
+import QUANTAXIS as QA
+user = QA.QA_User(username =&apos;quantaxis&apos;, password = &apos;quantaxis&apos;)
+portfolio=user.new_portfolio(&apos;x1&apos;)
+account = *portfolio.new_account*(account_cookie=&apos;test&apos;)
+
+QA_AccountPRO?
+Init signature:
+QA_AccountPRO(
+    user_cookie:str,
+    portfolio_cookie:str,
+    account_cookie=None,
+    strategy_name=None,
+    market_type=&apos;stock_cn&apos;,
+    frequence=&apos;day&apos;,
+    broker=&apos;backtest&apos;,
+    init_hold={},
+    init_cash=1000000,
+    commission_coeff=0.00025,
+    tax_coeff=0.001,
+    margin_level={},
+    allow_t0=False,
+    allow_sellopen=False,
+    allow_margin=False,
+    running_environment=&apos;backtest&apos;,
+    auto_reload=False,
+    generated=&apos;direct&apos;,
+    start=None,
+    end=None,
+)
+Docstring:     
+JOB是worker 需要接受QA_EVENT 需要完善RUN方法
+👻QA_Broker 继承这个类
+👻QA_Account 继承这个类
+👻QA_OrderHandler 继承这个类
+这些类都要实现run方法，在其它线程🌀中允许自己的业务代码
+File:           /usr/local/lib/python3.6/site-packages/QUANTAXIS/QAARP/QAAccountPro.py
+Type:           type
+Subclasses:     
+accpro = *portfolio.new_accountpro*(&apos;pro2&apos;,market_type=QA.MARKET_TYPE.STOCK_CN)
+accpro.positions
+{}
+*accpro.receive_deal*?
+Signature:
+accpro.receive_deal(
+    code,
+    trade_id:str,
+    order_id:str,
+    realorder_id:str,
+    trade_price,
+    trade_amount,
+    trade_towards,
+    trade_time,
+    message=None,
+)
+Docstring: &lt;no docstring&gt;
+File:      /usr/local/lib/python3.6/site-packages/QUANTAXIS/QAARP/QAAccountPro.py
+Type:      method
+`accpro.receive_deal`(&apos;000001&apos;,&apos;001&apos;,&apos;001&apos;,&apos;0001&apos;,trade_price=12,trade_amount=10000,trade_towards=QA.ORDER_DIRECTION.BUY,trade_time=&apos;2020-08-18&apos;)
+*accpro.positions*
+{&apos;000001&apos;: &lt; QAPOSITION 000001 amount 10000/0 &gt;}
+*accpro.history_table*
+
+
+*accpro.send_order?*
+Signature:
+accpro.send_order(
+    code=None,
+    amount=None,
+    time=None,
+    towards=None,
+    price=None,
+    money=None,
+    order_model=&apos;LIMIT&apos;,
+    amount_model=&apos;by_amount&apos;,
+    order_id=None,
+    position_id=None,
+    *args,
+    **kwargs,
+)
+Docstring: &lt;no docstring&gt;
+File:      /usr/local/lib/python3.6/site-packages/QUANTAXIS/QAARP/QAAccountPro.py
+Type:      method
+
+基于期货市场的账户初始化
+future_account = portfolio.new_account(account_cookie =&apos;future&apos;,allow_t0=True,allow_margin=True,allow_sellopen=True, running_environment=QA.MARKET_TYPE.FUTURE_CN)
+
+account的其他属性可以.出来，可以自己试着看
+*accpro.cash*
+[1000000, 879970.0, 779945.0]
+*accpro.cash_available*
+779945.0
+*accpro.get_history*
+*accpro.get_position*(&apos;000001&apos;)
+
+pos2 = accpro.get_position(&apos;000002&apos;)
+
+*pos2.message*
+{&apos;code&apos;: &apos;000002&apos;,
+ &apos;instrument_id&apos;: &apos;000002&apos;,
+ &apos;user_id&apos;: &apos;pro2&apos;,
+ &apos;portfolio_cookie&apos;: &apos;x1&apos;,
+ &apos;username&apos;: &apos;quantaxis&apos;,
+ &apos;position_id&apos;: &apos;3e2cd89e-7143-4e0e-b344-40571e84eda5&apos;,
+ &apos;account_cookie&apos;: &apos;pro2&apos;,
+ &apos;frozen&apos;: {},
+ &apos;name&apos;: None,
+ &apos;spms_id&apos;: None,
+ &apos;oms_id&apos;: None,
+ &apos;market_type&apos;: &apos;stock_cn&apos;,
+ &apos;exchange_id&apos;: None,
+ &apos;moneypreset&apos;: 100000,
+ &apos;moneypresetLeft&apos;: 0.0,
+ &apos;lastupdatetime&apos;: &apos;&apos;,
+ &apos;volume_long_today&apos;: 5000,
+ &apos;volume_long_his&apos;: 0,
+ &apos;volume_long&apos;: 5000,
+ &apos;volume_short_today&apos;: 0,
+ &apos;volume_short_his&apos;: 0,
+ &apos;volume_short&apos;: 0,
+ &apos;volume_long_frozen_today&apos;: 0,
+ &apos;volume_long_frozen_his&apos;: 0,
+ &apos;volume_long_frozen&apos;: 0,
+ &apos;volume_short_frozen_today&apos;: 0,
+ &apos;volume_short_frozen_his&apos;: 0,
+ &apos;volume_short_frozen&apos;: 0,
+ &apos;margin_long&apos;: 100000.0,
+ &apos;margin_short&apos;: 0,
+ &apos;margin&apos;: 100000.0,
+ &apos;position_price_long&apos;: 20.0,
+ &apos;position_cost_long&apos;: 100000.0,
+ &apos;position_price_short&apos;: 0,
+ &apos;position_cost_short&apos;: 0.0,
+ &apos;open_price_long&apos;: 20.0,
+ &apos;open_cost_long&apos;: 100000.0,
+ &apos;open_price_short&apos;: 0,
+ &apos;open_cost_short&apos;: 0.0,
+ &apos;trades&apos;: [],
+ &apos;orders&apos;: {},
+ &apos;last_price&apos;: 20,
+ &apos;float_profit_long&apos;: 0.0,
+ &apos;float_profit_short&apos;: 0.0,
+ &apos;float_profit&apos;: 0.0,
+ &apos;position_profit_long&apos;: 0.0,
+ &apos;position_profit_short&apos;: 0.0,
+ &apos;position_profit&apos;: 0.0}
+
+*pos2.volume_long*
+5000
+*pos2.volume_long_today*
+5000
+*pos2.volume_long_his*
+0
+*pos2.last_price*
+20
+*pos2.on_price_change*(21)
+if pos2.float_profit_long &gt; 2000:
+    print(&apos;sell&apos;)
+sell
+</code></pre><h3 id="QIFIAccount"><a href="#QIFIAccount" class="headerlink" title="QIFIAccount"></a>QIFIAccount</h3><pre><code>from QIFIAccount import QIFI_Account
+aifiacc = QIFI_Account(username=&apos;x2&apos;,password=&apos;x2&apos;,)
+aifiacc.initial()
+Create new Account
+aifiacc?
+Type:           QIFI_Account
+String form:    &lt;QIFIAccount.QAQIFIAccount.QIFI_Account object at 0x7f6e3b2dfc18&gt;
+File:           /usr/local/lib/python3.6/site-packages/QIFIAccount/QAQIFIAccount.py
+Docstring:      &lt;no docstring&gt;
+Init docstring:
+Initial
+QIFI Account是一个基于 DIFF/ QIFI/ QAAccount后的一个实盘适用的Account基类
+
+
+1. 兼容多持仓组合
+2. 动态计算权益
+
+使用 model = SIM/ REAL来切换
+
+
+sr = aifiacc.send_order(&apos;003&apos;,10,12,ORDER_DIRECTION.BUY)
+aifiacc.send_order?
+Signature:
+aifiacc.send_order(
+    code:str,
+    amount:float,
+    price:float,
+    towards:int,
+    order_id:str=&apos;&apos;,
+)
+Docstring: &lt;no docstring&gt;
+File:      /usr/local/lib/python3.6/site-packages/QIFIAccount/QAQIFIAccount.py
+Type:      method
+sr = aifiacc.send_order(&apos;004&apos;,10.0,12.0,QA.ORDER_DIRECTION.BUY)
+{&apos;volume_long&apos;: 0, &apos;volume_short&apos;: 0, &apos;volume_long_frozen&apos;: 0, &apos;volume_short_frozen&apos;: 0}
+{&apos;volume_long&apos;: 0, &apos;volume_short&apos;: 0}
+order check success
+下单成功 b3f155c7-ab2b-4ac1-94b7-08b6af152738
+td = aifiacc.make_deal(sr)
+全部成交 b3f155c7-ab2b-4ac1-94b7-08b6af152738
+update trade
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/投资/" rel="tag"># 投资</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/20/QUANTAXIS/" rel="next" title="QUANTAXIS">
+                <i class="fa fa-chevron-left"></i> QUANTAXIS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/09/05/backtrader/" rel="prev" title="backtrader">
+                backtrader <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/images/avatar.gif" alt="Airthink">
+          <p class="site-author-name" itemprop="name">Airthink</p>
+           
+              <p class="site-description motion-element" itemprop="description">The Pursuit of Happyness</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ikangbow" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据"><span class="nav-number">1.</span> <span class="nav-text">数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下单"><span class="nav-number">2.</span> <span class="nav-text">下单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#QA-Account"><span class="nav-number">2.1.</span> <span class="nav-text">QA_Account()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QIFIAccount"><span class="nav-number">2.2.</span> <span class="nav-text">QIFIAccount</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2018 - 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-snowflake-o"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Airthink</span>
+</div>
+
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
