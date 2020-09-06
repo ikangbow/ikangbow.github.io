@@ -13,7 +13,7 @@ category: 投资
 
 ## 新建jupyterProject文件夹，在其路径栏输入 jupyter lab,按enter键,等待启用jupyter
 
-## 策略的生命周期
+## strategy策略的生命周期
 
 ### __init__
 
@@ -152,3 +152,42 @@ trade指的是一笔头寸，trade是open的状态指当前时刻，这一标的
             self.datas[0], period=self.params.maperiod)
 
  这里的最后，我们使用了一个backtrader内置的indicator，后续我们将尝试自己编写一个indicator。
+
+## 数据的获取
+
+datafeed，也就是cerebro的本源，数据
+
+    dataframe = pd.read_csv('dfqc.csv', index_col=0, parse_dates=True)
+    dataframe['openinterest'] = 0
+    data = bt.feeds.PandasData(dataname=dataframe,
+                            fromdate = datetime.datetime(2015, 1, 1),
+                            todate = datetime.datetime(2016, 12, 31)
+                            )
+    # Add the Data Feed to Cerebro
+    cerebro.adddata(data)
+
+	2014-03-13 00:00:00.005,1.425,1.434,1.449,1.418,457767208.0
+	2014-03-14 00:00:00.005,1.429,1.422,1.436,1.416,196209439.0
+	2014-03-17 00:00:00.005,1.433,1.434,1.437,1.422,250946201.0
+	2014-03-18 00:00:00.005,1.434,1.425,1.437,1.424,245516577.0
+	2014-03-19 00:00:00.005,1.423,1.419,1.423,1.406,331866195.0
+	2014-03-20 00:00:00.005,1.412,1.408,1.434,1.407,379443759.0
+	2014-03-21 00:00:00.005,1.406,1.463,1.468,1.403,825467935.0
+
+	dataframe = pd.read_csv('dfqc.csv', index_col=0, parse_dates=True)
+
+把csv读入pandas的参数，index_col=0表示第一列时间数据是作为pandas 的index的，parse_dates=Ture是自动把数据中的符合日期的格式变成datetime类型。为什么要这样呢？其实读入后的pandas长怎么样都是由backtrader规定的
+
+
+pandas的要求的结构，我们就知道，不仅仅有self.datas[0].close,还会有self.datas[0].open。也确实如此。只是我们通常拿close作为一个价格基准
+
+	self.datas[0].close
+
+返回的是一个lines。lines是backtrader一个很重要的概念，可以理解为时间序列流，这类数据，后面可以跟index，也就是说，可以有
+
+	self.datas[0].close[0]
+	self.datas[0].close[-1]
+
+这里的index是有意义的，0代表当前时刻，-1代表前一时刻，1代表后一时刻，以此类推
+
+所以在next中使用self.dataclose[0],self.dataclose[-1]
