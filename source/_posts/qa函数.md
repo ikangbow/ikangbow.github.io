@@ -1,5 +1,5 @@
 ---
-title: '''qa函数'''
+title: qa函数
 date: 2020-08-29 11:08:26
 tags: 投资
 category: 投资
