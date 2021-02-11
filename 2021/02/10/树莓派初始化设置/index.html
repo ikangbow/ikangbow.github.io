@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_interface=DIR=/var/run/wpa_suppli">
+<meta name="description" content="先执行sudo apt-get install vim WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_inter">
 <meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="树莓派初始化设置">
 <meta property="og:url" content="http://yoursite.com/2021/02/10/树莓派初始化设置/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_interface=DIR=/var/run/wpa_suppli">
+<meta property="og:description" content="先执行sudo apt-get install vim WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_inter">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-10T13:56:26.397Z">
+<meta property="og:updated_time" content="2021-02-11T09:01:36.130Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派初始化设置">
-<meta name="twitter:description" content="WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_interface=DIR=/var/run/wpa_suppli">
+<meta name="twitter:description" content="先执行sudo apt-get install vim WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_inter">
 
 
 
@@ -404,7 +404,8 @@
       
 
       
-        <p>WIFI设置<br>每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。</p>
+        <p>先执行<br>sudo apt-get install vim</p>
+<p>WIFI设置<br>每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。</p>
 <p>那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？</p>
 <p>方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容：</p>
 <pre><code>country=CN
@@ -464,7 +465,49 @@ sudo apt-get upgrade -y
 <pre><code>index-url = https://mirrors.aliyun.com/pypi/simple
 </code></pre><p>输入法</p>
 <p>sudo apt-get install scim-pinyin</p>
+<p>一、安装</p>
+<pre><code>1.安装mongodb
 
+        sudo apt-get install mongodb
+
+2. 启动服务
+
+             mongod --dbpath /home/pi/mongod_data/
+
+3.启动命令行
+
+             mongo 
+
+             此时可以看到版本是MongoDB shell version: 2.4.14
+</code></pre><p>二、配置</p>
+<pre><code>1.配置主机ip：
+
+          sudo vim /etc/mongodb.conf
+
+          加入如下：127.0.0.1，自己的ip
+
+2.配置防火墙，让局域网环境可以访问数据库
+
+          2.1  安装：sudo apt-get install ufw
+
+          2.2  启用：sudo ufw enable
+
+          2.3  禁止外部访问 sudo ufw default deny
+
+          2.4  启用局域网mongodb端口访问：       sudo ufw allow from 192.168.0.0/8 
+</code></pre><p>三、使用</p>
+<pre><code>1.pymongo下载
+
+            这里注意，最新版本pymongo是不兼容MongoDB2.4的，所以下载的时候记得下载老版本
+
+                  pip install pymongo==3.1.1
+
+ 2.使用
+
+                  使用起来非常方便：连接、关闭、增删改查。具体操作见官网文档：
+
+                  http://api.mongodb.com/python/current/index.html
+</code></pre>
       
     </div>
     
