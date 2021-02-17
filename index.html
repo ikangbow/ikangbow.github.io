@@ -682,13 +682,16 @@ sudo apt-get upgrade -y
 
 2. 启动服务
 
-             mongod --dbpath /home/pi/mongod_data/
+        /usr/bin/mongod -f /etc/mongodb.conf
 
 3.启动命令行
 
-             mongo 
+        /usr/bin/mongo 
 
-             此时可以看到版本是MongoDB shell version: 2.4.14
+        此时可以看到版本是MongoDB shell version: 2.4.14
+
+4.关闭mongo
+      /usr/bin/mongod -shutdown -dbpath=/home/data/mongodb
 </code></pre><p>二、配置</p>
 <pre><code>1.配置主机ip：
 

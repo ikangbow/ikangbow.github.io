@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="先执行sudo apt-get install vim WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_inter">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-11T09:01:36.130Z">
+<meta property="og:updated_time" content="2021-02-17T03:05:14.667Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派初始化设置">
 <meta name="twitter:description" content="先执行sudo apt-get install vim WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_inter">
@@ -472,13 +472,16 @@ sudo apt-get upgrade -y
 
 2. 启动服务
 
-             mongod --dbpath /home/pi/mongod_data/
+        /usr/bin/mongod -f /etc/mongodb.conf
 
 3.启动命令行
 
-             mongo 
+        /usr/bin/mongo 
 
-             此时可以看到版本是MongoDB shell version: 2.4.14
+        此时可以看到版本是MongoDB shell version: 2.4.14
+
+4.关闭mongo
+      /usr/bin/mongod -shutdown -dbpath=/home/data/mongodb
 </code></pre><p>二、配置</p>
 <pre><code>1.配置主机ip：
 
