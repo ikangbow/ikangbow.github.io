@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="先执行sudo apt-get install vim WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_inter">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-02-17T03:05:14.667Z">
+<meta property="og:updated_time" content="2021-02-17T03:33:29.065Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树莓派初始化设置">
 <meta name="twitter:description" content="先执行sudo apt-get install vim WIFI设置每当重新安装树莓派的系统或者初始化一块全新的树莓派都会遇到这样的问题：连接WIFI。 那当我们没有显示器和键盘的情况下怎末可以将树莓连接到当前的WIFI网络呢？ 方法非常简单，首先在SD卡的根目录下添加一个名为 wpa_supplicant.conf的文件，然后在该文件内添加以下的内容： country=CN ctrl_inter">
@@ -510,6 +510,11 @@ sudo apt-get upgrade -y
                   使用起来非常方便：连接、关闭、增删改查。具体操作见官网文档：
 
                   http://api.mongodb.com/python/current/index.html
+</code></pre><p>python3.7导入gevent模块报错的解决方案</p>
+<pre><code>RuntimeWarning: greenlet.greenlet size changed, may indicate binary incompatibility. Expected 144, got 128
+  return f(*args, **kwds)
+
+pip3 install -U --force-reinstall --no-binary :all: gevent
 </code></pre>
       
     </div>
