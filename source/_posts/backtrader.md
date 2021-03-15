@@ -752,3 +752,9 @@ pandas的要求的结构，我们就知道，不仅仅有self.datas[0].close,还
 这里的index是有意义的，0代表当前时刻，-1代表前一时刻，1代表后一时刻，以此类推
 
 所以在next中使用self.dataclose[0],self.dataclose[-1]
+
+## 安装TA-lib
+
+下载TA_Lib-0.4.19-cp37-cp37m-win_amd64
+
+	pip install TA_Lib-0.4.19-cp37-cp37m-win_amd64.whl
