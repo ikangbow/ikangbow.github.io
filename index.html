@@ -3052,7 +3052,9 @@ dataframe = pd.read_csv(&apos;dfqc.csv&apos;, index_col=0, parse_dates=True)
 self.datas[0].close[-1]
 </code></pre><p>这里的index是有意义的，0代表当前时刻，-1代表前一时刻，1代表后一时刻，以此类推</p>
 <p>所以在next中使用self.dataclose[0],self.dataclose[-1]</p>
-
+<h2 id="安装TA-lib"><a href="#安装TA-lib" class="headerlink" title="安装TA-lib"></a>安装TA-lib</h2><p>下载TA_Lib-0.4.19-cp37-cp37m-win_amd64</p>
+<pre><code>pip install TA_Lib-0.4.19-cp37-cp37m-win_amd64.whl
+</code></pre>
           
         
       
