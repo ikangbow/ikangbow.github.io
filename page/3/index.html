@@ -315,6 +315,885 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/23/mongo/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/23/mongo/" itemprop="url">mongo</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T08:51:04+08:00">
+                2020-05-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/mongo/" itemprop="url" rel="index">
+                    <span itemprop="name">mongo</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="什么是MongoDB"><a href="#什么是MongoDB" class="headerlink" title="什么是MongoDB ?"></a>什么是MongoDB ?</h1><p>MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。<br>在高负载的情况下，添加更多的节点，可以保证服务器性能。<br>MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。<br>MongoDB 将数据存储为一个文档，数据结构由键值(key=&gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。</p>
+<p>NoSQL，指的是非关系型的数据库。NoSQL有时也称作Not Only SQL的缩写，是对不同于传统的关系型数据库的数据库管理系统的统称。<br>NoSQL用于超大规模数据的存储。（例如谷歌或Facebook每天为他们的用户收集万亿比特的数据）。这些类型的数据存储不需要固定的模式，无需多余操作就可以横向扩展。</p>
+<h1 id="主要特点"><a href="#主要特点" class="headerlink" title="主要特点"></a>主要特点</h1><ul>
+<li><p>MongoDB 是一个面向文档存储的数据库，操作起来比较简单和容易。</p>
+</li>
+<li><p>你可以在MongoDB记录中设置任何属性的索引 (如：FirstName=”Sameer”,Address=”8 Gandhi Road”)来实现更快的排序。</p>
+</li>
+<li><p>你可以通过本地或者网络创建数据镜像，这使得MongoDB有更强的扩展性。</p>
+</li>
+<li><p>如果负载的增加（需要更多的存储空间和更强的处理能力） ，它可以分布在计算机网络中的其他节点上这就是所谓的分片。</p>
+</li>
+<li><p>Mongo支持丰富的查询表达式。查询指令使用JSON形式的标记，可轻易查询文档中内嵌的对象及数组。</p>
+</li>
+<li><p>MongoDb 使用update()命令可以实现替换完成的文档（数据）或者一些指定的数据字段 。</p>
+</li>
+<li><p>Mongodb中的Map/reduce主要是用来对数据进行批量处理和聚合操作。</p>
+</li>
+<li><p>Map和Reduce。Map函数调用emit(key,value)遍历集合中所有的记录，将key与value传给Reduce函数进行处理。</p>
+</li>
+<li><p>Map函数和Reduce函数是使用Javascript编写的，并可以通过db.runCommand或mapreduce命令来执行MapReduce操作。</p>
+</li>
+<li><p>GridFS是MongoDB中的一个内置功能，可以用于存放大量小文件。</p>
+</li>
+<li><p>MongoDB允许在服务端执行脚本，可以用Javascript编写某个函数，直接在服务端执行，也可以把函数的定义存储在服务端，下次直接调用即可。</p>
+</li>
+<li><p>MongoDB支持各种编程语言:RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言。</p>
+</li>
+<li><p>MongoDB安装简单。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1></li>
+</ul>
+<ol>
+<li><p>下载mongodb-linux-x86_64-3.6.3.tar.gz</p>
+</li>
+<li><p>解压tar -zxvf mongodb-linux-x86_64-3.0.6.tgz</p>
+</li>
+<li><p>在与bin同级的目录下建立data文件夹</p>
+</li>
+<li><p>mongo.config文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">port=27017</span><br><span class="line">logpath=/airthink/mongodb-linux-x86_64-3.6.3/mongod.log</span><br><span class="line">pidfilepath=/airthink/mongodb-linux-x86_64-3.6.3/mongod.pid</span><br><span class="line">logappend=true</span><br><span class="line">fork=true</span><br><span class="line">maxConns=3000</span><br><span class="line">dbpath=/airthink/mongodb-linux-x86_64-3.6.3/data</span><br><span class="line">auth=true</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动./mongodb-linux-x86_64-3.6.3/bin/mongo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var schema = db.system.version.findOne(&#123;_id:&quot;authSchema&quot;&#125;);//驱动版本5--SCRAM-SHA-1需要修改成：3--Mongodb-CR</span><br><span class="line">schema. currentVersion = 3;</span><br><span class="line">db.system.version.save(schema);</span><br><span class="line"></span><br><span class="line">db.createUser(&#123;user:&quot;admin&quot;,pwd:&quot;mypass&quot;,roles:[&quot;readWriteAnyDatabase&quot;, &quot;userAdminAnyDatabase&quot;, &quot;dbAdminAnyDatabase&quot;]&#125;);</span><br><span class="line"></span><br><span class="line">windows下的启动命令到bin目录下  start mongod</span><br></pre></td></tr></table></figure>
+<h1 id="MongoDB用户角色配置"><a href="#MongoDB用户角色配置" class="headerlink" title="MongoDB用户角色配置"></a>MongoDB用户角色配置</h1></li>
+</ol>
+<h2 id="基本知识介绍"><a href="#基本知识介绍" class="headerlink" title="基本知识介绍"></a>基本知识介绍</h2><p>MongoDB基本的角色</p>
+<ol>
+<li>数据库用户角色：read、readWrite;</li>
+<li>数据库管理角色：dbAdmin、dbOwner、userAdmin；</li>
+<li>集群管理角色：clusterAdmin、clusterManager、clusterMonitor、hostManager；</li>
+<li>备份恢复角色：backup、restore；</li>
+<li>所有数据库角色：readAnyDatabase、readWriteAnyDatabase、userAdminAnyDatabase、dbAdminAnyDatabase</li>
+<li>超级用户角色：root (这里还有几个角色间接或直接提供了系统超级用户的访问（dbOwner 、userAdmin、userAdminAnyDatabase,其中MongoDB默认是没有开启用户认证的，也就是说游客也拥有超级管理员的权限。userAdminAnyDatabase：有分配角色和用户的权限，但没有查写的权限)</li>
+</ol>
+<h2 id="连接到MongoDB服务器"><a href="#连接到MongoDB服务器" class="headerlink" title="连接到MongoDB服务器"></a>连接到MongoDB服务器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">建库操作开始</span><br><span class="line"></span><br><span class="line">./mongodb-linux-x86_64-3.6.3/bin/mongo   进入mongo shell</span><br><span class="line"></span><br><span class="line">use admin(使用)</span><br><span class="line"></span><br><span class="line">db.createUser(&#123;user:&quot;root&quot;,pwd:&quot;password&quot;,roles:[&quot;root&quot;]&#125;)//创建root用户</span><br><span class="line"></span><br><span class="line">db.createUser(&#123;user:&quot;admin&quot;,pwd:&quot;admin&quot;,roles:[&#123;role:&quot;userAdminAnyDatabase&quot;,db:&quot;admin&quot;&#125;]&#125;)（创建admin用户）</span><br><span class="line"></span><br><span class="line">db.auth(&apos;admin&apos;, &apos;admin&apos;);（授权）</span><br><span class="line"></span><br><span class="line">修改mongod.conf文件</span><br><span class="line"></span><br><span class="line">security:</span><br><span class="line">authorization: enabled//启用授权</span><br><span class="line"></span><br><span class="line">重启MongoDB服务器</span><br><span class="line"></span><br><span class="line">service mongod restart</span><br><span class="line"></span><br><span class="line">创建数据库读写权限用户</span><br><span class="line"></span><br><span class="line">use admin</span><br><span class="line">db.auth(&quot;admin&quot;,&quot;password&quot;);</span><br><span class="line">use ballmatch</span><br><span class="line">db.createUser(&#123;</span><br><span class="line">    user: &quot;baidu&quot;,</span><br><span class="line">    pwd: &quot;password&quot;,</span><br><span class="line">    roles: [&#123;role: &quot;readWrite&quot;,db: &quot;baidu&quot;&#125;]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Java程序连接MongoDB"><a href="#Java程序连接MongoDB" class="headerlink" title="Java程序连接MongoDB"></a>Java程序连接MongoDB</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">MongoCredential credential = MongoCredential.createCredential(&quot;username&quot;, &quot;dbName&quot;, &quot;password&quot;.toCharArray());</span><br><span class="line">ServerAddress serverAddress = new ServerAddress(&quot;192.168.10.242&quot;, 27017);</span><br><span class="line">MongoClient mongoClient = new MongoClient(serverAddress, Arrays.asList(credential));</span><br><span class="line">DB db = mongoClient.getDB(&quot;dbName&quot;);</span><br><span class="line">returndb;</span><br><span class="line"></span><br><span class="line">//方式二</span><br><span class="line">String sURI = String.format(&quot;mongodb://%s:%s@%s:%d/%s&quot;, &quot;username&quot;, &quot;password&quot;, &quot;192.168.10.242&quot;, 27017, &quot;dbName&quot;); </span><br><span class="line">MongoClientURI uri = new MongoClientURI(sURI); </span><br><span class="line">MongoClient mongoClient = new MongoClient(uri); </span><br><span class="line">DB db = mongoClient.getDB(&quot;dbName&quot;);</span><br></pre></td></tr></table></figure>
+<h2 id="命令介绍"><a href="#命令介绍" class="headerlink" title="命令介绍"></a>命令介绍</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">修改用户密码</span><br><span class="line">db.updateUser( &quot;admin&quot;,&#123;pwd:&quot;password&quot;&#125;);</span><br><span class="line"></span><br><span class="line">密码认证</span><br><span class="line">db.auth(&quot;admin&quot;,&quot;password&quot;);</span><br><span class="line"></span><br><span class="line">MongoDB连接信息查询</span><br><span class="line">db.serverStatus().connections;</span><br><span class="line"></span><br><span class="line">关闭MongoDB服务</span><br><span class="line">use admin;</span><br><span class="line">db.shutdownServer();</span><br><span class="line"></span><br><span class="line">删除用户</span><br><span class="line">删除用户(需要root权限，会将所有数据库中的football用户删除)</span><br><span class="line">db.system.users.remove(&#123;user:&quot;baidu&quot;&#125;);</span><br><span class="line"></span><br><span class="line">删除用户(权限要求没有那么高，只删除本数据中的football用户)</span><br><span class="line">db.dropUser(&quot;baidu&quot;);</span><br></pre></td></tr></table></figure>
+<h1 id="mongoTemplate使用示例"><a href="#mongoTemplate使用示例" class="headerlink" title="mongoTemplate使用示例"></a>mongoTemplate使用示例</h1><h2 id="对匹配到的数据进行更新-inc"><a href="#对匹配到的数据进行更新-inc" class="headerlink" title="对匹配到的数据进行更新(inc)"></a>对匹配到的数据进行更新(inc)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Query query = new Query();</span><br><span class="line">query.addCriteria(Criteria.where(&quot;accountName&quot;).is(username));</span><br><span class="line">if (null != password)&#123;</span><br><span class="line">        query.addCriteria(Criteria.where(&quot;accountPwd&quot;).is(password));</span><br><span class="line">&#125;</span><br><span class="line">Account account = this.mongoTemplate.findOne(query, Account.class);</span><br><span class="line">if (account != null) &#123;</span><br><span class="line">    Update update = new Update();</span><br><span class="line">    update.inc(&quot;loginTimes&quot;, 1);</span><br><span class="line">    this.mongoTemplate.updateFirst(query, update, Account.class);//查找并更新</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mongoTemplate.updateFirst(Query.query(Criteria.where(&quot;_id&quot;).is(favor.getTypeId())),new Update().inc(&quot;favorTimes&quot;, 1), News.class);</span><br><span class="line"></span><br><span class="line">mongoTemplate.updateFirst(Query.query(Criteria.where(&quot;_id&quot;).is(favor.getTypeId())),new Update().inc(&quot;favorTimes&quot;, -1), News.class);</span><br></pre></td></tr></table></figure>
+<h2 id="查询一条记录和保存（findOne-save）"><a href="#查询一条记录和保存（findOne-save）" class="headerlink" title="查询一条记录和保存（findOne/save）"></a>查询一条记录和保存（findOne/save）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Account account = mongoTemplate.findOne(Query.query(Criteria.where(&quot;accountName&quot;).is(accountName)),Account.class);</span><br><span class="line"></span><br><span class="line">account.setAccountPwd(passwd);</span><br><span class="line"></span><br><span class="line">mongoTemplate.save(account);</span><br></pre></td></tr></table></figure>
+<h2 id="多条件匹配（并的关系）"><a href="#多条件匹配（并的关系）" class="headerlink" title="多条件匹配（并的关系）"></a>多条件匹配（并的关系）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">criteria.andOperator(Criteria.where(&quot;phone&quot;).is(phone), Criteria.where(&quot;status&quot;).is(0));</span><br><span class="line">List&lt;VerifyCode&gt; codes = mongoTemplate.find(Query.query(criteria), VerifyCode.class);</span><br><span class="line"></span><br><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">criteria.andOperator(Criteria.where(&quot;entityID&quot;).is(entityID), Criteria.where(&quot;accountType&quot;).is(accountType), Criteria.where(&quot;weUnionId&quot;).ne(&quot;&quot;).ne(null));</span><br><span class="line">Account Account = mongoTemplate.findOne(Query.query(criteria), Account.class);</span><br><span class="line"></span><br><span class="line">Boolean isFavor = mongoTemplate.exists(Query.query(Criteria.where(&quot;typeId&quot;).is(favor.getTypeId()).and(&quot;type&quot;).is(favor.getType()).and(&quot;userId&quot;).is(favor.getUserId())), Favor.class);</span><br></pre></td></tr></table></figure>
+<h2 id="多条件匹配（或的关系）"><a href="#多条件匹配（或的关系）" class="headerlink" title="多条件匹配（或的关系）"></a>多条件匹配（或的关系）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">criteria.orOperator(Criteria.where(&quot;status&quot;).is(1), Criteria.where(&quot;status&quot;).is(0));</span><br><span class="line">List&lt;VerifyCode&gt; codes = mongoTemplate.find(Query.query(criteria), VerifyCode.class);</span><br></pre></td></tr></table></figure>
+<h2 id="根据id查找并删除"><a href="#根据id查找并删除" class="headerlink" title="根据id查找并删除"></a>根据id查找并删除</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Account account = mongoTemplate.findById(id, Account.class); </span><br><span class="line">mongoTemplate.remove(account);</span><br></pre></td></tr></table></figure>
+<h2 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">long count = mongoTemplate.count(Query.query(Criteria.where(&quot;accountName&quot;).is(accountName)), Account.class);</span><br></pre></td></tr></table></figure>
+<h2 id="模糊匹配并排序"><a href="#模糊匹配并排序" class="headerlink" title="模糊匹配并排序"></a>模糊匹配并排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">criteria.andOperator(Criteria.where(&quot;province&quot;).regex(province));//正则</span><br><span class="line">mongoTemplate.find(Query.query(criteria).with(new Sort(Direction.ASC, &quot;order&quot;)), Bbatch.class);</span><br></pre></td></tr></table></figure>
+<h2 id="distinct查询"><a href="#distinct查询" class="headerlink" title="distinct查询"></a>distinct查询</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> DBObject dbObject = new BasicDBObject(&quot;schoolId&quot;, bschool.get_id());</span><br><span class="line">List&lt;String&gt; provinces = mongoTemplate.getCollection(</span><br><span class="line">mongoTemplate.getCollectionName(BschoolScoreline.class)) .distinct(&quot;province&quot;, dbObject);</span><br><span class="line">bschool.setProvinces(provinces);</span><br></pre></td></tr></table></figure>
+<h2 id="查找并所有排序"><a href="#查找并所有排序" class="headerlink" title="查找并所有排序"></a>查找并所有排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongoTemplate.find(new Query().with(new Sort(Direction.ASC, &quot;order&quot;,&quot;createTime&quot;)), Bschool.class);</span><br></pre></td></tr></table></figure>
+<h2 id="in查询"><a href="#in查询" class="headerlink" title="in查询"></a>in查询</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;MpropValue&gt; mpropValueList = mongoTemplate.find(Query.query(Criteria.where(&quot;propId&quot;).in(mprop1.get_id())), MpropValue.class);</span><br></pre></td></tr></table></figure>
+<h2 id="设置唯一字段"><a href="#设置唯一字段" class="headerlink" title="设置唯一字段"></a>设置唯一字段</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//used 是1 将其他所有是1的更新为0</span><br><span class="line">    if(address.getUsed()==1)&#123;</span><br><span class="line">    Query q = new Query(Criteria.where(&quot;userId&quot;).is(user.get_id()));//查询</span><br><span class="line">    Update u = new Update().set(&quot;used&quot;,0);</span><br><span class="line">    BulkOperations ops = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, &quot;address&quot;);</span><br><span class="line">    ops.updateMulti(q,u);//全部更新</span><br><span class="line">    ops.execute();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="插入多条数据"><a href="#插入多条数据" class="headerlink" title="插入多条数据"></a>插入多条数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public ReturnStatus upsert(List&lt;BspecialLink&gt; specialLinks) &#123;</span><br><span class="line">    ReturnStatus status;</span><br><span class="line">    mongoTemplate.insertAll(specialLinks);</span><br><span class="line">    status = new ReturnStatus(true);</span><br><span class="line">    return status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="获取数据库所有集合名称"><a href="#获取数据库所有集合名称" class="headerlink" title="获取数据库所有集合名称"></a>获取数据库所有集合名称</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; sets = mongoTemplage.getDb().getCollectionNames();</span><br></pre></td></tr></table></figure>
+<h2 id="查询当天数据"><a href="#查询当天数据" class="headerlink" title="查询当天数据"></a>查询当天数据</h2><pre><code>private static Date getStartTime() {
+    Calendar todayStart = Calendar.getInstance();
+    todayStart.set(Calendar.HOUR_OF_DAY, 0);
+    todayStart.set(Calendar.MINUTE, 0);
+    todayStart.set(Calendar.SECOND, 0);
+    todayStart.set(Calendar.MILLISECOND, 0);
+    return todayStart.getTime();
+}
+
+private static Date getEndTime() {
+    Calendar todayEnd = Calendar.getInstance();
+    todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+    todayEnd.set(Calendar.MINUTE, 59);
+    todayEnd.set(Calendar.SECOND, 59);
+    todayEnd.set(Calendar.MILLISECOND, 999);
+    return todayEnd.getTime();
+}
+
+Criteria criteria = new Criteria();
+criteria.andOperator(
+        Criteria.where(&quot;type&quot;).is(type),
+        Criteria.where(&quot;typeId&quot;).is(typeId),
+        Criteria.where(&quot;userId&quot;).is(user.get_id()),
+        Criteria.where(&quot;createTime&quot;).gte(getStartTime())
+                .lte(getEndTime()));
+return mongoTemplate.exists(Query.query(criteria), Zan.class);
+</code></pre><h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><ol>
+<li><p>删除字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.yourcollection.update(&#123;&#125;,&#123;$unset:&#123;&quot;需要删除的字段&quot;:&quot;&quot;&#125;&#125;,false,true)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将匹配到的值全部更新</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.getCollection(&quot;bschool&quot;).update(&#123;&quot;state&quot;:0&#125;,&#123;$set:&#123;&quot;state&quot;:&quot;1&quot;&#125;&#125;,&#123;&apos;multi&apos;:true&#125;)</span><br></pre></td></tr></table></figure>
+<p>db.getCollection(“pdfChapterItem”).update({}, {$rename : {“remark” : “abbr”}}, false, true)//更新所有字段名</p>
+</li>
+<li><p>建立索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.bschoolScorelineDetail.ensureIndex(&#123;&quot;schoolId&quot;:1,&quot;type&quot;:1,&quot;batch&quot;:1,&quot;province&quot;:1&#125;,&#123;&quot;name&quot;：&quot;schoolScorelineDetail&quot;&#125;)</span><br></pre></td></tr></table></figure>
+<p>mongo中建立索引用ensureIndex({“字段1”:1,”字段2”:”-1”},{“name”:”索引名”}) 1和-1代表正序和倒序</p>
+</li>
+<li><p>mongo数据库备份操作(在mongo的安装目录的bin下执行如下命令)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">不带验证的数据库备份：</span><br><span class="line"></span><br><span class="line">mongodump -d mrmf -o /tools/test   mrmf数据库名   /tools/test要备份到的地方</span><br><span class="line"></span><br><span class="line">不带验证的数据库恢复</span><br><span class="line"></span><br><span class="line">mongorestore --db mrmf /tools/test/mrmf   mrmf数据库名   /tools/test要恢复的数据</span><br><span class="line"></span><br><span class="line">带验证的数据库备份：</span><br><span class="line"></span><br><span class="line">mongodump -d mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase=admin -o /tools/test  </span><br><span class="line"></span><br><span class="line">带验证的数据库恢复：</span><br><span class="line"></span><br><span class="line">mongorestore --db mrmf -u admin -p &quot;ie8*kskIkd123&quot; --authenticationDatabase=admin /tools/test/red</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开启慢日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">在客户端调用db.setProfilingLevel(级别) 命令来实时配置。可以通过db.getProfilingLevel()命令来获取当前的Profile级别。</span><br><span class="line"></span><br><span class="line">&gt; db.setProfilingLevel(2); </span><br><span class="line">&gt; &#123;&quot;was&quot; : 0 , &quot;ok&quot; : 1&#125; </span><br><span class="line">&gt; db.getProfilingLevel()</span><br><span class="line">上面斜体的级别可以取0，1，2 三个值，他们表示的意义如下：</span><br><span class="line">0 – 不开启</span><br><span class="line">1 – 记录慢命令 (默认为&gt;100ms)</span><br><span class="line">2 – 记录所有命令</span><br><span class="line">Profile 记录在级别1时会记录慢命令，那么这个慢的定义是什么?上面我们说到其默认为100ms，当然有默认就有设置，其设置方法和级别一样有两种，一种是通过添加–slowms启动参数配置。第二种是调用db.setProfilingLevel时加上第二个参数：</span><br><span class="line">db.setProfilingLevel( level , slowms ) </span><br><span class="line">db.setProfilingLevel( 1 , 10 );</span><br><span class="line">Mongo Profile 记录是直接存在系统db里的，记录位置 system.profile ，所以，我们只要查询这个Collection的记录就可以获取到我们的 Profile 记录了。</span><br><span class="line"></span><br><span class="line">Profile 信息内容详解：</span><br><span class="line"></span><br><span class="line">ts-该命令在何时执行.</span><br><span class="line"></span><br><span class="line">millis Time-该命令执行耗时，以毫秒记.</span><br><span class="line"></span><br><span class="line">info-本命令的详细信息.</span><br><span class="line"></span><br><span class="line">query-表明这是一个query查询操作.</span><br><span class="line"></span><br><span class="line">ntoreturn-本次查询客户端要求返回的记录数.比如, findOne()命令执行时 ntoreturn 为 1.有limit(n) 条件时ntoreturn为n.</span><br><span class="line"></span><br><span class="line">query-具体的查询条件(如x&gt;3).</span><br><span class="line"></span><br><span class="line">nscanned-本次查询扫描的记录数.</span><br><span class="line"></span><br><span class="line">reslen-返回结果集的大小.</span><br><span class="line"></span><br><span class="line">nreturned-本次查询实际返回的结果集.</span><br><span class="line"></span><br><span class="line">update-表明这是一个update更新操作.</span><br><span class="line"></span><br><span class="line">upsert-表明update的upsert参数为true.此参数的功能是如果update的记录不存在，则用update的条件insert一条记录.</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>　　moved-表明本次update是否移动了硬盘上的数据，如果新记录比原记录短，通常不会移动当前记录，如果新记录比原记录长，那么可能会移动记录到其它位置，这时候会导致相关索引的更新.磁盘操作更多，加上索引更新，会使得这样的操作比较慢.</p>
+<p>　　insert-这是一个insert插入操作.</p>
+<p>　　getmore-这是一个getmore 操作，getmore通常发生在结果集比较大的查询时，第一个query返回了部分结果，后续的结果是通过getmore来获取的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">#下面是一个超过200ms的查询语句</span><br><span class="line">&#123; </span><br><span class="line">&quot;op&quot; : &quot;query&quot;,                     #操作类型，有insert、query、update、remove、getmore、command  </span><br><span class="line">&quot;ns&quot; : &quot;F10data3.f10_2_8_3_jgcc&quot;, </span><br><span class="line">&quot;query&quot; : &#123;                         #具体的查询语句 包括过滤条件，limit行数  排序字段</span><br><span class="line">    filter&quot; : &#123;</span><br><span class="line">        &quot;jzrq&quot; : &#123;</span><br><span class="line">            &quot;$gte&quot; : ISODate(&quot;2017-03-31T16:00:00.000+0000&quot;), </span><br><span class="line">            &quot;$lte&quot; : ISODate(&quot;2017-06-30T15:59:59.000+0000&quot;)</span><br><span class="line">        &#125;, </span><br><span class="line">        &quot;jglxfldm&quot; : 10.0</span><br><span class="line">    &#125;, </span><br><span class="line">    &quot;ntoreturn&quot; : 200.0,    </span><br><span class="line">    &quot;sort&quot; : &#123;                      #如果有排序  则显示排序的字段 这里是 RsId</span><br><span class="line">        &quot;RsId&quot; : 1.0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, </span><br><span class="line">&quot;keysExamined&quot; : 0.0,               #索引扫描数量 这里是全表扫描，没有用索引 所以是 0</span><br><span class="line">&quot;docsExamined&quot; : 69608.0,           #浏览的文档数 这里是全表扫描 所以是整个collection中的全部文档数</span><br><span class="line">&quot;numYield&quot; : 546.0,                 #该操作为了使其他操作完成而放弃的次数。通常来说，当他们需要访问</span><br><span class="line">                                    还没有完全读入内存中的数据时，操作将放弃。这使得在MongoDB为了</span><br><span class="line">                                    放弃操作进行数据读取的同时，还有数据在内存中的其他操作可以完成。</span><br><span class="line">&quot;locks&quot; : &#123;                         #锁信息，R：全局读锁；W：全局写锁；r：特定数据库的读锁；w：特定数据库的写锁</span><br><span class="line">    &quot;Global&quot; : &#123;</span><br><span class="line">        &quot;acquireCount&quot; : &#123;</span><br><span class="line">            &quot;r&quot; : NumberLong(1094)  #该操作获取一个全局级锁花费的时间。</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    &quot;Database&quot; : &#123;</span><br><span class="line">        &quot;acquireCount&quot; : &#123;</span><br><span class="line">            &quot;r&quot; : NumberLong(547)  </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, </span><br><span class="line">    &quot;Collection&quot; : &#123;</span><br><span class="line">        &quot;acquireCount&quot; : &#123;</span><br><span class="line">            &quot;r&quot; : NumberLong(547)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, </span><br><span class="line">&quot;nreturned&quot; : 200.0,                #返回的文档数量</span><br><span class="line">&quot;responseLength&quot; : 57695.0,         #返回字节长度，如果这个数字很大，考虑值返回所需字段</span><br><span class="line">&quot;millis&quot; : 264.0,                   #消耗的时间（毫秒）</span><br><span class="line">&quot;planSummary&quot; : &quot;COLLSCAN, COLLSCAN&quot;, #执行概览 从这里看来 是全表扫描 </span><br><span class="line">&quot;execStats&quot; : &#123;                       #详细的执行计划 这里先略过 后续可以用 explain来具体分析</span><br><span class="line">&#125;, </span><br><span class="line">&quot;ts&quot; : ISODate(&quot;2017-08-24T02:32:49.768+0000&quot;),  #命令执行的时间</span><br><span class="line">&quot;client&quot; : &quot;10.3.131.96&quot;,                        #访问的ip或者主机</span><br><span class="line">&quot;allUsers&quot; : [</span><br><span class="line">], </span><br><span class="line">&quot;user&quot; : &quot;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>MongoDB 查询优化</p>
+<ol>
+<li>　如果发现 millis 值比较大，那么就需要作优化。</li>
+<li>　如果docsExamined数很大，或者接近记录总数（文档数），那么可能没有用到索引查询，而是全表扫描。</li>
+<li>　如果keysExamined数为0，也可能是没用索引。</li>
+<li>　结合 planSummary 中的显示，上例中是 “COLLSCAN, COLLSCAN” 确认是全表扫描</li>
+<li>　如果 keysExamined 值高于 nreturned 的值，说明数据库为了找到目标文档扫描了很多文档。这时可以考虑创建索引来提高效率。</li>
+<li>　索引的键值选择可以根据 query 中的输出参考，上例中 filter:包含了 jzrq和jglxfldm 并且按照RsId排序，所以 我们的索引索引可以这么建: db.f10_2_8_3_jgcc.ensureindex({jzrq:1,jglxfldm:1,RsId:1})</li>
+</ol>
+<h1 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">示例一</span><br><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">criteria.andOperator(Criteria.where(&quot;userId&quot;).is(uid), Criteria.where(&quot;type&quot;).is(2));//查询条件</span><br><span class="line">Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),Aggregation.group(&quot;content&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC,&quot;count&quot;));</span><br><span class="line">AggregationResults&lt;SearchKeyWords&gt; ar = mongoTemplate.aggregate(aggregation,</span><br><span class="line">Searched.class, SearchKeyWords.class);//Searched为要查询的类，SearchKeyWords为查询结果的vo对象</span><br><span class="line">List&lt;SearchKeyWords&gt; list = ar.getMappedResults();</span><br><span class="line"></span><br><span class="line">public class SearchKeyWords &#123;</span><br><span class="line"></span><br><span class="line">    public String _id;//_id: &quot;中华&quot;  重复的字段</span><br><span class="line">    public int count;//count: 57   重复次数</span><br><span class="line">    public int getCount() &#123;</span><br><span class="line">        return count;</span><br><span class="line">    &#125;</span><br><span class="line">    public void setCount(int count) &#123;</span><br><span class="line">        this.count = count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/05/23/mongo/aggregation.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">示例二</span><br><span class="line">//分组group、排序sort统计每个分类下商品个数</span><br><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),</span><br><span class="line">        Aggregation.group(&quot;categoryId&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC,&quot;count&quot;));</span><br><span class="line"></span><br><span class="line">AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(aggregation,</span><br><span class="line">        Goods.class, BasicDBObject.class);</span><br><span class="line">for (BasicDBObject basicDBObject : ar) &#123;</span><br><span class="line">    logger.info(JsonUtils.toJson(basicDBObject));</span><br><span class="line">&#125;</span><br><span class="line">//输出结果</span><br><span class="line">2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] &#123;&quot;_id&quot;:&quot;6430379335205566832&quot;,&quot;count&quot;:1&#125;//分类id和当前分类下商品个数</span><br><span class="line">2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] &#123;&quot;_id&quot;:&quot;8732390723817262538&quot;,&quot;count&quot;:2&#125;</span><br><span class="line">2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] &#123;&quot;_id&quot;:&quot;4479460853249390323&quot;,&quot;count&quot;:2&#125;</span><br><span class="line">2019-05-06 11:13:11 [com.badou.service.basic.goods.GoodsService]-[INFO] &#123;&quot;_id&quot;:&quot;6571438787886532072&quot;,&quot;count&quot;:16&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">示例三</span><br><span class="line">//两个集合关联查询 Aggregation.lookup</span><br><span class="line">//若 A集合关联B集合</span><br><span class="line">//参数： from B集合名</span><br><span class="line">//localField A集合存外键的字段</span><br><span class="line">//foreignField B集合与A集合关联的字段</span><br><span class="line">//as 重新组合成C集合名称</span><br><span class="line">语法</span><br><span class="line">db.collection.aggregate([&#123;</span><br><span class="line">   $lookup:</span><br><span class="line">     &#123;</span><br><span class="line">       from: &lt;collection to join&gt;,</span><br><span class="line">       localField: &lt;field from the input documents&gt;,</span><br><span class="line">       foreignField: &lt;field from the documents of the &quot;from&quot; collection&gt;,</span><br><span class="line">       as: &lt;output array field&gt;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;])</span><br><span class="line"></span><br><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">criteria.andOperator(Criteria.where(&quot;_id&quot;).is(&quot;6118446118773213048&quot;));</span><br><span class="line">Aggregation aggregation = Aggregation.newAggregation(</span><br><span class="line">        Aggregation.match(criteria),</span><br><span class="line">        Aggregation.lookup(&quot;goodsCategory&quot;, &quot;categoryId&quot;, &quot;_id&quot;, &quot;goodsCategory&quot;),</span><br><span class="line">        Aggregation.unwind(&quot;goodsCategory&quot;),</span><br><span class="line">        Aggregation.project(&quot;title&quot;,&quot;price&quot;).and(&quot;goodsCategory.name&quot;).as(&quot;categoryName&quot;).and(&quot;goodsCategory.order&quot;).as(&quot;categoryOrder&quot;)</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">AggregationResults&lt;BasicDBObject&gt; ar = mongoTemplate.aggregate(</span><br><span class="line">        aggregation, Goods.class, BasicDBObject.class);</span><br><span class="line">for (BasicDBObject basicDBObject : ar) &#123;</span><br><span class="line">    logger.info(JsonUtils.toJson(basicDBObject));</span><br><span class="line">&#125;</span><br><span class="line">//输出结果</span><br><span class="line">2019-05-06 21:17:26 [com.badou.service.basic.goods.GoodsService]-[INFO] &#123;&quot;_id&quot;:&quot;6118446118773213048&quot;,&quot;title&quot;:&quot;小学生必备国学常识&amp;小学生必读国学经典&quot;,&quot;price&quot;:&quot;10.0&quot;,&quot;categoryName&quot;:&quot;小学生&quot;,&quot;categoryOrder&quot;:&quot;1&quot;&#125;</span><br><span class="line"></span><br><span class="line">示例四(未曾验证)</span><br><span class="line">//全文搜索查询</span><br><span class="line">//设置索引：db.logInfo.ensureIndex(msg:&quot;text&quot;)</span><br><span class="line">Query query = TextQuery.query(new TextCriteria().matching(&quot;coffee&quot;).matching(&quot;-cake&quot;));</span><br><span class="line">//-cake表示不匹配不包含cake与notMatching类似</span><br><span class="line">//Query query = TextQuery.searching((new TextCriteria().matching(&quot;coffee&quot;).notMatching(&quot;-cake&quot;))</span><br><span class="line">List&lt;LogInfoCol&gt; lfs = mongoTemplate.find(query,LogInfoCol.class);</span><br><span class="line">if(lfs!=null)&#123;</span><br><span class="line">    for(LogInfoCol logInfoCol:lfs)&#123;</span><br><span class="line">        logger.info(JSON.toString(logInfoCol));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">示例五(未曾验证)</span><br><span class="line">//得到范围内数据：以Circle构造函数，第一第二个参数为坐标，第三个参数为距离半径查找符合条件的</span><br><span class="line">Circle circle = new Circle(4.2341111,63.00001,0.01);</span><br><span class="line">List&lt;PositionCol&gt; positionCols = mongoTemplate.find(new Query(Criteria.where(&quot;location&quot;).within(circle)),PositionCol.class);</span><br><span class="line">if(positionCols!=null)&#123;</span><br><span class="line">    for(PositionCol positionCol:positionCols)&#123;</span><br><span class="line">        logger.info(JSON.toJSONString(positionCol))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">示例六(未曾验证)</span><br><span class="line">//查找坐标周围10KM内的所有商店</span><br><span class="line">Point location = new Point(116.425253,39.925338);</span><br><span class="line">NearQuery query = NearQuery.near(location).maxDistance(new Distance(10,Metrice.KILOMETERS));</span><br><span class="line">GeoResults&lt;PositionCol&gt; positions = mongoTemplate.geoNear(query,PositionCol.class);</span><br><span class="line">if(positionCols!=null)&#123;</span><br><span class="line">    for(GeoResults&lt;PositionCol&gt;geoResult :positions)&#123;</span><br><span class="line">        logger.info(geoResult.getContent().getBuissName()+&quot;-&quot;+geoResult.getDistance().getValue());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">示例七</span><br><span class="line">mongo支持的查询参数实例</span><br><span class="line">fpi.getParams().put(&quot;state|integer&quot;, &quot;1&quot;);           相当于is       一对一</span><br><span class="line">fpi.getParams().put(&quot;ne:state|integer&quot;, &quot;1&quot;);           相当于not is       一对一</span><br><span class="line">fpi.getParams().put(&quot;all:keywords&quot;, keyword);        keywords为list 多对一</span><br><span class="line">fpi.getParams().put(&quot;in:_id|array&quot;, &quot;0,1&quot;);          包含    一对多</span><br><span class="line">fpi.getParams().put(&quot;nin:_id|array&quot;, &quot;0,1&quot;);         排除id  一对多</span><br><span class="line">fpi.getParams().put(&quot;gte:serialNum&quot;, start);        </span><br><span class="line">fpi.getParams().put(&quot;lte:serialNum&quot;, end); </span><br><span class="line">//日期查询</span><br><span class="line">Date currentDate = DateUtil.currentDate();</span><br><span class="line">String d = DateUtil.format(currentDate,&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line">fpi.getParams().put(&quot;gte:endDate|datetime&quot;, d);  大于当前日期的翻页查询</span><br><span class="line"></span><br><span class="line">聚合查询</span><br><span class="line">1、Criteria idcardCriteria = new Criteria();</span><br><span class="line">                idcardCriteria.orOperator(Criteria.where(&quot;idcard&quot;).regex(studentIdcard.toLowerCase()),</span><br><span class="line">                        Criteria.where(&quot;idcard&quot;).regex(studentIdcard.toUpperCase()));</span><br><span class="line">                criteria.andOperator(idcardCriteria);</span><br><span class="line"></span><br><span class="line">Mongodb: Sort operation used more than the maximum 33554432 bytes of RAM</span><br><span class="line">mongo中所有排序字段加上索引比较好</span><br><span class="line"></span><br><span class="line">Criteria criteria = new Criteria();</span><br><span class="line">criteria.andOperator(Criteria.where(&quot;shakyId&quot;).in(gshakyIds), Criteria.where(&quot;userId&quot;).in(userIds));//筛选条件（限定数据范围）</span><br><span class="line">Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),</span><br><span class="line">        Aggregation.group(&quot;userId&quot;, &quot;shakyId&quot;).count().as(&quot;count&quot;),Aggregation.sort(Sort.Direction.ASC, &quot;count&quot;));//分组  单个字段分组，直接取count;两个字段key 确定唯一一条记录,后续需要手动统计</span><br></pre></td></tr></table></figure>
+<p>AggregationResults ar = mongoTemplate.aggregate(aggregation,<br>Ugclock.class, BasicDBObject.class);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">for (BasicDBObject basicDBObject : ar) &#123;</span><br><span class="line">    String id = basicDBObject.getString(&quot;shakyId&quot;);</span><br><span class="line">    int count = 1;</span><br><span class="line">    if (shakyCount.containsKey(id)) &#123;</span><br><span class="line">        count = shakyCount.get(id);</span><br><span class="line">        count++;</span><br><span class="line">        shakyCount.put(id, count);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        shakyCount.put(id, count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">2、以id为group by计算num的总值sum（）</span><br><span class="line">Aggregation agg = Aggregation.newAggregation(</span><br><span class="line">                Aggregation.group(new String[] &#123;&quot;_id&quot;&#125;).sum(&quot;num&quot;).as(&quot;num&quot;)</span><br><span class="line">                );</span><br><span class="line">3、以id为group by找出num的最大值max()                </span><br><span class="line">Aggregation agg = Aggregation.newAggregation(</span><br><span class="line">                Aggregation.group(new String[] &#123;&quot;_id&quot;&#125;).max(&quot;num&quot;).as(&quot;num&quot;)</span><br><span class="line">                );                </span><br><span class="line">Aggregation agg = Aggregation.newAggregation(</span><br><span class="line">                Aggregation.group(new String[] &#123;&quot;_id&quot;&#125;).min(&quot;num&quot;).as(&quot;num&quot;)</span><br><span class="line">                );</span><br><span class="line">4、以id为group by计算num的平均值avg(）</span><br><span class="line">Aggregation agg = Aggregation.newAggregation(</span><br><span class="line">                Aggregation.group(new String[] &#123;&quot;_id&quot;&#125;).avg(&quot;num&quot;).as(&quot;num&quot;)</span><br><span class="line">                );</span><br></pre></td></tr></table></figure>
+<h1 id="翻页"><a href="#翻页" class="headerlink" title="翻页"></a>翻页</h1><p>项目当中模拟插入了120W条数据，在同一个文档当中单纯查询数据的速度还不错，主要是对查询的文档字段添加了索引，但是对查询结果的前台分页确有问题。具体来说是不设置任何查询条件的时候，会查询出来将近120W条满足条件的结果，使用mongodb的limit()和skip() 来取出来 第一页前20条数据，这样在后台的java程序当中只是这20条数据占用内存。<br>代码具体形式类似于用mongodb客户端执行db.feedbackInfo.find(criteria).skip(0).limit(20) 获得第一页0-20条数据db.feedbackInfo.find(criteria).skip(20).limit(20) 获得第二页20-40条数据……db.feedbackInfo.find(criteria).skip(N).limit(20) 获得第二页N-N+20条数据但问题在于随着不断翻页，skip的值N会越来越大，前台的反应越来越慢。很直接的一个表现就是在前台从第一页直接跳转进入最后一页根本反应不过来。对于这个实际问题，原因就是本书这里所言的skip略过大量结果会带来性能问题，再根源地说是mongodb还不够完善，索引本身还比较简单。具体的这个分页效率的问题，有两种思路：第一，等mongodb升级，优化这个skip的执行效率。第二，不用skip()而实现分页效果。这个思路的基础就是mongodb本身对于where查询和limit()的效率还比较不错，也就是本来分页的那个查询用where和limit速度还可以的前提（一般就是需要建立必要的索引）。假如这个前提不成立，那没法讨论。本书接下来具体讨论了不使用skip对结果分页的实现例子，这个本质是对信息系统增加一个查询中间量——上次查询的业务数值，在逻辑上承担起跟skip相对等价的功能。比如说是第一页查询是按照一个日期date值查询，第一次用db.foo.find().sort({“date”,-1}).limit(20)而点击下一页的时候，事先将上次查询的date的边界值给传递过去，第二页查询的时候就使用新的find条件查询db.foo.find({“date”:{“$gt”:latest.date}}); 而后再对查询结果排序即可这种绕过skip的方式评价：第一，很难比较方便地解决所有的分页问题，简单来说 对于使用正则表达式的查询，根本无法通过记录边界条件来实现。第二，不得不多传递上次查询的那个边界条件，增加了工作量，不够优雅。第三，只能够解决一页一页往下翻页的问题，如果我要从第1页直接跳到100页，就束手无策</p>
+<h2 id="翻页的实现一"><a href="#翻页的实现一" class="headerlink" title="翻页的实现一"></a>翻页的实现一</h2><h3 id="skip实现跳页（比较简单，数据量大了不行）"><a href="#skip实现跳页（比较简单，数据量大了不行）" class="headerlink" title="skip实现跳页（比较简单，数据量大了不行）"></a>skip实现跳页（比较简单，数据量大了不行）</h3><pre><code> /**
+ *db.getCollection(&apos;user&apos;).find({})是指查询全部。
+ *sort()设置排序，本示例是指以_id作为条件，正序排序。若将数字1改为-1，则为倒序。
+ *skip()设置跳页，本示例是指跳过前10条，从第11条开始显示。
+ *limit()设置每页的显示数量，本例是指每页限制显示10条。
+ */
+db.getCollection(&apos;user&apos;).find({}).sort({&quot;ID&quot;:1}).skip(10).limit(10)
+</code></pre><h3 id="非skip实现跳页"><a href="#非skip实现跳页" class="headerlink" title="非skip实现跳页"></a>非skip实现跳页</h3><pre><code>原理：以自增_id作为主条件，获取前一页的最后一条记录，查询之后的指定条记录
+
+//根据_id，查询前10条
+var a = db. getCollection(&apos;user&apos;).find({}).sort(&quot;_id&quot;,1).limit(10)
+//定义变量last
+var last  = null
+//循环遍历
+while(a.hasNext()){
+    last=a.next;//循环到最后，last接收的是最后一条的信息
+}
+//核心是&quot;_id&quot;:{&quot;$gt&quot;:last._id}，即查询大于最后一条的_id的后10条信息
+db.getCollection(&apos;slt&apos;).find({&quot;_id&quot;:{&quot;$gt&quot;:last._id}}).sort({_id:1}).limit(10)
+</code></pre><h2 id="翻页的实现二（非skip实现跳页，以自增-id作为主条件）"><a href="#翻页的实现二（非skip实现跳页，以自增-id作为主条件）" class="headerlink" title="翻页的实现二（非skip实现跳页，以自增_id作为主条件）"></a>翻页的实现二（非skip实现跳页，以自增_id作为主条件）</h2><pre><code>private List&lt;JSONObject&gt; findOrderList(Map&lt;String,Object&gt; paramOptions,int page,int size,String sidx,String sord) throws Exception {
+            //连接数据库
+    MongoCollection&lt;Document&gt; mongoCollection = getMdbCollection();
+    //进行第一次查询，条件中没有skip
+    MongoCursor&lt;Document&gt; iterable = mongoCollection.find().limit(size).sort(new BasicDBObject(&quot;_id&quot;, 1)).iterator(); 
+    //定义orderItems，用以接收查询的信息
+    List&lt;JSONObject&gt; orderItems = new ArrayList&lt;JSONObject&gt;();
+
+    //如果只有一页或第一页，则走此条件，否，则走else
+        if(page == 1){     
+　　　　  //遍历        
+            while (iterable.hasNext()) {
+              Document next = iterable.next();
+              JSONObject a =JSONObject.parseObject(next.toJson());
+              orderItems.add(a);
+            }
+　　　　　}else{ 
+　　　　　　MongoCursor&lt;Document&gt; iterable2 = mongoCollection.find().limit(size*(page-1)).sort(new BasicDBObject(&quot;_id&quot;, 1)).iterator(); 
+         //定义变量last，用以存储每页的最后一条记录 
+　　　　　Document last = null; 
+　　　　　while (iterable2.hasNext()) { 
+　　　　　　　　last = iterable2.next(); 
+　　　　　} 
+         //定义condition，用以添加【$gt:每页最后一条记录的_id值】，作为查询条件 
+　　　　　　Map&lt;String, Object&gt; condition = new HashMap&lt;&gt;(); 
+　　　　　　if (null != last.get(&quot;_id&quot;)) { 
+　　　　　　　　condition.put(&quot;$gt&quot;,last.get(&quot;_id&quot;)); 
+ 　　　　　 } 
+　　　　　 MongoCursor&lt;Document&gt; iterable3 = mongoCollection.find(condition).limit(size).sort(new BasicDBObject(&quot;_id&quot;, 1)).iterator(); 
+　　　　　　//遍历 
+　　　　　　while (iterable.hasNext()) { 
+　　　　　　　　　　Document next = iterable.next(); 
+　　　　　　　　　　JSONObject a =JSONObject.parseObject(next.toJson()); 
+　　　　　　　　　　orderItems.add(a);
+　　　　　　} 
+　　　　　　return orderItems; 
+}
+ 注：上面是按_id正序排列的，如果想要按照倒序排列，则需要将condition.put(&quot;$gt&quot;,last.get(&quot;_id&quot;))改为condition.put(&quot;$lt&quot;,last.get(&quot;_id&quot;))，将sort(new BasicDBObject(&quot;_id&quot;, 1)改为sort(new BasicDBObject(&quot;_id&quot;, -1)。
+</code></pre><h1 id="mongo高级"><a href="#mongo高级" class="headerlink" title="mongo高级"></a>mongo高级</h1><h2 id="本地搭建副本集"><a href="#本地搭建副本集" class="headerlink" title="本地搭建副本集"></a>本地搭建副本集</h2><h3 id="mongo的版本"><a href="#mongo的版本" class="headerlink" title="mongo的版本"></a>mongo的版本</h3><p> version 3.6.5</p>
+<h3 id="副本集文件夹准备"><a href="#副本集文件夹准备" class="headerlink" title="副本集文件夹准备"></a>副本集文件夹准备</h3><pre><code>mongodb3.6 同目录下建立文件夹，存放数据
+data/mongo/27017,data/mongo/27018,data/mongo/27019
+同目录下建立文件夹存放日志数据
+data/mongo/27017log,data/mongo/27018log,data/mongo/27019log
+</code></pre><h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><pre><code>mongod --port 27017 --dbpath /data/mongo/27017 --logpath /data/mongo/27017log/27017.log --replSet rs-local-test --logappend
+mongod --port 27018 --dbpath /data/mongo/27018 --logpath /data/mongo/27018log/27018.log --replSet rs-local-test --logappend
+mongod --port 27019 --dbpath /data/mongo/27019 --logpath /data/mongo/27019log/27019.log --replSet rs-local-test --logappend
+</code></pre><p>三个服务器启动完毕之后，不要关闭。另开一个cmd窗口，连接到27017端口的服务器（连接其他端口也可以），每次启动，主服务器可能会不一样，如果连接的是主服务器，前缀会变成如下PRIMARY，如果是从服务器，前缀会变成SECONDARY</p>
+<h3 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h3><p>创建一个配置文件，在配置文件中列出每一个成员，知道彼此的存在(第二次启动就不需要再配置)</p>
+<pre><code>use test
+witched to db test
+     rs.initiate({
+      &quot;_id&quot;:&quot;rs-local-test01&quot;,
+      &quot;members&quot;:[
+     {&quot;_id&quot;:0,&quot;host&quot;:&quot;127.0.0.1:27017&quot;},
+      {&quot;_id&quot;:1,&quot;host&quot;:&quot;127.0.0.1:27018&quot;},
+      {&quot;_id&quot;:2,&quot;host&quot;:&quot;127.0.0.1:27019&quot;}
+    ]
+})
+
+{
+&quot;ok&quot; : 1,
+&quot;operationTime&quot; : Timestamp(1596076771, 1),
+&quot;$clusterTime&quot; : {
+    &quot;clusterTime&quot; : Timestamp(1596076771, 1),
+        &quot;signature&quot; : {
+            &quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;
+            &quot;keyId&quot; : NumberLong(0)
+        }
+    }
+}
+</code></pre><p>查看状态信息</p>
+<pre><code>rs-local-test:OTHER&gt; rs.status()
+{
+&quot;set&quot; : &quot;rs-local-test&quot;,
+&quot;date&quot; : ISODate(&quot;2020-07-30T02:40:29.243Z&quot;),
+&quot;myState&quot; : 1,
+&quot;term&quot; : NumberLong(1),
+&quot;heartbeatIntervalMillis&quot; : NumberLong(2000),
+&quot;optimes&quot; : {
+&quot;lastCommittedOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;readConcernMajorityOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;appliedOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;durableOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+}
+},
+&quot;members&quot; : [
+{
+&quot;_id&quot; : 0,
+&quot;name&quot; : &quot;127.0.0.1:27017&quot;,
+&quot;health&quot; : 1,
+&quot;state&quot; : 1,
+&quot;stateStr&quot; : &quot;PRIMARY&quot;,
+&quot;uptime&quot; : 286,
+&quot;optime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDate&quot; : ISODate(&quot;2020-07-30T02:40:23Z&quot;),
+&quot;infoMessage&quot; : &quot;could not find member to sync fr
+&quot;electionTime&quot; : Timestamp(1596076782, 1),
+&quot;electionDate&quot; : ISODate(&quot;2020-07-30T02:39:42Z&quot;),
+&quot;configVersion&quot; : 1,
+&quot;self&quot; : true
+},
+{
+&quot;_id&quot; : 1,
+&quot;name&quot; : &quot;127.0.0.1:27018&quot;,
+&quot;health&quot; : 1,
+&quot;state&quot; : 2,
+&quot;stateStr&quot; : &quot;SECONDARY&quot;,
+&quot;uptime&quot; : 57,
+&quot;optime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDurable&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDate&quot; : ISODate(&quot;2020-07-30T02:40:23Z&quot;),
+&quot;optimeDurableDate&quot; : ISODate(&quot;2020-07-30T02:40:2
+&quot;lastHeartbeat&quot; : ISODate(&quot;2020-07-30T02:40:28.47
+&quot;lastHeartbeatRecv&quot; : ISODate(&quot;2020-07-30T02:40:2
+),
+&quot;pingMs&quot; : NumberLong(0),
+&quot;syncingTo&quot; : &quot;127.0.0.1:27017&quot;,
+&quot;configVersion&quot; : 1
+},
+{
+&quot;_id&quot; : 2,
+&quot;name&quot; : &quot;127.0.0.1:27019&quot;,
+&quot;health&quot; : 1,
+&quot;state&quot; : 2,
+&quot;stateStr&quot; : &quot;SECONDARY&quot;,
+&quot;uptime&quot; : 57,
+&quot;optime&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDurable&quot; : {
+&quot;ts&quot; : Timestamp(1596076823, 1),
+&quot;t&quot; : NumberLong(1)
+},
+&quot;optimeDate&quot; : ISODate(&quot;2020-07-30T02:40:23Z&quot;),
+&quot;optimeDurableDate&quot; : ISODate(&quot;2020-07-30T02:40:2
+&quot;lastHeartbeat&quot; : ISODate(&quot;2020-07-30T02:40:28.47
+&quot;lastHeartbeatRecv&quot; : ISODate(&quot;2020-07-30T02:40:2
+),
+&quot;pingMs&quot; : NumberLong(0),
+&quot;syncingTo&quot; : &quot;127.0.0.1:27018&quot;,
+&quot;configVersion&quot; : 1
+}
+],
+&quot;ok&quot; : 1,
+&quot;operationTime&quot; : Timestamp(1596076823, 1),
+&quot;$clusterTime&quot; : {
+&quot;clusterTime&quot; : Timestamp(1596076823, 1),
+&quot;signature&quot; : {
+&quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;
+&quot;keyId&quot; : NumberLong(0)
+}
+}
+}
+</code></pre><p>如果是第二次启动，可以直接查看状态信息，不需要在设置配置文件。<br>查看状态信息，可以看到主服务器和备份服务器：</p>
+<pre><code>rs-local-test:SECONDARY&gt;use test
+switched to db test
+rs-local-test:SECONDARY&gt; db.isMaster()
+{
+&quot;hosts&quot; : [
+&quot;127.0.0.1:27017&quot;,
+&quot;127.0.0.1:27018&quot;,
+&quot;127.0.0.1:27019&quot;
+],
+&quot;setName&quot; : &quot;rs-local-test&quot;,
+&quot;setVersion&quot; : 1,
+&quot;ismaster&quot; : false,
+&quot;secondary&quot; : true,
+&quot;primary&quot; : &quot;127.0.0.1:27019&quot;,
+&quot;me&quot; : &quot;127.0.0.1:27017&quot;,
+&quot;lastWrite&quot; : {
+&quot;opTime&quot; : {
+&quot;ts&quot; : Timestamp(1596079583, 1),
+&quot;t&quot; : NumberLong(5)
+},
+&quot;lastWriteDate&quot; : ISODate(&quot;2020-07-30T03:26:23Z&quot;),
+&quot;majorityOpTime&quot; : {
+&quot;ts&quot; : Timestamp(1596079583, 1),
+&quot;t&quot; : NumberLong(5)
+},
+&quot;majorityWriteDate&quot; : ISODate(&quot;2020-07-30T03:26:23Z&quot;)
+},
+&quot;maxBsonObjectSize&quot; : 16777216,
+&quot;maxMessageSizeBytes&quot; : 48000000,
+&quot;maxWriteBatchSize&quot; : 100000,
+&quot;localTime&quot; : ISODate(&quot;2020-07-30T03:26:25.289Z&quot;),
+&quot;logicalSessionTimeoutMinutes&quot; : 30,
+&quot;minWireVersion&quot; : 0,
+&quot;maxWireVersion&quot; : 6,
+&quot;readOnly&quot; : false,
+&quot;ok&quot; : 1,
+&quot;operationTime&quot; : Timestamp(1596079583, 1),
+&quot;$clusterTime&quot; : {
+&quot;clusterTime&quot; : Timestamp(1596079583, 1),
+&quot;signature&quot; : {
+&quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;),
+&quot;keyId&quot; : NumberLong(0)
+}
+}
+}
+</code></pre><h3 id="读写测试"><a href="#读写测试" class="headerlink" title="读写测试"></a>读写测试</h3><p>连接主服务器后，可以写入数据：<br>重新启动一个cmd,连接一个备份服务器，查看是否数据被复制：<br>备份节点可能会落后于主节点，可能没有最新写入数据，所以备份节点默认情况下会拒绝读取请求，这是为了保护应用程序，以免意外连接到备份节点，读取到过期数据：</p>
+<pre><code>rs-local-test:SECONDARY&gt; db.foo.find()
+Error: error: {
+        &quot;operationTime&quot; : Timestamp(1596079503, 1),
+        &quot;ok&quot; : 0,
+        &quot;errmsg&quot; : &quot;not master and slaveOk=false&quot;,
+        &quot;code&quot; : 13435,
+        &quot;codeName&quot; : &quot;NotMasterNoSlaveOk&quot;,
+        &quot;$clusterTime&quot; : {
+                &quot;clusterTime&quot; : Timestamp(1596079503, 1),
+                &quot;signature&quot; : {
+                        &quot;hash&quot; : BinData(0,&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;),
+                        &quot;keyId&quot; : NumberLong(0)
+                }
+        }
+}
+
+从备份节点读取数据，需要设置标识：
+db.getMongo().setSlaveOk();
+</code></pre><h3 id="节点变更"><a href="#节点变更" class="headerlink" title="节点变更"></a>节点变更</h3><p>在主节点插入数据后，如果有备份节点服务器没有启动，当在该备份启动后，也可以查询到写入的数据：<br>不能对备份节点执行写入操作，备份节点只能通过复制功能写入数据，不接受客户端的写入请求：<br>rs-local-test:SECONDARY&gt;</p>
+<p>可以随时添加或删除成员,先按之前的方法创建一个备用服务器，再添加进去：<br>rs.add(‘127.0.0.1’:4444)<br>rs是一个全局变量，其中包含与复制相关的辅助函数。<br>删除成员：<br>rs.remove(‘127.0.0.1’:4444)</p>
+<p>添加或删除完可通过 db.isMaster()查看修改结果<br>也可rs.config();</p>
+<pre><code>rs-local-test:SECONDARY&gt; rs.config()
+{
+        &quot;_id&quot; : &quot;rs-local-test&quot;,
+        &quot;version&quot; : 1,
+        &quot;protocolVersion&quot; : NumberLong(1),
+        &quot;members&quot; : [
+                {
+                        &quot;_id&quot; : 0,
+                        &quot;host&quot; : &quot;127.0.0.1:27017&quot;,
+                        &quot;arbiterOnly&quot; : false,
+                        &quot;buildIndexes&quot; : true,
+                        &quot;hidden&quot; : false,
+                        &quot;priority&quot; : 1,
+                        &quot;tags&quot; : {
+
+                        },
+                        &quot;slaveDelay&quot; : NumberLong(0),
+                        &quot;votes&quot; : 1
+                },
+                {
+                        &quot;_id&quot; : 1,
+                        &quot;host&quot; : &quot;127.0.0.1:27018&quot;,
+                        &quot;arbiterOnly&quot; : false,
+                        &quot;buildIndexes&quot; : true,
+                        &quot;hidden&quot; : false,
+                        &quot;priority&quot; : 1,
+                        &quot;tags&quot; : {
+
+                        },
+                        &quot;slaveDelay&quot; : NumberLong(0),
+                        &quot;votes&quot; : 1
+                },
+                {
+                        &quot;_id&quot; : 2,
+                        &quot;host&quot; : &quot;127.0.0.1:27019&quot;,
+                        &quot;arbiterOnly&quot; : false,
+                        &quot;buildIndexes&quot; : true,
+                        &quot;hidden&quot; : false,
+                        &quot;priority&quot; : 1,
+                        &quot;tags&quot; : {
+
+                        },
+                        &quot;slaveDelay&quot; : NumberLong(0),
+                        &quot;votes&quot; : 1
+                }
+        ],
+        &quot;settings&quot; : {
+                &quot;chainingAllowed&quot; : true,
+                &quot;heartbeatIntervalMillis&quot; : 2000,
+                &quot;heartbeatTimeoutSecs&quot; : 10,
+                &quot;electionTimeoutMillis&quot; : 10000,
+                &quot;catchUpTimeoutMillis&quot; : -1,
+                &quot;catchUpTakeoverDelayMillis&quot; : 30000,
+                &quot;getLastErrorModes&quot; : {
+
+                },
+                &quot;getLastErrorDefaults&quot; : {
+                        &quot;w&quot; : 1,
+                        &quot;wtimeout&quot; : 0
+                },
+                &quot;replicaSetId&quot; : ObjectId(&quot;5f2232e3b3ef9f7db4cb682d&quot;)
+        }
+}
+</code></pre><p>以上参考自 <a href="https://www.cnblogs.com/a-horse-mosaic/p/9284297.html" target="_blank" rel="noopener">https://www.cnblogs.com/a-horse-mosaic/p/9284297.html</a></p>
+<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><h3 id="如何开启读写分离"><a href="#如何开启读写分离" class="headerlink" title="如何开启读写分离"></a>如何开启读写分离</h3><p>默认情况下驱动是从Replica Set 集群中的 Primary 上进行读写的，应用可以在读多写少的场景下开启读写分离，提高效率。</p>
+<p>读取偏好(Read Preference)参数</p>
+<p>primary  主节点，默认模式，读操作只在主节点，如果主节点不可用，报错或者抛异常。</p>
+<p>primaryPreferred 首选主节点，如果主节点不可用，如故障转移，读操作在从节点。</p>
+<p>secondary 从节点，读操作只在从节点，如果从节点不可用，报错或者抛异常。</p>
+<p>secondaryPreferred 首选从节点，大多情况下读操作在从节点，特殊情况（如单主节点架构）读操作在主节点。</p>
+<p>nearest 最邻近节点，读操作在最邻近的成员，可能是主节点或者从节点</p>
+<h3 id="在Mongodb中最多能创建多少集合？"><a href="#在Mongodb中最多能创建多少集合？" class="headerlink" title="在Mongodb中最多能创建多少集合？"></a>在Mongodb中最多能创建多少集合？</h3><p>默认情况下，MongoDB 的每个数据库的命名空间保存在一个 16MB 的 .ns 文件中，平均每个命名占用约 628 字节，也即整个数据库的命名空间的上限约为 24000。<br>每一个集合、索引都将占用一个命名空间。所以，如果每个集合有一个索引（比如默认的 _id 索引），那么最多可以创建 12000 个集合。如果索引数更多，则可创建的集合数就更少了。同时，如果集合数太多，一些操作也会变慢。甚至使得MongoDB集群无法服务的情况发生！</p>
+<h3 id="MongoDB有传统数据库的事务和事务回滚么？"><a href="#MongoDB有传统数据库的事务和事务回滚么？" class="headerlink" title="MongoDB有传统数据库的事务和事务回滚么？"></a>MongoDB有传统数据库的事务和事务回滚么？</h3><p>没有，请不要把它当成关系型数据库来使用，对于MongoDB集群来说，默认情况下数据也不是强一致性的，而是最终一致性。如果对数据一致性比较敏感建议更改WriteConcern级别，但后果是降低了性能，请酌情考虑。</p>
+<h3 id="MongoDB有命名规范么？"><a href="#MongoDB有命名规范么？" class="headerlink" title="MongoDB有命名规范么？"></a>MongoDB有命名规范么？</h3><ul>
+<li>不能是空字符串</li>
+<li>不能含有.、’’、*、/、\、&lt;、&gt;、:、?、$、\0。建议只使用ASCII码中字母和数字</li>
+<li>数据库名区分大小写</li>
+<li>数据库名长度最多为64字节</li>
+<li>集合名不能包含\0字符，这个字符表示集合名的结束</li>
+<li>集合名不能是空字符串””</li>
+<li>集合名不能使用系统集合的保留前缀”system.”</li>
+<li>集名名中不建议包含字符’$’，虽然很多驱动程序可以支持包含此字符的集合名</li>
+</ul>
+<h3 id="MongoDB有系统保留库名么？"><a href="#MongoDB有系统保留库名么？" class="headerlink" title="MongoDB有系统保留库名么？"></a>MongoDB有系统保留库名么？</h3><ul>
+<li>admin</li>
+<li>local</li>
+<li>config</li>
+</ul>
+<h3 id="MongoDB有连接池么？"><a href="#MongoDB有连接池么？" class="headerlink" title="MongoDB有连接池么？"></a>MongoDB有连接池么？</h3><p>MongoDB驱动中其实已经是一个现成的连接池了，而且线程安全。这个内置的连接池默认初始了100个连接，每一个操作（增删改查等）都会获取一个连接，执行操作后释放连接。<br>【题外话】请务必记得关闭资源，并且设置合理的池子连接数和超时时间。</p>
+<h3 id="内置连接池有多个重要参数，分别是"><a href="#内置连接池有多个重要参数，分别是" class="headerlink" title="内置连接池有多个重要参数，分别是"></a>内置连接池有多个重要参数，分别是</h3><ul>
+<li>connectionsPerHost：每个主机答应的连接数（每个主机的连接池大小），当连接池被用光时，会被阻塞住，默认值为100</li>
+<li>threadsAllowedToBlockForConnectionMultiplier：线程队列数，它和上面connectionsPerHost值相乘的结果就是线程队列最大值。如果连接线程排满了队列就会抛出“Out of semaphores to get db”错误，默认值为5，则最多有500个线程可以等待获取连接</li>
+<li>maxWaitTime: 被阻塞线程从连接池获取连接的最长等待时间(ms)。默认值为120,000</li>
+<li>connectTimeout：在建立（打开）套接字连接时的超时时间（ms）。默认值为10,000</li>
+<li>socketTimeout：套接字超时时间（ms）。默认值为0，无限制（infinite）</li>
+<li>autoConnectRetry：这个控制是否在连接时，会自动重试，2.13驱动已经【废弃】，请使用connectTimeout代替它</li>
+</ul>
+<p>连接池的MaximumPoolSize要有个合理值，否则这个值数据量的连接都被占用，后面再有新的连接创建时就要等待了，而不能超出池上限新建连接。除此之外还要设置合理的连接等待，连接超时时间，以防止一个连接占用时间过长，影响其它连接请求。</p>
+<h3 id="connectTimeout-和-socketTimeout-的区别"><a href="#connectTimeout-和-socketTimeout-的区别" class="headerlink" title="connectTimeout 和 socketTimeout 的区别"></a>connectTimeout 和 socketTimeout 的区别</h3><p>一次完整的请求包括三个阶段：</p>
+<ul>
+<li>建立连接</li>
+<li>数据传输</li>
+<li>断开连接</li>
+</ul>
+<p>如果与服务器(这里指数据库)请求建立连接的时间超过ConnectTimeout，就会抛 ConnectionTimeOutException，即服务器连接超时，没有在规定的时间内建立连接。<br>如果与服务器连接成功，就开始数据传输了。<br>如果服务器处理数据用时过长，超过了SocketTimeOut，就会抛出SocketTimeOutExceptin，即服务器响应超时，服务器没有在规定的时间内返回给客户端数据。</p>
+<p>所以这该死的超时该怎么配？<br>这里有一份国外写的关于超时的建议：<br><a href="http://blog.mongolab.com/2013/10/do-you-want-a-timeout/" target="_blank" rel="noopener">http://blog.mongolab.com/2013/10/do-you-want-a-timeout/</a><br>上文给出的通常情况下：connectTimeout=5000，socketTimeout=0</p>
+<h3 id="关于WriteConcern"><a href="#关于WriteConcern" class="headerlink" title="关于WriteConcern"></a>关于WriteConcern</h3><p>MongoDB提供了一个配置参数：write concern 来让用户自己衡量性能和写安全。分布式数据库中这样的参数比较常见，记得Cassandra中也有一个类似参数，不过那个好像是要写入几个节点返回成功。其实道理都一样分布式的集群环境考虑到性能因素不能确保每个成员都写入后在返回成功，所以只能交给用户根据实际场景衡量。</p>
+<ul>
+<li>Unacknowledged</li>
+<li>这个级别也属于比较低的级别，以前这个级别是驱动配置的默认级别，不过后来调整成Acknowledged级别。在这个级别下，这个驱动会根据当前系统的网络配置进行网络问题的检测，不等待Mongd的返回。代码测试：本地网络问题是否有异常？本地网络无问题是远程server问题是否异常？</li>
+<li>Acknowledged</li>
+<li>这个级别算是中等级别的配置，这个级别能够拿到mongod的返回信息：dupkey Error，以及一些其他的问题。现在这个级别是驱动的默认级别，估计是10gen公司发现好多人评价Mongodb不靠谱后改的。一般系统这个级别也就够用了。由于默认级别是Acknowledged，内部用getLastError方法检查是否写入成功的时候是也不用设置任何参数，对与Replset来说可以在配置中进行getLastErrorDefaults的配置，如果没有的话默认则是Master收到就ok。</li>
+<li>Journaled</li>
+<li>等到操作记录到Journal Log中才返回操作结果，也就是下一次JournaledLog提交。这种情况可以容忍服务器突然宕机，断电等意外的恢复。出去上边的配置还要在启动mongod的时候加上journaling 参数确保可以使用。commitlog提交间隔时间是可以配置的，单磁盘设备（physical volume, RAID device, or LVM volume）每100ms提交一次，和数据文件刷出相同频率，日志和数据分开磁盘设备的30ms提交一次。在插入数据是如果使用{j:true}则会缩短到已配置的默认设置1/3的时间。</li>
+<li>Replica Acknowledged</li>
+<li>在副本集中如果w设置为2的话则至少已经吸入到一个secondary中，我猜测写入secondary这个级别是Acknowledged级别，majority是多个secondary已经写入。如果手贱设置w参数大于replset中需要复制的secondarys的话，操作就一直等待直到达到已写入数据的服务器数量符合要求，也可以设置timeout值来指明最长等待时间。{ getLastError: 1, w: 2, wtimeout:5000 }</li>
+</ul>
+<h3 id="MongoDB的锁机制"><a href="#MongoDB的锁机制" class="headerlink" title="MongoDB的锁机制"></a>MongoDB的锁机制</h3><p>MongoDB的锁机制和一般关系数据库如 MySQL（InnoDB）, Oracle 有很大的差异，InnoDB 和 Oracle 能提供行级粒度锁，而 MongoDB v2 只能提供库级粒度锁，这意味着当 MongoDB 一个写锁处于占用状态时，其它的读写操作都得干等。</p>
+<p>初看起来库级锁在大并发环境下有严重的问题，但是 MongoDB 依然能够保持大并发量和高性能，这是因为 MongoDB 的锁粒度虽然很粗放，但是在锁处理机制和关系数据库锁有很大差异，主要表现在</p>
+<ul>
+<li>MongoDB 没有完整事务支持，操作原子性只到单个 document 级别，所以通常操作粒度比较小；</li>
+<li>MongoDB 锁实际占用时间是内存数据计算和变更时间，通常很快；</li>
+<li>MongoDB 锁有一种临时放弃机制，当出现需要等待慢速 IO 读写数据时，可以先临时放弃，等 IO 完成之后再重新获取锁。</li>
+</ul>
+<p>通常不出问题不等于没有问题，如果数据操作不当，依然会导致长时间占用写锁，比如下面提到的前台建索引操作，当出现这种情况的时候，整个数据库就处于完全阻塞状态，无法进行任何读写操作，情况十分严重。</p>
+<p>解决问题的方法，尽量避免长时间占用写锁操作，如果有一些集合操作实在难以避免，可以考虑把这个集合放到一个单独的 MongoDB 库里，因为 MongoDB 不同库锁是相互隔离的，分离集合可以避免某一个集合操作引发全局阻塞问题。</p>
+<h3 id="建索引导致数据库阻塞"><a href="#建索引导致数据库阻塞" class="headerlink" title="建索引导致数据库阻塞"></a>建索引导致数据库阻塞</h3><p>上面提到了 MongoDB 库级锁的问题，建索引就是一个容易引起长时间写锁的问题，MongoDB 在前台建索引时需要占用一个写锁（而且不会临时放弃），如果集合的数据量很大，建索引通常要花比较长时间，特别容易引起问题。</p>
+<p>解决的方法很简单，MongoDB 提供了两种建索引的访问，一种是 background 方式，不需要长时间占用写锁，另一种是非 background 方式，需要长时间占用锁。使用 background 方式就可以解决问题。<br>例如，为超大表 posts 建立索引</p>
+<pre><code>//千万不用使用
+db.posts.ensureIndex({user_id: 1})
+//而应该使用
+db.posts.ensureIndex({user_id: 1}, {background: 1})
+</code></pre><p><a href="http://www.111com.net/database/165981.htm" target="_blank" rel="noopener">http://www.111com.net/database/165981.htm</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/04/ffmpeg的使用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/04/ffmpeg的使用/" itemprop="url">ffmpeg的使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-04T08:22:08+08:00">
+                2020-04-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="视频格式小科普"><a href="#视频格式小科普" class="headerlink" title="视频格式小科普"></a>视频格式小科普</h2><p>在开始下面的教程之前有必要先简单科普一下视频格式的知识。</p>
+<p>视频格式是一种非常不专业的叫法，事实上，视频有编码格式和容器格式两种。编码格式之于容器格式就像牛奶之于杯子一样。 常见的视频文件有mp4(mpeg4 part 14)，mkv，flv等，这些是视频的容器格式/封装格式(Container format)。它们包含视频流和音频流，mkv支持多条音轨和字幕，因此是目前最受欢迎的容器格式。比如在播放mkv视频的时候，可以选择不同语言的音轨/字幕。 至于视频编码格式(Encoding format)，则是这些容器所包含的视频流/音频流所采用的压缩方式，比如最常用的h.264/aac，mpeg4/mpeg3等。</p>
+<h3 id="安装ffmpeg"><a href="#安装ffmpeg" class="headerlink" title="安装ffmpeg"></a>安装ffmpeg</h3><p>在mac os上安装ffmpeg：</p>
+<p>brew install ffmpeg –with-fdk-aac –with-libass –with-sdl2<br>与默认安装相比，这里增加了对fdk-aac音频库和ass字幕库的支持，同时安装了ffplay播放器。</p>
+<p>在linux上安装ffmpeg最简单的方式是使用官方提供的静态编译安装包，解压后即可使用。</p>
+<p>ffmpeg命令通用格式<br>先来认识一下ffmpeg命令行工具的格式：</p>
+<p><code>ffmpeg -global_options -input_1_options -i input_1 -input_2_options -i input_2 -output_1_options output_1</code> …<br>不管你看到的ffmpeg命令多么复杂，万变不离其宗，都可以按照这个格式拆分成几个单独的部分，各个选项的含义可以查阅ffmpeg的documentation。</p>
+<p>需要注意的是： <em> 输入输出 </em> 至少有一个输入和输出 <em> 可以同时有多个输入和输出 </em> 输入、输出不一定是文件，可以是rtmp流的地址、摄像头对应的设备文件等 <em> 顺序很重要 </em> 所有的输入完了然后是输出 * 某个选项只对它后面的输入或输出起作用</p>
+<h3 id="1、查看视频的信息"><a href="#1、查看视频的信息" class="headerlink" title="1、查看视频的信息"></a>1、查看视频的信息</h3><p><code>ffmpeg -hide_banner -i input.mkv  或者  ffprobe -hide_banner input.mkv</code></p>
+<p>通过ffmpeg可以查看一个视频文件的以下基本信息：</p>
+<p>视频/音频的编码格式<br>分辨率(1080p or 1080i, Progressive Interlaced)<br>时长(duration)/码率(bitrate)/帧率(fps,frames per second)<br>音轨(Audio)/字幕(Subtitle)</p>
+<h3 id="2、转码-transcode"><a href="#2、转码-transcode" class="headerlink" title="2、转码(transcode)"></a>2、转码(transcode)</h3><p>转码是指对流(视频、音频和字幕)进行解码然后再编码，这个过程非常耗CPU。输出的编码格式通过-codec指定，如果不指定，ffmpeg并不会直接copy，而是采用根据容器格式采用相应的默认编码格式进行重新编码。</p>
+<p>为了简单起见，把转换容器格式也归为转码，ffmpeg会通过输出文件的后缀判断输出的容器格式，因此不需要指定(-f)。</p>
+<p>视频<br>将mkv转换成mp4</p>
+<p>有时候我们需要将mkv转换成mp4：</p>
+<p>很多视频网站不支持上传mkv格式<br>大部分视频剪辑软件，比如premiere等不支持导入mkv格式的视频<br>下面的命令将mkv的视频和音频流重新封装成mp4文件，不进行重新编码(无损)</p>
+<p><code>ffmpeg -i input.mkv -codec copy output.mp4</code><br>制作mkv</p>
+<p>mkv格式能够封装多个音频、字幕轨，是目前最为流行的视频分发格式，通常使用mkvtoolnix工具来编辑制作mkv视频，通过ffmpeg也能完成一些简单的任务。</p>
+<p>将mpeg4/mp3编码的视频重新编码为h.264/aac，并和字幕一起封装成mkv文件：</p>
+<p><code>ffmpeg -i input.avi -i input.srt -map 0:0 -map 0:1 -map 1:0 -c:v libx264 -c:a aac -c:s srt output.mkv</code><br>这里使用ffmpeg自带的aac音频编码器，而不是fdkaac。</p>
+<p>音频<br>ffmpeg不仅能处理视频，音频文件也不在话下，因此，同样可以用ffmpeg转换音频格式。</p>
+<p>将flac无损的音乐转换成高质量(High Quality，即320Kb)的mp3格式：</p>
+<p><code>ffmpeg -i &quot;Michael Jackson - Billie Jean.flac&quot; -ab 320k &quot;Michael Jackson - Billie Jean.mp3&quot;</code></p>
+<h3 id="3、截取-cut"><a href="#3、截取-cut" class="headerlink" title="3、截取(cut)"></a>3、截取(cut)</h3><p>从视频中截取出精彩片段是我们最常用的功能。</p>
+<p>从第2分钟开始，截取30秒。所有流都直接拷贝。</p>
+<p><code>ffmpeg -ss 00:02:00.0 -i input.mkv -t 30 -c copy output.mkv</code><br>-ss设置开始时间点，格式是HH:MM:SS.xxx或sec.msec。当作为输入选项时，可以快速seek到指定时间点； -t作为输出选项，设置时长。</p>
+<p>截取最大的问题是难以做到精确控制时间点，大部分的视频剪辑软件都存在这样的问题：</p>
+<p>视频开头卡顿/不流畅，画面与声音不同步<br>时间误差甚至能达到秒级，比如截取10秒的片段，可能会得到12秒的输出<br>原因是ffmpeg会seek到指定时间点前的一个关键帧，如果是copy视频流，seek点和起点之间的额外部分将会被保留，因此就产生了误差。解决办法是将-ss作为输出选项或进行重新编码：</p>
+<p><code>ffmpeg -i input.mkv -ss 00:02:00.0 -t 30 -c copy output.mkv</code><br>-ss作为输出选项时，解码到指定的时间点，然后开始输出，相当于要扫描前面的所有帧。但是这种方式能获得更精确的输出。</p>
+<p>如果还是出现上述问题，使用下面的终极解决方案(使用两次seek)：</p>
+<p><code>ffmpeg -ss 00:01:30.0 -i input.mkv -ss 00:00:30.0 -t 30 output.mkv</code></p>
+<h3 id="4、截图-screenshot"><a href="#4、截图-screenshot" class="headerlink" title="4、截图(screenshot)"></a>4、截图(screenshot)</h3><p>截图就是将某个视频帧保存为图片，例如：</p>
+<p>在指定时间点截图</p>
+<p><code>ffmpeg -ss 00:30:14.435 -i input.mkv -vframes 1 out.png</code></p>
+<ul>
+<li>-ss作为输入选项，可以快速定位到指定时间点；如果作为输出选项，需要读取指定时间点前面所有的帧，但可以获得更精确的位置。 * -vframes设置输出的帧数。</li>
+</ul>
+<p>结合fps视频滤镜，可以从视频中截取多张图片。例如：</p>
+<p>每1分钟截一张图，在截图文件名中添加当前的时间</p>
+<p><code>ffmpeg -i input.mkv -vf fps=1/60 -strftime 1 out_%Y%m%d%H%M%S.jpg</code></p>
+<h3 id="5、压缩-compress"><a href="#5、压缩-compress" class="headerlink" title="5、压缩(compress)"></a>5、压缩(compress)</h3><p>一张蓝光原盘接近50G，而720p的电影可能只有2G，这是通过压缩实现的。在保证画质的前提下使用更小的文件存储，一直是压缩的目标。然而压缩并非那么简单，比如同样是720p的电影，有的只有2个G，有的却有5个G，然而从视觉上几乎看不出区别来。 这里只介绍压缩的一个简单用途：resize。</p>
+<p>将1080p转成720p，宽度自适应</p>
+<p><code>ffmpeg -i input.mkv -c copy -c:v libx264 -vf scale=-2:720 output.mkv</code><br>-vf是-filter:v的简写，-filter指定滤镜，:v是流选择器，表示对视频流应用滤镜。scale滤镜后面的参数是w:h，w和h可以包含一些变量，比如原始的宽高分别为iw和ih。当其中一个是负数时，假设为-n，ffmpeg自动使用另一个值按照原始的宽高比(aspect ratio)计算出该值，并且保证计算出来的值能被n整除。</p>
+<p>因为scale滤镜是针对未编码的原始数据，所以视频流不能用copy，需要进行重新编码。-c copy -c:v libx264表示视频流使用h.264重新编码，其他流直接copy，顺序不能颠倒。</p>
+<h3 id="6、字幕-subtitle"><a href="#6、字幕-subtitle" class="headerlink" title="6、字幕(subtitle)"></a>6、字幕(subtitle)</h3><p>对于视频发布者，给视频添加字幕很有必要。如果是mkv，可以采用制作mkv的方法将字幕文件封装到mkv文件里。如果是mp4视频，则需要进行烧录(draw)，即对视频重新编码的过程中将字幕融入视频流。</p>
+<p><code>ffmpeg -i input.mkv -vf subtitles=input.srt output.mp4</code><br>该过程是通过subtitles滤镜完成的，安装ffmpeg的时候需要启用libass库。subtitles的参数是字幕文件，如果是mkv文件则表示使用mkv的默认字幕流。</p>
+<p>如果是ass格式的字幕文件，则使用ass滤镜：</p>
+<p><code>ffmpeg -i input.mkv -vf ass=input.ass output.mp4</code><br>据我所知，通常ass字幕具有更丰富的样式。</p>
+<p>另一种常见的方法是使用-c:s mov_text将字幕流封装进mp4里，它不需要重新编码，但是目前大部分播放器对mp4的软字幕支持不好。</p>
+<h3 id="7、提取-extract"><a href="#7、提取-extract" class="headerlink" title="7、提取(extract)"></a>7、提取(extract)</h3><p>有时候我们需要从电影中提取插曲或从视频中提取背景音乐，通过ffmpeg可以很容易从视频文件中提取音频：</p>
+<p><code>ffmpeg -i cut.mp4 -vn output.mp3</code><br>-vn表示不输出视频流。</p>
+<p>输出的mp3默认的码率是128kb，可以使用ab控制。结合截取中的-ss和-t还可以只提取一个部分的音频。</p>
+<p>从mkv文件中提取字幕也是同样的方法。</p>
+<h3 id="8、水印-watermark"><a href="#8、水印-watermark" class="headerlink" title="8、水印(watermark)"></a>8、水印(watermark)</h3><p>给视频添加水印是通过overlay滤镜实现的，overlay滤镜的作用是将一个视频覆盖另一个视频上面，它有两个输入，前一个是下层(main)，后一个是上层(overlaid)。 overlay的参数x:y是上层左上角的坐标，0:0表示位于下层的左上角。它可以包含以下参数：</p>
+<p>W(w):下(上)层的宽<br>H(h):下(上)层的高<br>将水印/logo添加到视频的右上角，并且和边缘保持5像素的距离：</p>
+<p><code>ffmpeg -i input.mkv -i input.png -filter_complex &quot;overlay=W-w-5:5&quot; -c copy -c:v libx264 output.mkv</code><br>input.png是带透明背景的logo，作为上层。</p>
+<p>需要注意的是，视频需要重新编码，其他流(音频、字幕)则直接copy，顺序不能颠倒。</p>
+<h3 id="9、混流-Muxing"><a href="#9、混流-Muxing" class="headerlink" title="9、混流(Muxing)"></a>9、混流(Muxing)</h3><p>如果我们拍摄了一段视频，想给它添加背景音乐，最好还是借助视频编辑软件，它能对音乐的开头和结尾分别进行增强和减弱的处理，如果不在意这些细节，完全可以用ffmpeg来代替。</p>
+<p>替换音频<br><code>ffmpeg -i input.mkv -i input.mp3 -map 0:v -map 1:a -c copy -shortest output.mp4</code><br>-map的作用是手动选择输出的流：</p>
+<p>-map 0:v – 从输入0(第1个输入，即input.mkv) 选择视频流<br>-map 1:a – 从输入1(第2个输入，即input.mp3) 选择音频流<br>第1个map对应输出的第1个流，第2个map对应输出的第2个流，以此类推。</p>
+<p>合并音频<br>另一个常见的形式是将两个音频合并成一个，需要使用amerge滤镜：</p>
+<p><code>ffmpeg -i input.mkv -i output.aac -filter_complex &quot;[0:a][1:a]amerge=inputs=2[a]&quot; -map 0:v -map &quot;[a]&quot; -c:v copy -c:a aac -ac 2 -shortest output.mp4</code></p>
+<h3 id="10、制作gif"><a href="#10、制作gif" class="headerlink" title="10、制作gif"></a>10、制作gif</h3><p>结合前面讲到的截取和压缩，将输出文件的后缀改为gif就可以得到动态图</p>
+<p><code>ffmpeg -ss 30 -t 5 -i input.mp4 -r 10 -vf scale=-1:144 -y output.gif</code><br>-r指定帧率，原始的帧率是25，降低帧率能减小gif图片的大小。</p>
+<p>但是这种方式的效果很差，有一种粗糙的布料的感觉。 原因在于gif限制只能包含256种颜色，而原始视频可能包含数以百万的颜色，ffmpeg默认会使用一种通用的调色板(palettep)，因此导致颜色失真。2015年，ffmpeg通过引入palettegen和paletteuse两个滤镜来改进这个问题，它通过扫描整个视频，输出一个最佳的调色板，然后再转换成gif的过程中应用这个调色板从而避免颜色失真。</p>
+<p>下面的命令从input.mp4的第30秒开始截取5秒，生成高144像素的gif动态图：</p>
+<p><code>palette=&quot;/tmp/palette.png&quot;</code><br><code>filters=&quot;fps=10,scale=-1:144:flags=lanczos&quot;</code></p>
+<p><code>ffmpeg -ss 30 -t 5 -i input.mp4 -vf &quot;$filters,palettegen&quot; -y $palette</code><br><code>ffmpeg -ss 30 -t 5 -i input.mp4 -i $palette -filter_complex &quot;$filters [x]; [x][1:v] paletteuse&quot; -y output.gif</code></p>
+<p>与前一个输出相比，质量提升了很多。</p>
+<p>另一个有待研究的难题是如何控制输出gif的大小。在不影响画质的前提下，我们希望体积越小越好。比如网上有的gif图很清晰，却不超过1M。而一段500K的视频文件，使用上面的方法转成gif后输出的gif却有1.6M。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/分布式环境下redis的使用优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2767,319 +3646,6 @@ http:// 192.168.1.64:8080
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/12/财务自由体系/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/12/财务自由体系/" itemprop="url">财务自由体系-三元策略</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-12T20:35:03+08:00">
-                2019-12-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/财务/" itemprop="url" rel="index">
-                    <span itemprop="name">财务</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="现金流"><a href="#现金流" class="headerlink" title="现金流"></a>现金流</h1><p>现金流指通过薪资，实业，租金等获取长期的稳定的收入。</p>
-<h1 id="低风险投资"><a href="#低风险投资" class="headerlink" title="低风险投资"></a>低风险投资</h1><p>低风险套利：将现金流进行低风险的证券，债券套利；</p>
-<h1 id="优质增值资产（房地产等）"><a href="#优质增值资产（房地产等）" class="headerlink" title="优质增值资产（房地产等）"></a>优质增值资产（房地产等）</h1>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/11/天道/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/11/天道/" itemprop="url">《天道》</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-11T20:33:41+08:00">
-                2019-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/书摘/" itemprop="url" rel="index">
-                    <span itemprop="name">书摘</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="壹"><a href="#壹" class="headerlink" title="壹"></a>壹</h1><p>“悟，悟道休言天命；修行勿取真经。一悲一喜一枯荣，哪个前生注定。袈裟本无清净，红尘不染性空，幽幽古刹千年钟，都是痴人说梦。”</p>
-<h1 id="贰"><a href="#贰" class="headerlink" title="贰"></a>贰</h1><p>“你是一块玉，但我不是匠人，我不过是一个略懂投机之道的混子。充其量挣几个打发凡夫俗子的铜板，你要求的是一种雄性文化的魂，我不能因为你没有说出来而假装不知道，接受你就接受了一种高度，我没有这个自信。”</p>
-<h1 id="叁"><a href="#叁" class="headerlink" title="叁"></a>叁</h1><p>“透视社会依次有三个层面，技术、制度、文化。小到一个人，大到一个国家一个民族任何一种命运归根到底都是那种文化属性的产物。强势文化造就强者，弱势文化造就弱者，这是规律。也可以理解为天道，不以人的意志为转移。”</p>
-<h1 id="肆"><a href="#肆" class="headerlink" title="肆"></a>肆</h1><p>“天下之道论到极致，百姓的柴米油盐，人生冷暖论到极致，男人女人的一个情字。”</p>
-<h1 id="伍"><a href="#伍" class="headerlink" title="伍"></a>伍</h1><p>“所谓真经，就是能够达到寂空涅槃的究竟法门。可悟不可修。修为成佛，在求。悟为明性，在知。修行以行制性。悟道以性施行。觉着由心生律；修者以律制心，不落恶果者有信无证，住因住果，住念住心，如是生灭。不昧因果者无住而住。无欲不欲。无戒无不戒。如是涅槃。”</p>
-<h1 id="陆"><a href="#陆" class="headerlink" title="陆"></a>陆</h1><p>但知行好事，莫要问前程。</p>
-<h1 id="柒"><a href="#柒" class="headerlink" title="柒"></a>柒</h1><p>“强盗的本质是破格获取，破格获取和直接获取是两个不同的概念。你们没有自信与强者在同一个规则下竞争，这只能说明你是弱者，因为弱势文化所追求的最高价值就是破格获取。所以，强盗的逻辑从本质上讲是懦弱的生存哲学，所以你不算好汉。”</p>
-<h1 id="捌"><a href="#捌" class="headerlink" title="捌"></a>捌</h1><p>神就是道，道就是规律，规律如来，容不得你思议，按规律办事的人就是神。</p>
-<h1 id="玖"><a href="#玖" class="headerlink" title="玖"></a>玖</h1><p>要想做点事，别把自己太当人，别把别人不当人。</p>
-<h1 id="拾"><a href="#拾" class="headerlink" title="拾"></a>拾</h1><p>“如果一个民族的文化从骨子里就是弱势文化属性，怎么可能去承载强势文化的政治、经济衡量一种文化属性不是看他的积淀的时间长短二十看他与客观规律的距离。五千年的文化是光辉，是灿烂。这个没有问题。但是，传统和习俗得过过客观规律的筛子。”</p>
-<h1 id="十一"><a href="#十一" class="headerlink" title="十一"></a>十一</h1><p>“女人是形式逻辑的典范，是辩证逻辑的障碍，我无意摧残女人，也不想被女人摧残。”</p>
-<h1 id="十二"><a href="#十二" class="headerlink" title="十二"></a>十二</h1><p>过于沉静的外表，恰恰诠释着他内心的沉重。</p>
-<h1 id="十三"><a href="#十三" class="headerlink" title="十三"></a>十三</h1><p>“强势文化就是遵循事物规律的文化，弱势文化就是依赖强者得道的期望破格获取的文化，也是期望救主的文化。强势文化在武学上被称为秘笈， 而弱势文化由于易学、 易懂、易用、成了流行品种。”</p>
-<h1 id="十四"><a href="#十四" class="headerlink" title="十四"></a>十四</h1><p>“你的生存状态不是病态，用佛教得话说是自性，无所挂碍，是自在。自在是什么？就是解脱。”</p>
-<h1 id="十五"><a href="#十五" class="headerlink" title="十五"></a>十五</h1><p>“红颜知己自古有之，这还得看男人是不是一杯好酒，自古又有几个男人能把自己酿到淡而又淡得名贵，这不是为之而可为的事，能混就混吧。”</p>
-<h1 id="十六"><a href="#十六" class="headerlink" title="十六"></a>十六</h1><p>“这就是圆融世故，不显山不露水，各得其所。可品行这个东西今天缺个角，明天裂个缝，也就离坍陷不远了。”</p>
-<h1 id="十七"><a href="#十七" class="headerlink" title="十七"></a>十七</h1><p>“这世上原来就没有什么神话。所谓的神话，不过是常人的思维所不易理解的平常事。”</p>
-<h1 id="十八"><a href="#十八" class="headerlink" title="十八"></a>十八</h1><p>“中国的传统文化是皇恩浩荡的文化，他的实用是以皇天在上为先决条件，中国为什么穷，穷就穷在幼稚的思维，穷在期望救主，期望救恩的文化上，这是一个渗透到民族骨子里的价值判断体系。太可怕了！”</p>
-<h1 id="十九"><a href="#十九" class="headerlink" title="十九"></a>十九</h1><p>“马克思主义得道理归根到底一句话，客观规律不以人的意志为转移，什么是客观规律，归根到底也是一句话：一切以时间，地点和条件为转移。”</p>
-<h1 id="二十"><a href="#二十" class="headerlink" title="二十"></a>二十</h1><p>“我们这个民族总是以有文化自居，却忘了问一句，是有什么文化，是真理真相的文化，还是弱势文化，是符合事物规律的文化还是违背事物规律的文化，归根到底都是那种文化属性的产物，不以人的意志为转移。”</p>
-<h1 id="二十壹"><a href="#二十壹" class="headerlink" title="二十壹"></a>二十壹</h1><p>女人与男人的对话方式只有两个，要么躺着，要么站着。所以，我总愿意把你想象成一个流浪街头的醉汉，想收留你，却不敢想象收留你的门槛有多高。你说过，给你扔块馒头就行，可你要的这块馒头太大了，我这个穷家养不活你。</p>
-<h1 id="二十贰"><a href="#二十贰" class="headerlink" title="二十贰"></a>二十贰</h1><p>“佛说，看山是山，看水是水。我只是依佛法如实观照，看摩登女郎实摩登女郎，看红颜知己实红颜知己。”</p>
-<h1 id="二十叁"><a href="#二十叁" class="headerlink" title="二十叁"></a>二十叁</h1><p>“当有人笑话耶稣是傻子的时候，其实谁都不傻，仅仅是两种价值观不兼容。”</p>
-<h1 id="二十肆"><a href="#二十肆" class="headerlink" title="二十肆"></a>二十肆</h1><p>“比如说文化产业。文学、影视是扒拉灵魂的艺术。如果文学影视的创作能破解更高思维空间的文化密码，那么他的功效就是启迪人的觉悟，震撼人的灵魂，这是众生所需，就是功德、市场、 名利、精神拯救的暴利与毒品麻醉完全等值。而且不必像贩毒那样耍花招没有心理成本和法律风险。”</p>
-<h1 id="二十伍"><a href="#二十伍" class="headerlink" title="二十伍"></a>二十伍</h1><p>“股票的暴利并不产生上产经营，而是产生于股票市场本身的投机性。他的运作动力是把你口袋里的钱装到我的口袋里去，他的规律是把大多数的肉填到极少数狼的嘴里。私募基金是从狼嘴里夹肉。这就要求你得比狼更黑更狠，但是心理成本也更高，而且又多了一重股市之外的风险。 所以，得适可而止。”</p>
-<h1 id="二十六"><a href="#二十六" class="headerlink" title="二十六"></a>二十六</h1><p>“灵魂归宿感， 这是人性本能的需要，是人性你帮他找块干净的地方归宿灵魂。”</p>
-<h1 id="二十七"><a href="#二十七" class="headerlink" title="二十七"></a>二十七</h1><p>有道无术，术尚可求，有术无道，止于术。神即道，道法自然,如来!</p>
-<h1 id="二十八"><a href="#二十八" class="headerlink" title="二十八"></a>二十八</h1><p>从心理学角度分析，越是头脑简 单的人越需要点缀和填充，而头脑复杂的 人，则对简洁有着特殊的心理需求。</p>
-<h1 id="二十九"><a href="#二十九" class="headerlink" title="二十九"></a>二十九</h1><p>更高的哲人独处着，不是他们享受孤独，而是在他们身边找不到同类！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3128,7 +3694,7 @@ http:// 192.168.1.64:8080
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-count">48</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3139,7 +3705,7 @@ http:// 192.168.1.64:8080
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -3150,7 +3716,7 @@ http:// 192.168.1.64:8080
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
