@@ -50,6 +50,8 @@ Streams Api遍历
         }
     }
 
+	当遍历时涉及到删除操作，建议使用iterator的remove方法。使用forEach会报错。
+
 迭代器keySet
 
     @Test
@@ -77,7 +79,10 @@ ForEach EntrySet
         }
     }
 
-ForEach keySet
+	通过Map.entrySet遍历key和value，代码简洁高效，推荐使用
+
+
+ForEach keySet(如果只需要获取所有的key，推荐使用，比entrySet遍历要快，代码简洁)
 
     @Test
     public void test004(){
@@ -87,6 +92,22 @@ ForEach keySet
         for (String str:
              map.keySet()) {
             System.out.println("key:"+str+",value:"+map.get(str));
+        }
+    }
+	
+	根据键取值是耗时操作，不推荐使用
+
+
+	如果只需要获取所有的value，推荐使用，比entrySet快，简洁
+
+    @Test
+    public void test004(){
+        Map<String,Integer> map = new HashMap<>();
+        map.put("1111",1);
+        map.put("2222",2);
+        for (String str:
+             map.values()) {
+            System.out.println("value:"+str);
         }
     }
 
