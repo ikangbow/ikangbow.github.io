@@ -588,6 +588,8 @@ public void test001(){
         System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
     }
 }
+
+当遍历时涉及到删除操作，建议使用iterator的remove方法。使用forEach会报错。
 </code></pre><p>迭代器keySet</p>
 <pre><code>@Test
 public void test002(){
@@ -611,7 +613,9 @@ public void test003(){
         System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
     }
 }
-</code></pre><p>ForEach keySet</p>
+
+通过Map.entrySet遍历key和value，代码简洁高效，推荐使用
+</code></pre><p>ForEach keySet(如果只需要获取所有的key，推荐使用，比entrySet遍历要快，代码简洁)</p>
 <pre><code>@Test
 public void test004(){
     Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
@@ -620,6 +624,22 @@ public void test004(){
     for (String str:
          map.keySet()) {
         System.out.println(&quot;key:&quot;+str+&quot;,value:&quot;+map.get(str));
+    }
+}
+
+根据键取值是耗时操作，不推荐使用
+
+
+如果只需要获取所有的value，推荐使用，比entrySet快，简洁
+
+@Test
+public void test004(){
+    Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
+    map.put(&quot;1111&quot;,1);
+    map.put(&quot;2222&quot;,2);
+    for (String str:
+         map.values()) {
+        System.out.println(&quot;value:&quot;+str);
     }
 }
 </code></pre><p>Lambda表达式</p>

@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="HashMap底层数据结构详解JDK1.7及之前：数组+链表 JDK1.8:数组+链表+红黑树 HashMap添加元素时，会根据哈希值和数组长度来计算该元素put的位置。put元素会判断当前位置是否已经有元素，这样在多线程环境下，会发生数据覆盖，导致数据丢失。通常为了使元素分布均匀会使用取模运算，计算出index后，就会将改元素添加进去，但是会出现两个key的哈希值相同，这时候会产生哈希冲突，当哈">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-10-18T13:16:45.137Z">
+<meta property="og:updated_time" content="2021-10-19T12:52:39.115Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap相关">
 <meta name="twitter:description" content="HashMap底层数据结构详解JDK1.7及之前：数组+链表 JDK1.8:数组+链表+红黑树 HashMap添加元素时，会根据哈希值和数组长度来计算该元素put的位置。put元素会判断当前位置是否已经有元素，这样在多线程环境下，会发生数据覆盖，导致数据丢失。通常为了使元素分布均匀会使用取模运算，计算出index后，就会将改元素添加进去，但是会出现两个key的哈希值相同，这时候会产生哈希冲突，当哈">
@@ -429,6 +429,8 @@ public void test001(){
         System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
     }
 }
+
+当遍历时涉及到删除操作，建议使用iterator的remove方法。使用forEach会报错。
 </code></pre><p>迭代器keySet</p>
 <pre><code>@Test
 public void test002(){
@@ -452,7 +454,9 @@ public void test003(){
         System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
     }
 }
-</code></pre><p>ForEach keySet</p>
+
+通过Map.entrySet遍历key和value，代码简洁高效，推荐使用
+</code></pre><p>ForEach keySet(如果只需要获取所有的key，推荐使用，比entrySet遍历要快，代码简洁)</p>
 <pre><code>@Test
 public void test004(){
     Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
@@ -461,6 +465,22 @@ public void test004(){
     for (String str:
          map.keySet()) {
         System.out.println(&quot;key:&quot;+str+&quot;,value:&quot;+map.get(str));
+    }
+}
+
+根据键取值是耗时操作，不推荐使用
+
+
+如果只需要获取所有的value，推荐使用，比entrySet快，简洁
+
+@Test
+public void test004(){
+    Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
+    map.put(&quot;1111&quot;,1);
+    map.put(&quot;2222&quot;,2);
+    for (String str:
+         map.values()) {
+        System.out.println(&quot;value:&quot;+str);
     }
 }
 </code></pre><p>Lambda表达式</p>
