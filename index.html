@@ -315,6 +315,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/23/双亲委派/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/10/23/双亲委派/" itemprop="url">双亲委派</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-23T09:22:13+08:00">
+                2021-10-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/面基/" itemprop="url" rel="index">
+                    <span itemprop="name">面基</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="java中类加载器"><a href="#java中类加载器" class="headerlink" title="java中类加载器"></a>java中类加载器</h2><p>JDK自带有三个类加载器：BootStrapClassLoader，ExtClassLoader，AppClassLoaser</p>
+<p>BootStrapClassLoader是ExtClassLoader的父类加载器，默认加载%JAVA_HOME%/lib下的jar包和class文件。</p>
+<p>ExtClassLoader是AppClassLoader的父类加载器，负责加载%JAVA_HOME%/jre/lib/ext目录下的一些扩展jar。</p>
+<p>AppClassLoader是自定义类加载器的父类，负责加载classpath下的类文件，是系统类加载器，线程上下文加载器继承ClassLoader实现自定义类加载器。</p>
+<h2 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h2><p>当某个类加载器需要加载.class文件时，它首先会把这个任务委托给他的上级类加载器，递归这个操作，如果上级的类加载器没有加载，自己才会去加载这个类。即向上委派，实际上就是查找缓存，看是否加载了该类，有则返回，没有继续向上；向下查找，查找加载的路径，有则加载，没有继续向下查找。</p>
+<p>作用：主要为了安全性，避免用户自己编写的类动态替换java的一些核心类。同时也避免了类的重复加载，因为JVM中区分不同的类，不仅仅是根据类名，相同的class文件被不同的classLoader加载就是不同的两个类。</p>
+<h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>Java虚拟机对class文件采用的是按需加载的方式，也就是说当需要使用该类时才会将它的class文件加载到内存生成class对象，加载某个类class文件时，java虚拟机采用的是双亲委派机制，即把请求交由父类处理。</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>如果一个类加载器收到了类加载请求，它并不会自己先加载，而是把这个请求委托给父类的加载器去执行</p>
+<p>如果父类加载器还存在其他父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的引导类加载器</p>
+<p>如果父类加载器可以完成类加载的任务，就成功返回，倘若父类加载器无法完成加载任务，子类加载器材会尝试自己去加载，这就是双亲委派机制</p>
+<p>父类加载器一层一层往下分配任务，如果子类加载器能加载，则加载此类，如果一直向下查找也无法加载此类，则抛出异常。</p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>避免类的重复加载。</p>
+<p>保护程序安全，防止核心API被随意篡改。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/18/面试题（查漏补缺）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2692,153 +2846,6 @@ date       id
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/30/量化投资/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/11/30/量化投资/" itemprop="url">量化投资</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-11-30T07:53:05+08:00">
-                2020-11-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/投资/" itemprop="url" rel="index">
-                    <span itemprop="name">投资</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>关于量化投资的学习和思考</p>
-<h1 id="数学角度看量化"><a href="#数学角度看量化" class="headerlink" title="数学角度看量化"></a>数学角度看量化</h1><p>在量化投资单纯从数学角度看，一个交易系统/交易模型仅仅是一个从行情序列到资金曲线的映射。</p>
-<p>f(ts,para) = E</p>
-<p>其中f是一个交易系统，ts是某一个投资标的（股票、期货、期权、外汇等）的行情时间序列para是交易系统的参数组，E是资金曲线。</p>
-<p>任何一个模型都会有参数，有参数就会碰到参数寻优，过拟合等问题。</p>
-<p>参数优化是基于历史数据进行的策略优化。而历史并不能完全重演。历史中表现优秀的参数，在交易中未必会表现很好。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2887,7 +2894,7 @@ date       id
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">48</span>
+                <span class="site-state-item-count">49</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
