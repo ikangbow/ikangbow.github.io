@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[多线程]]></title>
+    <url>%2F2021%2F10%2F26%2F%E5%A4%9A%E7%BA%BF%E7%A8%8B%2F</url>
+    <content type="text"><![CDATA[为什么要用线程池？核心参数有哪些作用 降低资源消耗；提高线程利用率，降低创建和销毁线程的消耗。 提高响应速度；任务来了直接有线程可用可执行，而不是先创建线程，再执行。 提高线程的可管理；线程是稀缺资源，使用线程池可用统一分配调优监控。 线程池创建public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue) { this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, Executors.defaultThreadFactory(), defaultHandler); } 核心参数corePoolSize：核心线程最大数量，即线程池中常驻线程的最大数量。线程池新建线程的时候，如果当前线程总数小于corePoolSize，则新建的是核心线程；如果超过了corePoolSize则新建的是非核心线程。 maximumPoolSize：线程池中运行的最大线程数，包括核心线程和非核心线程。 keepAliveTime：线程池中空闲线程所存活的最长时间（仅适用于非核心线程）。 unit：表示超出核心线程数之外的线程的空闲存活时间，也就是核心线程不会消除，但是超出核心线程数的部分线程如果空闲一定的时间则会被消除，可以通过keepAliveTime来设置空闲时间。 workQueue：用来存放任务的阻塞队列，假设我们现在核心线程都被使用，还有任务进来则全部放入队列，直到整个队列被放满但再持续进入则会创建新的线程。 ThreadFactory：实际上是一个线程工厂，用来生产线程执行任务，我们可以选择使用默认的创建工厂，产生的线程都在同一个组内，拥有相同的优先级，且都不是守护线程。当然我们也可以选择自定义线程工厂，一般会根据业务来制定不同的线程工厂。 Handler：任务拒绝策略，有两种情况，第一种是当我们调用shutdown等方法关闭线程池后，这时候即使线程池内部还有没执行完的任务正在执行，但是由于线程池已经关闭，我们再继续想线程池提交任务就会遭到拒绝，另一种情况就是当达到最大线程数，线程池已经没有能力继续处理新提交的任务时，这时也就会拒绝。 执行流程图 判断线程池中的核心线程数是否已经到达corePoolSize，没有则创建一个核心线程执行任务。 若核心线程数已经到达corePoolSize，判断阻塞队列workQueque是否已满，如果没满，则将新任务加入阻塞队列。如果已满，判断线程池中的线程数是否到达maximumPoolSize，如果没有，则新建一个非核心线程执行任务，如果到达阀值，则执行线程池饱和策略。 线程池饱和策略 AbortPolicy：直接抛出一个异常阻止系统正常运行，默认策略 DiscardPolicy：直接丢弃任务，不予任何处理也不抛异常（如果允许任务丢失，建议此方案） DiscardOldestPolicy：抛弃队列中等待最久的任务，然后把当前任务加入队列中尝试再次提交当前任务 CallerRunsPolicy：调用者运行一种调节机制，该策略既不会抛弃任务也不会抛异常，而是将某些任务回退到调用者，从而降低新任务的流量。]]></content>
+      <categories>
+        <category>面基</category>
+      </categories>
+      <tags>
+        <tag>面基</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[双亲委派]]></title>
     <url>%2F2021%2F10%2F23%2F%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%2F</url>
     <content type="text"><![CDATA[java中类加载器JDK自带有三个类加载器：BootStrapClassLoader，ExtClassLoader，AppClassLoaser BootStrapClassLoader是ExtClassLoader的父类加载器，默认加载%JAVA_HOME%/lib下的jar包和class文件。 ExtClassLoader是AppClassLoader的父类加载器，负责加载%JAVA_HOME%/jre/lib/ext目录下的一些扩展jar。 AppClassLoader是自定义类加载器的父类，负责加载classpath下的类文件，是系统类加载器，线程上下文加载器继承ClassLoader实现自定义类加载器。 双亲委派机制当某个类加载器需要加载.class文件时，它首先会把这个任务委托给他的上级类加载器，递归这个操作，如果上级的类加载器没有加载，自己才会去加载这个类。即向上委派，实际上就是查找缓存，看是否加载了该类，有则返回，没有继续向上；向下查找，查找加载的路径，有则加载，没有继续向下查找。 作用：主要为了安全性，避免用户自己编写的类动态替换java的一些核心类。同时也避免了类的重复加载，因为JVM中区分不同的类，不仅仅是根据类名，相同的class文件被不同的classLoader加载就是不同的两个类。 是什么Java虚拟机对class文件采用的是按需加载的方式，也就是说当需要使用该类时才会将它的class文件加载到内存生成class对象，加载某个类class文件时，java虚拟机采用的是双亲委派机制，即把请求交由父类处理。 工作原理如果一个类加载器收到了类加载请求，它并不会自己先加载，而是把这个请求委托给父类的加载器去执行 如果父类加载器还存在其他父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的引导类加载器 如果父类加载器可以完成类加载的任务，就成功返回，倘若父类加载器无法完成加载任务，子类加载器材会尝试自己去加载，这就是双亲委派机制 父类加载器一层一层往下分配任务，如果子类加载器能加载，则加载此类，如果一直向下查找也无法加载此类，则抛出异常。 作用避免类的重复加载。 保护程序安全，防止核心API被随意篡改。]]></content>

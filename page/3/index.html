@@ -315,6 +315,302 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/28/SpringSecurity验证流程解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/05/28/SpringSecurity验证流程解析/" itemprop="url">SpringSecurity验证流程解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-28T21:08:05+08:00">
+                2020-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="SpringSecurity"><a href="#SpringSecurity" class="headerlink" title="SpringSecurity"></a>SpringSecurity</h2><ol>
+<li><p>TokenAuthenticationFilter</p>
+<pre><code>if (httpRequest.getServletPath().equals(loginLink)) {
+    //如果是登录或注销的话，设置不沿着过滤器向下
+    doNotContinueWithRequestProcessing(httpRequest);
+    checkLoginAnDoSomething(httpRequest, httpResponse, token);
+}
+</code></pre></li>
+<li><p>checkLoginAnDoSomething(httpRequest, httpResponse, token);</p>
+<pre><code>example: Authorization=Basic YWRtaW46MTIzNDU2 (admin:123456)
+
+private boolean checkLoginAnDoSomething(HttpServletRequest httpRequest, HttpServletResponse httpResponse,
+    String token) throws IOException {
+    String authorization = httpRequest.getHeader(CacheConstant.AUTHORIZATION);
+    ReturnStatus result = null;
+    if (authorization != null) {
+        result = checkBasicAuthorization(authorization, httpRequest, httpResponse, token);
+    }
+
+    if (null == result) {
+        result = new ReturnStatus(false);
+        result.getErrors().add(new MError(MErrorCode.e9000));
+        result.setMessage(MErrorCode.e9000.desc());
+    }
+
+    String body;
+    try {
+        body = JsonUtils.toJson(result);// JsonParserFactory.getParser().toJson(result).toString();
+        httpResponse.setContentType(&quot;text/html;charset=UTF-8&quot;);
+        httpResponse.getWriter().write(body);
+    } catch (Exception e) {
+        throw new IOException(e);
+    }
+
+    return result.isSuccess();
+</code></pre><p> }</p>
+</li>
+<li><p>checkBasicAuthorization(authorization, httpRequest, httpResponse, token);</p>
+<pre><code>private ReturnStatus checkBasicAuthorization(String authorization, HttpServletRequest httpRequest,
+        HttpServletResponse httpResponse, String token) throws IOException {
+    StringTokenizer tokenizer = new StringTokenizer(authorization);
+    if (tokenizer.countTokens() &lt; 2) {
+        return null;
+    }
+    if (!tokenizer.nextToken().equalsIgnoreCase(CacheConstant.BASIC_AUTH_PREFIX)) {
+        return null;
+    }
+
+    String base64 = tokenizer.nextToken();
+    String loginPassword = new String(Base64.decode(base64.getBytes(StandardCharsets.UTF_8)));
+    tokenizer = new StringTokenizer(loginPassword, &quot;:&quot;);
+    String username = tokenizer.nextToken();
+    String pwd = tokenizer.nextToken();
+    String password = passwordEncoder.encodePassword(pwd, null);
+    ReturnStatus status = checkUsernameAndPassword(username, password, httpRequest, httpResponse, token);
+    // 登录成功后返回登录状态
+    return status;
+}
+</code></pre></li>
+<li><p>private ReturnStatus checkUsernameAndPassword(String username, String password, HttpServletRequest httpRequest,HttpServletResponse httpResponse, String oldtoken)</p>
+<pre><code>private ReturnStatus checkUsernameAndPassword(String username, String password, HttpServletRequest httpRequest,
+        HttpServletResponse httpResponse, String oldtoken) throws IOException {
+    ReturnStatus returnResult = new ReturnStatus(false);
+    TokenInfo tokenInfo = authenticationService.authenticate(username, password, httpRequest);
+    if (tokenInfo != null &amp;&amp; tokenInfo.getUserDetails() != null) {
+        VerifyContext verifyContext = (VerifyContext) tokenInfo.getUserDetails();
+        Account account = (Account) verifyContext.getUser().getEntity();
+        if (account.isLogin()) {
+            if (null != oldtoken &amp;&amp; !&quot;&quot;.equals(oldtoken) &amp;&amp; !&quot;null&quot;.equals(oldtoken)
+                    &amp;&amp; !&quot;undefined&quot;.equals(oldtoken)) {
+                logger.info(&quot;tokenInfo.setToken use the oldtoken Token :{}&quot;, tokenInfo.getToken());
+                tokenInfo.setToken(oldtoken);
+            }
+            logger.info(&quot;the new Token :{},entity:{}&quot;, tokenInfo.getToken(), tokenInfo);
+            this.cacheManager.saveObject(CacheEnum.TOKEN, tokenInfo.getToken(), tokenInfo.getUserDetails(),
+                    CacheConstant.USER_SESSION_TIME);
+            logger.info(&quot;the token:{}, save object:{}&quot;, tokenInfo.getToken(),
+                    this.cacheManager.getObject(CacheEnum.TOKEN, tokenInfo.getToken()));
+            returnResult.setEntity(account);
+            returnResult.setSuccess(true);
+        } else {
+            returnResult.getErrors().add(new MError(MErrorCode.e9001));
+            returnResult.setMessage(MErrorCode.e9001.desc());
+        }
+        httpResponse.setHeader(CacheConstant.HEADER_TOKEN, tokenInfo.getToken());
+    } else {
+        logger.error(&quot;User {} ,Password {} Unauthorized!&quot;, username, password);
+        returnResult.getErrors().add(new MError(MErrorCode.e9000));
+        returnResult.setMessage(MErrorCode.e9000.desc());
+    }
+    return returnResult;
+}
+</code></pre></li>
+</ol>
+<h2 id="基于用户-角色-权限设计"><a href="#基于用户-角色-权限设计" class="headerlink" title="基于用户-角色-权限设计"></a>基于用户-角色-权限设计</h2><pre><code>Account
+
+accountName//账号名
+accountPwd//密码
+status//状态
+accountType//账号类型
+entityID//实体id
+lastLoginTime//最后一次登录时间
+loginTimes//登录次数
+roleIds//角色列表
+//一个账号可以关联角色，角色呈树状结构，可多选
+
+Function
+
+name//功能点名称
+parentId//父级
+memo//描述
+action//资源url
+order//排序
+icon//图标
+permissionCode//唯一权限标识
+permissionName//权限名称
+
+Role
+
+name//角色名称
+parentId//父级
+memo//描述
+functionIds//功能点
+order//排序
+//角色也是呈树状菜单的，角色里面有权限配置，所有的功能点以树状结构展示，通过角色去关联功能点
+</code></pre><h2 id="递归菜单和角色"><a href="#递归菜单和角色" class="headerlink" title="递归菜单和角色"></a>递归菜单和角色</h2><pre><code>// 获取标准JSON数据
+public static List&lt;Map&lt;String, Object&gt;&gt; getStandardJSON() {
+    // 根据不同框架获取对应的List数据
+    List&lt;Map&lt;String, Object&gt;&gt; queryList = query.find();
+    List&lt;Map&lt;String, Object&gt;&gt; parentList = Lists.newArrayList();
+    for (Map&lt;String, Object&gt; map : queryList) {
+        if (map.get(&quot;pId&quot;).equals(&quot;0&quot;)) {
+            parentList.add(map);
+        }
+    }    
+    recursionChildren(parentList, queryList);
+    return parentList;
+}
+
+// 递归获取子节点数据
+public static void recursionChildren (List&lt;Map&lt;String, Object&gt;&gt; parentList, 
+List&lt;Map&lt;String, Object&gt;&gt; allList) {
+    for (Map&lt;String, Object&gt; parentMap : parentList) {
+        List&lt;Map&lt;String, Object&gt;&gt; childrenList = Lists.newArrayList();
+        for (Map&lt;String, Object&gt; allMap : allList) {
+            if (allMap.get(&quot;pId&quot;).equals(parentMap.get(&quot;id&quot;))) {
+                childrenList.add(allMap);
+            }
+        }
+        if (!ParamValidUtils.isEmpty(childrenList)) {
+            parentMap.put(&quot;children&quot;, childrenList);
+            recursionChildren(childrenList, allList);
+        }
+    }
+}
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/05/26/SpringBoot系列/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -4624,161 +4920,6 @@ http:// 192.168.1.64:8080
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/11/奇迹男孩/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/11/奇迹男孩/" itemprop="url">奇迹男孩</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-11T08:59:40+08:00">
-                2020-02-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/电影台词/" itemprop="url" rel="index">
-                    <span itemprop="name">电影台词</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="零"><a href="#零" class="headerlink" title="零"></a>零</h1><p>My mom always said…”if you don’t like where you are…just picture where you wanna be.”（by Auggie）</p>
-<p>我妈妈常说，“如果你不喜欢这里，就想象一个你想去的地方。”(奥吉)</p>
-<h1 id="壹"><a href="#壹" class="headerlink" title="壹"></a>壹</h1><p>“When given the choice between being right or being kind , choose kind.”(Mr Brown’s September Precet)</p>
-<p>“如果要从正确和善良中，做出选择，请选择善良。”（布朗老师的九月箴言）</p>
-<h1 id="叁"><a href="#叁" class="headerlink" title="叁"></a>叁</h1><p>Because I’m your mom , it counts the most because I know you the most.(By Isabel)</p>
-<p>正因为我是你妈妈说话才算数，因为我最了解你。（伊莎贝尔）</p>
-<h1 id="肆"><a href="#肆" class="headerlink" title="肆"></a>肆</h1><p>Because school sucks. And people change.So if you wanna be a normal kid,Auggie,the those are the rules.(By Via)</p>
-<p>上学就是这么糟糕。人也是会变的。如果你想当普通小孩奥吉，这就是规则。（维娅）</p>
-<h1 id="伍"><a href="#伍" class="headerlink" title="伍"></a>伍</h1><p>While nothing justifies striking another student…I know goos friends are worth defending.(By Mr. Tushman)</p>
-<p>虽然殴打同学的行为不能通融，但我知道友情是值得捍卫的。（图始曼先生）</p>
-<h1 id="六"><a href="#六" class="headerlink" title="六"></a>六</h1><p>Maybe if we knew what other people were thinking, we’d know that no one’s ordinary.And we all deserve a standing ovation at least once in our lives.(By Auggie)</p>
-<p>如果我们了解别人的想法，就会知道，没有人是普通的。每个人都值得大家站起来为他鼓掌一次。</p>
-<h1 id="柒"><a href="#柒" class="headerlink" title="柒"></a>柒</h1><p>Be kind,for everyone is fighting a hard battle.And if you really wanna see what people  are… all you have to do ..is look.(By Auggie)</p>
-<p>善良一点，因为每个人都在与人生苦战。如果你想真正了解他人，你只需要用心…去看。（奥吉）</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -4827,7 +4968,7 @@ http:// 192.168.1.64:8080
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">49</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
