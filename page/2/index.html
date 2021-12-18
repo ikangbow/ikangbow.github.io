@@ -315,6 +315,262 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/07/compose/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/07/compose/" itemprop="url">compose</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-07T21:19:37+08:00">
+                2020-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/compose/" itemprop="url" rel="index">
+                    <span itemprop="name">compose</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="如何写docker-compose-yml，Docker-compose-file-参考文档"><a href="#如何写docker-compose-yml，Docker-compose-file-参考文档" class="headerlink" title="如何写docker-compose.yml，Docker compose file 参考文档"></a>如何写docker-compose.yml，Docker compose file 参考文档</h1><h2 id="Compose-简介"><a href="#Compose-简介" class="headerlink" title="Compose 简介"></a>Compose 简介</h2><p>Compose 文件是一个YAML文件，用于定义services、netword和volumes。 Compose 文件的默认路径为./docker-compose.yaml(后缀为.yml和.yaml都可以)。</p>
+<p>Compose 是用于定义和运行多容器 Docker 应用程序的工具。通过 Compose，您可以使用 YML 文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。</p>
+<p>Compose 使用的三个步骤：</p>
+<p>使用 Dockerfile 定义应用程序的环境。</p>
+<p>使用 docker-compose.yml 定义构成应用程序的服务，这样它们可以在隔离环境中一起运行。</p>
+<p>最后，执行 docker-compose up 命令来启动并运行整个应用程序。</p>
+<h2 id="安装-Docker-Compose"><a href="#安装-Docker-Compose" class="headerlink" title="安装 Docker Compose"></a>安装 Docker Compose</h2><pre><code>sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose -v
+</code></pre><h2 id="工程、服务、容器"><a href="#工程、服务、容器" class="headerlink" title="工程、服务、容器"></a>工程、服务、容器</h2><p>Docker Compose 将所管理的容器分为三层，分别是工程（project）、服务（service）、容器（container）</p>
+<p>Docker Compose 运行目录下的所有文件（docker-compose.yml）组成一个工程,一个工程包含多个服务，每个服务中定义了容器运行的镜像、参数、依赖，一个服务可包括多个容器实例</p>
+<p>Docker Compose默认的模板文件是docker-compose.yml，其中定义的每个服务都必须通过image指令指定镜像或使用Dockerfile的build指令进行自动构建，其它大部分指令跟docker run中选项类似。</p>
+<p>如果使用Dockerfile的build指令，则在Dockerfile中设置的选项如CMD、EXPOSE、VOLUME、ENV等将会自动被获取，无需在docker-comopse.yml文件中再次设置。</p>
+<p>如果使用image指定为镜像名称或镜像ID时镜像在本地不存在，Compose将会尝试去拉取这个镜像。</p>
+<p>典型的docker-comopse.yml文件格式</p>
+<pre><code>version: &apos;2&apos;
+services:
+  web:
+    image: dockercloud/hello-world
+    ports:
+      - 8080
+    networks:
+      - front-tier
+      - back-tier
+
+  redis:
+    image: redis
+    links:
+      - web
+    networks:
+      - back-tier
+
+  lb:
+    image: dockercloud/haproxy
+    ports:
+      - 80:80
+    links:
+      - web
+    networks:
+      - front-tier
+      - back-tier
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+driver: bridge
+</code></pre><h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><p>version：指定 docker-compose.yml 文件的写法格式<br>services：多个容器集合<br>build：配置构建时，Compose 会利用它自动构建镜像，该值可以是一个路径，也可以是一个对象，用于指定 Dockerfile 参数</p>
+<p>Compose文件是一个定义服务services、网络networks和卷volumes的YAML文件，默认路径是./docker-compose.yml，可使用.yml或.yaml作为文件扩展名。</p>
+<p>服务services定义包含应用于为该服务启动的每个容器的配置，类似传递命令行参数一样docker container create。同样，网络networks和卷volumes的定义类似于docker network create和docker volume create。正如docker container create在Dockerfile指定选项，如CMD、EXPOSE、VOLUME、ENV，在默认情况下，不需要在docker-compose.yml配置中再次指定。可以使用Bash类${VARIABLE}语法在配置值中使用环境变量。</p>
+<p>标准配置文件应该包含version、services、networks三部分，其中最关键的是services和networks两个部分。</p>
+<h3 id="images"><a href="#images" class="headerlink" title="images"></a>images</h3><p>images用来指定服务的镜像名称或镜像ID，如果镜像在本地不存在，compose将会尝试去拉取这个镜像。</p>
+<pre><code>services:
+  web:
+    image:redis
+</code></pre><h3 id="volumes"><a href="#volumes" class="headerlink" title="volumes"></a>volumes</h3><p>volumes指令用于设置数据卷挂载路径，数据卷挂载路径可以是一个目录或一个已经存在的数据卷容器，可以设置宿主机路径HOST:CONTAINER或加上访问模式HOST:CONTAINER:ro。使用ro表示对于容器来说数据卷是只读的，这样可以有效地保护宿主机的文件系统。</p>
+<pre><code>volumes:
+  # 指定一个容器内的路径，Docker会自动创建一个数据卷。
+  - /var/lib/mysql
+  # 使用绝对路径挂载数据卷
+  - /opt/data:/var/lib/mysql
+  # 以compose配置文件所在目录为根的相对路径作为数据卷挂载到容器
+  - ./cache:/tmp/cache
+  # 使用用户的相对路径
+  - ~/configs:/etc/configs:ro
+</code></pre><h3 id="networks"><a href="#networks" class="headerlink" title="networks"></a>networks</h3><p>networks指令用于设置指定网络</p>
+<pre><code>services:
+  some-service:
+    networks:
+      - some-network
+</code></pre><h2 id="多服务"><a href="#多服务" class="headerlink" title="多服务"></a>多服务</h2><pre><code>version: &apos;2&apos;
+
+services:
+
+ service-eureka: 
+   image: java
+   volumes:
+     - /Users/objcat/jar/service-eureka.jar:/usr/local/service-eureka.jar
+   ports:
+     - 8081:8081
+   command:
+     - /bin/sh
+     - -c
+     - |
+       echo 192.168.1.126 servicehost &gt;&gt; /etc/hosts
+       java -jar /usr/local/service-eureka.jar
+
+ service-a: 
+   image: java
+   volumes:
+     - /Users/objcat/jar/service-a.jar:/usr/local/service-a.jar
+   ports:
+     - 8082:8082
+   command:
+     - /bin/sh
+     - -c
+     - |
+       echo 192.168.1.126 servicehost &gt;&gt; /etc/hosts
+       java -jar /usr/local/service-a.jar
+
+ service-b: 
+   image: java
+   volumes:
+     - /Users/objcat/jar/service-b.jar:/usr/local/service-b.jar
+   ports:
+     - 8083:8083
+   command:
+     - /bin/sh
+     - -c
+     - |
+       echo 192.168.1.126 servicehost &gt;&gt; /etc/hosts
+       java -jar /usr/local/service-b.jar
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/07/arctic/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -3982,181 +4238,11 @@ java.util.ConcurrentModificationException异常了，翻译成中文就是：并
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/05/JSON对象和JSON字符串/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/06/05/JSON对象和JSON字符串/" itemprop="url">JSON对象和JSON字符串</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-05T18:31:07+08:00">
-                2020-06-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/JS/" itemprop="url" rel="index">
-                    <span itemprop="name">JS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="JSON对象"><a href="#JSON对象" class="headerlink" title="JSON对象"></a>JSON对象</h1><h2 id="对象的概念"><a href="#对象的概念" class="headerlink" title="对象的概念"></a>对象的概念</h2><p>对象的属性是可以用： 对象.属性进行调用的。</p>
-<pre><code>var person={&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}//json对象
-console.log(person.name);//在控制台输出tom
-alert(typeof(person));//object
-</code></pre><p>以上就是json对象。是一个可以用person.name这种方式进行属性的调用。<br>第三行代码就是看person的类型为object类型</p>
-<h1 id="JSON字符串"><a href="#JSON字符串" class="headerlink" title="JSON字符串"></a>JSON字符串</h1><h2 id="字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下"><a href="#字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下" class="headerlink" title="字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下"></a>字符串，JS中的字符串是单引号或者双引号引起来的。那么json字符串就是如下</h2><pre><code>var b = &apos;{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}&apos;;//json字符串
-console.log(b);//{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;};
-alert(typeof(b));//string
-</code></pre><p>以上b就是一个字符串，是一个string类型</p>
-<h1 id="JSON字符串和JSON对象的转换"><a href="#JSON字符串和JSON对象的转换" class="headerlink" title="JSON字符串和JSON对象的转换"></a>JSON字符串和JSON对象的转换</h1><h2 id="JSON字符串转json对象，调用parse方法；"><a href="#JSON字符串转json对象，调用parse方法；" class="headerlink" title="JSON字符串转json对象，调用parse方法；"></a>JSON字符串转json对象，调用parse方法；</h2><pre><code>var b = &apos;{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}&apos;;//json字符串
-console.log(b);//{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;};
-alert(typeof(b));//string
-var objb = JSON.parse(b);
-console.log(objb.name);
-</code></pre><h2 id="JSON对象转JSON字符串"><a href="#JSON对象转JSON字符串" class="headerlink" title="JSON对象转JSON字符串"></a>JSON对象转JSON字符串</h2><pre><code>var person={&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}//json对象
-console.log(person.name);//在控制台输出tom
-alert(typeof(person));//object
-var personStr = JSON.stringify(person);
-alert(typeof(personStr));//string
-console.log(personStr);//{&quot;name&quot;:&quot;tom&quot;,&quot;sex&quot;:&quot;男&quot;}
-</code></pre><h2 id="字符串转json对象"><a href="#字符串转json对象" class="headerlink" title="字符串转json对象"></a>字符串转json对象</h2><pre><code>场景：
-    后台返回的person对象上有herf属性，是一个字符串
-href = {&apos;href&apos;:&apos;../juvenile/summerCamp/summerCamp.html&apos;,&apos;isLogined&apos;:&apos;1&apos;,&apos;param&apos;:{&apos;activityId&apos;:&apos;2141108450038362510&apos;}}
-
-要解析到herf
-
-var configData = eval(&apos;(&apos; + href + &apos;)&apos;);//由字符串转换为JSON对象
-
-console.log(configData.href)
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -4200,7 +4286,7 @@ console.log(configData.href)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-count">51</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
