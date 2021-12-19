@@ -521,7 +521,7 @@ tzselect
 crontab -l 查看所有定时任务
 </code></pre><h2 id="将当前容器创建为镜像（id）"><a href="#将当前容器创建为镜像（id）" class="headerlink" title="将当前容器创建为镜像（id）"></a>将当前容器创建为镜像（id）</h2><pre><code>docker commit -a &quot;ikangbow&quot; 730661ccf053 ikangbow/myquant:1.0.1
 </code></pre><h2 id="推送到dockerhub"><a href="#推送到dockerhub" class="headerlink" title="推送到dockerhub"></a>推送到dockerhub</h2><pre><code>docker push ikangbow/myquant:1.0.1
-</code></pre><h2 id="docker运行"><a href="#docker运行" class="headerlink" title="docker运行"></a>docker运行</h2><pre><code>docker run --privileged -it -d ikangbow/myquant:1.0.1
+</code></pre><h2 id="docker运行"><a href="#docker运行" class="headerlink" title="docker运行"></a>docker运行</h2><pre><code>docker run -e TZ=&quot;Asia/Shanghai&quot; --privileged -it -d --name myquant ikangbow/myquant:1.0.3
 </code></pre>
           
         
