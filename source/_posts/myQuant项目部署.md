@@ -147,4 +147,4 @@ category: 投资
 
 ## docker运行
 
-	docker run --privileged -it -d ikangbow/myquant:1.0.1
+	docker run -e TZ="Asia/Shanghai" --privileged -it -d --name myquant ikangbow/myquant:1.0.3
