@@ -129,6 +129,7 @@ category: 投资
 
 	systemctl start rsyslog
 	systemctl start crond
+	systemctl restart crond
 	tail -f /var/log/cron
 
 	更改时区
@@ -137,6 +138,8 @@ category: 投资
 
 	crontab -l 查看所有定时任务
 
+	vim /etc/crontab
+	添加变量 CRON_TZ=Asia/Shanghai
 ## 将当前容器创建为镜像（id）
 
 	docker commit -a "ikangbow" 730661ccf053 ikangbow/myquant:1.0.1
