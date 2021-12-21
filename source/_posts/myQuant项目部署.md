@@ -140,6 +140,12 @@ category: 投资
 
 	vim /etc/crontab
 	添加变量 CRON_TZ=Asia/Shanghai
+
+	00 21 * * 2-6 python3 /stock/data_main.py
+	00 06 * * 3-7 python3 /stock/frm_main.py
+	00 07 * * 2-6 python3 /stock/stock_match.py
+	0 */1 * * 2-6 python3 /stock/timer.py
+
 ## 将当前容器创建为镜像（id）
 
 	docker commit -a "ikangbow" 730661ccf053 ikangbow/myquant:1.0.1
