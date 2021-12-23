@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install yum-utils  yum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zl">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-12-21T13:40:18.041Z">
+<meta property="og:updated_time" content="2021-12-23T00:22:42.092Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="myQuant项目部署">
 <meta name="twitter:description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install yum-utils  yum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zl">
@@ -511,22 +511,47 @@ systemctl start crond
 systemctl restart crond
 tail -f /var/log/cron
 
+crontab -l 查看所有定时任务
+crontab -e 编辑修改定时任务
+
 更改时区
 
 tzselect
 
-crontab -l 查看所有定时任务
-
 vim /etc/crontab
 添加变量 CRON_TZ=Asia/Shanghai
 
-00 21 * * 2-6 python3 /stock/data_main.py
-00 06 * * 3-7 python3 /stock/frm_main.py
-00 07 * * 2-6 python3 /stock/stock_match.py
-0 */1 * * 2-6 python3 /stock/timer.py
+cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+service crond restart
+
+示例
+
+30  20  *  *  1-5 python3 /home/stock/data_main.py
+0   5  *  *  2-6 python3 /home/stock/frm_main.py
+30  7  *  *  1-5 python3 /home/stock/stock_match.py
+30  8  *  *  1-5 python3 /home/stock/timer.py
 </code></pre><h2 id="将当前容器创建为镜像（id）"><a href="#将当前容器创建为镜像（id）" class="headerlink" title="将当前容器创建为镜像（id）"></a>将当前容器创建为镜像（id）</h2><pre><code>docker commit -a &quot;ikangbow&quot; 730661ccf053 ikangbow/myquant:1.0.1
 </code></pre><h2 id="推送到dockerhub"><a href="#推送到dockerhub" class="headerlink" title="推送到dockerhub"></a>推送到dockerhub</h2><pre><code>docker push ikangbow/myquant:1.0.1
 </code></pre><h2 id="docker运行"><a href="#docker运行" class="headerlink" title="docker运行"></a>docker运行</h2><pre><code>docker run -e TZ=&quot;Asia/Shanghai&quot; --privileged -it -d --name myquant ikangbow/myquant:1.0.3
+</code></pre><h2 id="安装talib"><a href="#安装talib" class="headerlink" title="安装talib"></a>安装talib</h2><pre><code>wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+
+cd ta-lib/
+
+./configure --prefix=/usr
+
+make &amp;&amp; make install
+
+ cd /usr
+
+find -name libta_lib.so.0
+
+vim /etc/profile
+
+export LD_LIBRARY_PATH=/usr/lib64
+
+pip install ta-lib -U
+
+cp /usr/lib/libta_lib.* /usr/lib64/
 </code></pre>
       
     </div>
@@ -710,7 +735,7 @@ vim /etc/crontab
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基于Backtrader的量化投资项目"><span class="nav-number">1.</span> <span class="nav-text">基于Backtrader的量化投资项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于centos的docker镜像"><span class="nav-number">1.1.</span> <span class="nav-text">基于centos的docker镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#centos安装yum"><span class="nav-number">1.2.</span> <span class="nav-text">centos安装yum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在新安装的Centos中安装python3-7-解决pip和yum问题"><span class="nav-number">1.3.</span> <span class="nav-text">在新安装的Centos中安装python3.7 解决pip和yum问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python环境创建"><span class="nav-number">1.4.</span> <span class="nav-text">python环境创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装mongo4"><span class="nav-number">1.5.</span> <span class="nav-text">安装mongo4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装crontab"><span class="nav-number">1.6.</span> <span class="nav-text">安装crontab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将当前容器创建为镜像（id）"><span class="nav-number">1.7.</span> <span class="nav-text">将当前容器创建为镜像（id）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推送到dockerhub"><span class="nav-number">1.8.</span> <span class="nav-text">推送到dockerhub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker运行"><span class="nav-number">1.9.</span> <span class="nav-text">docker运行</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基于Backtrader的量化投资项目"><span class="nav-number">1.</span> <span class="nav-text">基于Backtrader的量化投资项目</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于centos的docker镜像"><span class="nav-number">1.1.</span> <span class="nav-text">基于centos的docker镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#centos安装yum"><span class="nav-number">1.2.</span> <span class="nav-text">centos安装yum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在新安装的Centos中安装python3-7-解决pip和yum问题"><span class="nav-number">1.3.</span> <span class="nav-text">在新安装的Centos中安装python3.7 解决pip和yum问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python环境创建"><span class="nav-number">1.4.</span> <span class="nav-text">python环境创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装mongo4"><span class="nav-number">1.5.</span> <span class="nav-text">安装mongo4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装crontab"><span class="nav-number">1.6.</span> <span class="nav-text">安装crontab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将当前容器创建为镜像（id）"><span class="nav-number">1.7.</span> <span class="nav-text">将当前容器创建为镜像（id）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推送到dockerhub"><span class="nav-number">1.8.</span> <span class="nav-text">推送到dockerhub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker运行"><span class="nav-number">1.9.</span> <span class="nav-text">docker运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装talib"><span class="nav-number">1.10.</span> <span class="nav-text">安装talib</span></a></li></ol></li></ol></div>
             
 
           </div>
