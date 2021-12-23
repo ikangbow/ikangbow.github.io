@@ -132,19 +132,25 @@ category: 投资
 	systemctl restart crond
 	tail -f /var/log/cron
 
+	crontab -l 查看所有定时任务
+	crontab -e 编辑修改定时任务
+
 	更改时区
 
 	tzselect
 
-	crontab -l 查看所有定时任务
-
 	vim /etc/crontab
 	添加变量 CRON_TZ=Asia/Shanghai
 
-	00 21 * * 2-6 python3 /stock/data_main.py
-	00 06 * * 3-7 python3 /stock/frm_main.py
-	00 07 * * 2-6 python3 /stock/stock_match.py
-	0 */1 * * 2-6 python3 /stock/timer.py
+	cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+	service crond restart
+
+	示例
+
+	30  20  *  *  1-5 python3 /home/stock/data_main.py
+	0   5  *  *  2-6 python3 /home/stock/frm_main.py
+	30  7  *  *  1-5 python3 /home/stock/stock_match.py
+	30  8  *  *  1-5 python3 /home/stock/timer.py
 
 ## 将当前容器创建为镜像（id）
 
@@ -157,3 +163,28 @@ category: 投资
 ## docker运行
 
 	docker run -e TZ="Asia/Shanghai" --privileged -it -d --name myquant ikangbow/myquant:1.0.3
+
+## 安装talib
+
+	wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+
+	cd ta-lib/
+
+	./configure --prefix=/usr
+
+	make && make install
+
+ 	cd /usr
+
+	find -name libta_lib.so.0
+	
+	vim /etc/profile
+	
+	export LD_LIBRARY_PATH=/usr/lib64
+	
+	pip install ta-lib -U
+	
+	cp /usr/lib/libta_lib.* /usr/lib64/
+	
+
+	
