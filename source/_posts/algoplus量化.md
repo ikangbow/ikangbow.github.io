@@ -41,3 +41,6 @@ category: arctic
 
 	#显示镜像通道
 	conda config --show channels
+	
+	#更新pip源
+	pip install - i https://pypi.doubanio.com/simple pip -U --user
