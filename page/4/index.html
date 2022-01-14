@@ -315,6 +315,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/win10学linux/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/16/win10学linux/" itemprop="url">win10学linux</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-16T10:36:20+08:00">
+                2020-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Linux环境"><a href="#Linux环境" class="headerlink" title="Linux环境"></a>Linux环境</h1><h2 id="win10家庭版自带虚拟机Hyper-V的设置"><a href="#win10家庭版自带虚拟机Hyper-V的设置" class="headerlink" title="win10家庭版自带虚拟机Hyper-V的设置"></a>win10家庭版自带虚拟机Hyper-V的设置</h2><p>一般win10家庭版并不带Hyper-V虚拟机，解决方法：</p>
+<p>新建Hyper-V.bat文件，内容为</p>
+<pre><code>pushd &quot;%~dp0&quot;
+
+dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &gt;hyper-v.txt
+
+for /f %%i in (&apos;findstr /i . hyper-v.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;%SystemRoot%\servicing\Packages\%%i&quot;
+
+del hyper-v.txt
+
+Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL
+</code></pre><p>右键-以管理员身份运行，这时就会自动的安装虚拟机功能。</p>
+<h2 id="下载linux镜像"><a href="#下载linux镜像" class="headerlink" title="下载linux镜像"></a>下载linux镜像</h2><p>下载linux镜像，运行Hyper-V管理器，并加载linux镜像</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/13/nginx/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1949,163 +2103,6 @@ http:// 192.168.1.64:8080
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/07/围城-钱钟书/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/07/围城-钱钟书/" itemprop="url">《围城》-钱钟书</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-07T21:15:21+08:00">
-                2019-12-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/书摘/" itemprop="url" rel="index">
-                    <span itemprop="name">书摘</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="零"><a href="#零" class="headerlink" title="零"></a>零</h1><p>围在城里的人想逃出来，城外的人想冲进去，对婚姻也罢，职业也罢，人生的愿望大都如此。</p>
-<h1 id="壹"><a href="#壹" class="headerlink" title="壹"></a>壹</h1><p>天生人是教他们孤独的，一个个该各归各，老死不相往来。身体里容不下的东西，或消化，或排泄，是个人的事；为什么心里容不下的情感，要找同伴来分摊？聚在一起，动不动自己冒犯人，或者人开罪自己，好像一只刺猬，只好保持着彼此间的距离，要亲密团结，不是你刺痛我的肉，就是我擦破你的皮。（引自第199页）</p>
-<h1 id="贰"><a href="#贰" class="headerlink" title="贰"></a>贰</h1><p>我们一天要想到不知多少人，亲戚、朋友、仇人，以及不相干的见过面的人。真正想一个人，记挂着他，希望跟他接近，这少得很。人事太忙了，不许我们全神贯注，无间断地怀念一个人。我们一生对于最亲爱的人的想念，加起来恐怕不到一点钟，此外不过是念头在他身上瞥过，想到而已。（引自第161页）</p>
-<h1 id="叁"><a href="#叁" class="headerlink" title="叁"></a>叁</h1><p>写信的时候总觉得这是慰情聊胜于无，比不上见面，到见了面，许多话倒将不出来，想还不如写信。见面有瘾的；最初，约着见一面就能使见面的前后几天都沾着光，变成好日子渐渐地恨不能天天见面了；到后来，恨不能刻刻见面了。写好信发出，他总担心这信像支火箭，到落地时，火已熄了，对方收到的只是一段枯炭。（引自第79页）</p>
-<h1 id="肆"><a href="#肆" class="headerlink" title="肆"></a>肆</h1><p>像咱们这种旅行，最实验得出一个人的品性。旅行是最劳顿，最麻烦，叫人本相毕现的时候。经过长期苦旅行而彼此不讨厌的人，才可以结交作朋友–且慢，你听我说–结婚以后的蜜月旅行是次序颠倒的，应该先同旅行一个月，一个月舟车仆仆以后，双方还没有彼此看破，彼此厌恶，还没有吵嘴翻脸，还要维持原来的婚约，这种夫妇保证不会离婚（引自第188页）</p>
-<h1 id="伍"><a href="#伍" class="headerlink" title="伍"></a>伍</h1><p>年龄是个自然历程里不能超越的事实，就像饮食男女，像死亡。有时，这种年辈意识比阶级意识更鲜明。随你政见、学说或趣味如何相同，年辈的老少总替你隐隐分了界限，仿佛瓷器上的裂纹，平时一点没有什么，一旦受着震动，这条裂纹先扩大成裂缝。（引自第248页）</p>
-<h1 id="陆"><a href="#陆" class="headerlink" title="陆"></a>陆</h1><p>忠厚老实人的恶毒，像饭菜里的沙砾或者出骨鱼片里未净的刺，会给人一种不期待的伤。（引自第5页）</p>
-<h1 id="柒"><a href="#柒" class="headerlink" title="柒"></a>柒</h1><p>心里仿佛黑牢里的禁锢者摸索着一根火柴，刚划亮，火柴就熄了，眼前没看清的一片又滑回黑暗里。譬如黑夜里两条船相迎擦过，一个在这条船上，瞥见对面船舱的灯光正是自己梦寐不忘的脸，没来得及叫唤，彼此早距离远了。这一刹那的接近，反见得睽隔的渺茫。</p>
-<h1 id="捌"><a href="#捌" class="headerlink" title="捌"></a>捌</h1><p>在旅行的时候，人生的地平线移近；坐汽车只几个钟点，而乘客仿佛下半世全在车里消磨的，只要坐定了，身心像得到归宿，一劳永逸地看书、看报、抽烟、吃东西、瞌睡，路程以外的事暂时等于身后身外的事。</p>
-<h1 id="玖"><a href="#玖" class="headerlink" title="玖"></a>玖</h1><p>对于丑人，细看是一种残忍–除非他是坏人，你要惩罚他。    </p>
-<h1 id="拾"><a href="#拾" class="headerlink" title="拾"></a>拾</h1><p>天下只有两种人，譬如一串葡萄到手，一种人挑最好的先吃，另一种人把最好的留在最后吃。照例第一种人应该乐观，因为他每吃一颗都是吃剩的葡萄里最好的；第二种应该悲观，因为他每吃一颗都是吃剩的葡萄里最坏的。只不过事实上适得其反，缘故是第二种人还有希望，第一种人只有回忆。从恋爱到白头偕老，好比一串葡萄，总有最好的一颗，最好的只有一颗，留着希望，多么好？你希望的好葡萄在后面呢，我们是坏葡萄，别倒了你的胃口。</p>
-<h1 id="十一"><a href="#十一" class="headerlink" title="十一"></a>十一</h1><p>一个人的缺点正像猴子的尾巴，猴子蹲在地面的时候，尾巴是看不见的，直到他向树上爬，就把后部供大众瞻仰，可是这红臀长尾巴本来就有，并非地位爬高了的新标识。</p>
-<h1 id="十二"><a href="#十二" class="headerlink" title="十二"></a>十二</h1><p>我们在社会上一切说话全像戏院子的入场券，一边印着“过期作废”，可是那一边并不注明什么日期，随我们都的便可以提早或延迟。</p>
-<h1 id="十三"><a href="#十三" class="headerlink" title="十三"></a>十三</h1><p>这就是生离死别比百年团聚好的地方，它能使人不老。不但鬼不会长大，不见了好久的朋友，在我们心目里，还是当年的风采，尽管我们自己已经老了。</p>
-<h1 id="十四"><a href="#十四" class="headerlink" title="十四"></a>十四</h1><p>他个人的天地忽然从世人公共生活的天地里分出来，宛如与活人幽明隔绝的孤鬼。瞧着阳世的乐事，自己插不进，瞧着阳世的太阳，自己晒不到。</p>
-<h1 id="十五"><a href="#十五" class="headerlink" title="十五"></a>十五</h1><p>吃的饭并不能使他们不饿，只滋养栽培了饿，使饿在他们身体里长存，而他们不至于饿死了不再饿。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2154,7 +2151,7 @@ http:// 192.168.1.64:8080
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">51</span>
+                <span class="site-state-item-count">52</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2231,7 +2228,7 @@ http:// 192.168.1.64:8080
         <div class="copyright">
   
   &copy;  2018 - 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-snowflake-o"></i>
   </span>
