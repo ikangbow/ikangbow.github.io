@@ -416,11 +416,19 @@ yum -y install wget
 
 yum install -y bzip2
 </code></pre><h2 id="安装anocanda"><a href="#安装anocanda" class="headerlink" title="安装anocanda"></a>安装anocanda</h2><pre><code>wget --no-check-certificate https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.11-Linux-x86_64.sh
+
+bash Anaconda3-2021.11-Linux-x86_64.sh -u
+
+vim /etc/profile
+
+export PATH=/root/anaconda3/bin:$PATH
+
+source /etc/profile
 </code></pre><h2 id="anocanda使用"><a href="#anocanda使用" class="headerlink" title="anocanda使用"></a>anocanda使用</h2><pre><code>conda create -n foralgo python=3.7
 
 conda env list
 
-conda activate foralgo
+source activate foralgo
 </code></pre><h2 id="添加镜像源"><a href="#添加镜像源" class="headerlink" title="添加镜像源"></a>添加镜像源</h2><pre><code>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
@@ -429,13 +437,17 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/m
 
 
 #显示检索路径
+
 conda config --set show_channel_urls yes
 
 #显示镜像通道
+
 conda config --show channels
 
 #更新pip源
-pip install - i https://pypi.doubanio.com/simple pip -U --user
+
+pip install -i https://pypi.doubanio.com/simple pip -U --user
+</code></pre><h2 id="安装algoplus"><a href="#安装algoplus" class="headerlink" title="安装algoplus"></a>安装algoplus</h2><pre><code>pip install AlgoPlus -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
 </code></pre>
           
         
@@ -703,7 +715,7 @@ service crond restart
 0   5  *  *  2-6 python3 /home/stock/frm_main.py
 30  7  *  *  1-5 python3 /home/stock/stock_match.py
 30  8  *  *  1-5 python3 /home/stock/timer.py
-</code></pre><h2 id="将当前容器创建为镜像（id）"><a href="#将当前容器创建为镜像（id）" class="headerlink" title="将当前容器创建为镜像（id）"></a>将当前容器创建为镜像（id）</h2><pre><code>docker commit -a &quot;ikangbow&quot; 730661ccf053 ikangbow/myquant:1.0.1
+</code></pre><h2 id="将当前容器创建为镜像（id）"><a href="#将当前容器创建为镜像（id）" class="headerlink" title="将当前容器创建为镜像（id）"></a>将当前容器创建为镜像（id）</h2><pre><code>docker commit -a &quot;ikangbow&quot; -m &quot;描述信心&quot; 730661ccf053 ikangbow/myquant:1.0.1
 </code></pre><h2 id="推送到dockerhub"><a href="#推送到dockerhub" class="headerlink" title="推送到dockerhub"></a>推送到dockerhub</h2><pre><code>docker push ikangbow/myquant:1.0.1
 </code></pre><h2 id="docker运行"><a href="#docker运行" class="headerlink" title="docker运行"></a>docker运行</h2><pre><code>docker run -e TZ=&quot;Asia/Shanghai&quot; --privileged -it -d --name myquant ikangbow/myquant:1.0.3
 </code></pre><h2 id="安装talib"><a href="#安装talib" class="headerlink" title="安装talib"></a>安装talib</h2><pre><code>wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz

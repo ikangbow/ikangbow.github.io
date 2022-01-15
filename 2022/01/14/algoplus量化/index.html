@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="centos安装yumyum install -y git  yum install -y vim  yum -y install wget  yum install -y bzip2 安装anocandawget --no-check-certificate https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-01-14T14:01:46.411Z">
+<meta property="og:updated_time" content="2022-01-15T03:52:58.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="algoplus量化">
 <meta name="twitter:description" content="centos安装yumyum install -y git  yum install -y vim  yum -y install wget  yum install -y bzip2 安装anocandawget --no-check-certificate https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.">
@@ -412,11 +412,19 @@ yum -y install wget
 
 yum install -y bzip2
 </code></pre><h2 id="安装anocanda"><a href="#安装anocanda" class="headerlink" title="安装anocanda"></a>安装anocanda</h2><pre><code>wget --no-check-certificate https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.11-Linux-x86_64.sh
+
+bash Anaconda3-2021.11-Linux-x86_64.sh -u
+
+vim /etc/profile
+
+export PATH=/root/anaconda3/bin:$PATH
+
+source /etc/profile
 </code></pre><h2 id="anocanda使用"><a href="#anocanda使用" class="headerlink" title="anocanda使用"></a>anocanda使用</h2><pre><code>conda create -n foralgo python=3.7
 
 conda env list
 
-conda activate foralgo
+source activate foralgo
 </code></pre><h2 id="添加镜像源"><a href="#添加镜像源" class="headerlink" title="添加镜像源"></a>添加镜像源</h2><pre><code>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
@@ -425,13 +433,17 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/m
 
 
 #显示检索路径
+
 conda config --set show_channel_urls yes
 
 #显示镜像通道
+
 conda config --show channels
 
 #更新pip源
-pip install - i https://pypi.doubanio.com/simple pip -U --user
+
+pip install -i https://pypi.doubanio.com/simple pip -U --user
+</code></pre><h2 id="安装algoplus"><a href="#安装algoplus" class="headerlink" title="安装algoplus"></a>安装algoplus</h2><pre><code>pip install AlgoPlus -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
 </code></pre>
       
     </div>
@@ -615,7 +627,7 @@ pip install - i https://pypi.doubanio.com/simple pip -U --user
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#centos安装yum"><span class="nav-number">1.</span> <span class="nav-text">centos安装yum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装anocanda"><span class="nav-number">2.</span> <span class="nav-text">安装anocanda</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#anocanda使用"><span class="nav-number">3.</span> <span class="nav-text">anocanda使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加镜像源"><span class="nav-number">4.</span> <span class="nav-text">添加镜像源</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#centos安装yum"><span class="nav-number">1.</span> <span class="nav-text">centos安装yum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装anocanda"><span class="nav-number">2.</span> <span class="nav-text">安装anocanda</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#anocanda使用"><span class="nav-number">3.</span> <span class="nav-text">anocanda使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加镜像源"><span class="nav-number">4.</span> <span class="nav-text">添加镜像源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装algoplus"><span class="nav-number">5.</span> <span class="nav-text">安装algoplus</span></a></li></ol></div>
             
 
           </div>
