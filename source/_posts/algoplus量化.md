@@ -19,6 +19,14 @@ category: arctic
 
     wget --no-check-certificate https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-2021.11-Linux-x86_64.sh
 
+	bash Anaconda3-2021.11-Linux-x86_64.sh -u
+
+	vim /etc/profile
+	
+	export PATH=/root/anaconda3/bin:$PATH
+
+	source /etc/profile
+
 ## anocanda使用
 
     conda create -n foralgo python=3.7

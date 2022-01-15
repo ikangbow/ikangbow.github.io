@@ -154,7 +154,7 @@ category: 投资
 
 ## 将当前容器创建为镜像（id）
 
-	docker commit -a "ikangbow" 730661ccf053 ikangbow/myquant:1.0.1
+	docker commit -a "ikangbow" -m "描述信心" 730661ccf053 ikangbow/myquant:1.0.1
 
 ## 推送到dockerhub
 
