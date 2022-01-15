@@ -33,7 +33,7 @@ category: arctic
 
 	conda env list
 
-	conda activate foralgo
+	source activate foralgo
 
 ## 添加镜像源
 
@@ -51,4 +51,8 @@ category: arctic
 	conda config --show channels
 	
 	#更新pip源
-	pip install - i https://pypi.doubanio.com/simple pip -U --user
+	pip install -i https://pypi.doubanio.com/simple pip -U --user
+
+## 安装algoplus
+
+    pip install AlgoPlus -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
