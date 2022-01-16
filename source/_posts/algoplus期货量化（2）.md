@@ -10,6 +10,12 @@ category: algoplus
 买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。
 
 
+	b"ExchangeID": b"SHFE", b"Direction": 1, b"Volume": 1
+
+	exchange_id：b"SHFE"
+	instrument_id：b"rb2001"
+	order_vol：1
+
     买开仓
 	buy_open(exchange_id, instrument_id, order_price, order_vol)
 	
@@ -36,6 +42,7 @@ category: algoplus
 	
 	查合约
 	req_qry_instrument()
+
 
 ## 买卖撤查通知
 
