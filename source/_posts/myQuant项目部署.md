@@ -12,8 +12,6 @@ category: 投资
     docker pull centos:7
 
 ## centos安装yum
-
-    yum install yum-utils
 	
 	yum install -y git
 	
@@ -88,6 +86,8 @@ category: 投资
 	使用yum进行安装
 
 	yum install -y mongodb-org
+
+	vim /etc/mongod.conf
 
 	systemLog:
 	  destination: file #日志输出方式。file/syslog,如果是file，需指定path，默认是输出到标准输出流中
