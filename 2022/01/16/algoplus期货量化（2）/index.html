@@ -94,19 +94,19 @@
 
 
 
-<meta name="description" content="买卖撤查请求买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。 买开仓 buy_open(exchange_id, instrument_id, order_price, order_vol)  卖平仓 sell_close(exchange_id, instrument_">
+<meta name="description" content="买卖撤查请求买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。 b&amp;quot;ExchangeID&amp;quot;: b&amp;quot;SHFE&amp;quot;, b&amp;quot;Direction&amp;quot;: 1, b&amp;quot;Volume&amp;quot;: 1  exchange_i">
 <meta name="keywords" content="algoplus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="algoplus期货量化（2）">
 <meta property="og:url" content="http://yoursite.com/2022/01/16/algoplus期货量化（2）/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="买卖撤查请求买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。 买开仓 buy_open(exchange_id, instrument_id, order_price, order_vol)  卖平仓 sell_close(exchange_id, instrument_">
+<meta property="og:description" content="买卖撤查请求买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。 b&amp;quot;ExchangeID&amp;quot;: b&amp;quot;SHFE&amp;quot;, b&amp;quot;Direction&amp;quot;: 1, b&amp;quot;Volume&amp;quot;: 1  exchange_i">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2022/01/16/algoplus期货量化（2）/114604.png">
-<meta property="og:updated_time" content="2022-01-16T03:47:44.937Z">
+<meta property="og:updated_time" content="2022-01-16T05:13:35.129Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="algoplus期货量化（2）">
-<meta name="twitter:description" content="买卖撤查请求买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。 买开仓 buy_open(exchange_id, instrument_id, order_price, order_vol)  卖平仓 sell_close(exchange_id, instrument_">
+<meta name="twitter:description" content="买卖撤查请求买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。 b&amp;quot;ExchangeID&amp;quot;: b&amp;quot;SHFE&amp;quot;, b&amp;quot;Direction&amp;quot;: 1, b&amp;quot;Volume&amp;quot;: 1  exchange_i">
 <meta name="twitter:image" content="http://yoursite.com/2022/01/16/algoplus期货量化（2）/114604.png">
 
 
@@ -407,7 +407,13 @@
 
       
         <h2 id="买卖撤查请求"><a href="#买卖撤查请求" class="headerlink" title="买卖撤查请求"></a>买卖撤查请求</h2><p>买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。</p>
-<pre><code>买开仓
+<pre><code>b&quot;ExchangeID&quot;: b&quot;SHFE&quot;, b&quot;Direction&quot;: 1, b&quot;Volume&quot;: 1
+
+exchange_id：b&quot;SHFE&quot;
+instrument_id：b&quot;rb2001&quot;
+order_vol：1
+
+买开仓
 buy_open(exchange_id, instrument_id, order_price, order_vol)
 
 卖平仓

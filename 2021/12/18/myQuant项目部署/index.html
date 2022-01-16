@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install yum-utils  yum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zl">
+<meta name="description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zlib-devel bzip2-devel op">
 <meta name="keywords" content="投资">
 <meta property="og:type" content="article">
 <meta property="og:title" content="myQuant项目部署">
 <meta property="og:url" content="http://yoursite.com/2021/12/18/myQuant项目部署/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install yum-utils  yum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zl">
+<meta property="og:description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zlib-devel bzip2-devel op">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-01-15T03:22:35.729Z">
+<meta property="og:updated_time" content="2022-01-16T03:52:14.908Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="myQuant项目部署">
-<meta name="twitter:description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install yum-utils  yum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zl">
+<meta name="twitter:description" content="基于Backtrader的量化投资项目基于centos的docker镜像docker pull centos:7 centos安装yumyum install -y git  yum install -y vim  yum -y install wget 在新安装的Centos中安装python3.7 解决pip和yum问题yum install zlib-devel bzip2-devel op">
 
 
 
@@ -405,9 +405,7 @@
 
       
         <h1 id="基于Backtrader的量化投资项目"><a href="#基于Backtrader的量化投资项目" class="headerlink" title="基于Backtrader的量化投资项目"></a>基于Backtrader的量化投资项目</h1><h2 id="基于centos的docker镜像"><a href="#基于centos的docker镜像" class="headerlink" title="基于centos的docker镜像"></a>基于centos的docker镜像</h2><pre><code>docker pull centos:7
-</code></pre><h2 id="centos安装yum"><a href="#centos安装yum" class="headerlink" title="centos安装yum"></a>centos安装yum</h2><pre><code>yum install yum-utils
-
-yum install -y git
+</code></pre><h2 id="centos安装yum"><a href="#centos安装yum" class="headerlink" title="centos安装yum"></a>centos安装yum</h2><pre><code>yum install -y git
 
 yum install -y vim
 
@@ -470,6 +468,8 @@ gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
 使用yum进行安装
 
 yum install -y mongodb-org
+
+vim /etc/mongod.conf
 
 systemLog:
   destination: file #日志输出方式。file/syslog,如果是file，需指定path，默认是输出到标准输出流中

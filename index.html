@@ -409,7 +409,13 @@
         
           
             <h2 id="买卖撤查请求"><a href="#买卖撤查请求" class="headerlink" title="买卖撤查请求"></a>买卖撤查请求</h2><p>买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。</p>
-<pre><code>买开仓
+<pre><code>b&quot;ExchangeID&quot;: b&quot;SHFE&quot;, b&quot;Direction&quot;: 1, b&quot;Volume&quot;: 1
+
+exchange_id：b&quot;SHFE&quot;
+instrument_id：b&quot;rb2001&quot;
+order_vol：1
+
+买开仓
 buy_open(exchange_id, instrument_id, order_price, order_vol)
 
 卖平仓
@@ -971,9 +977,7 @@ mongod -f /etc/mongod.conf
         
           
             <h1 id="基于Backtrader的量化投资项目"><a href="#基于Backtrader的量化投资项目" class="headerlink" title="基于Backtrader的量化投资项目"></a>基于Backtrader的量化投资项目</h1><h2 id="基于centos的docker镜像"><a href="#基于centos的docker镜像" class="headerlink" title="基于centos的docker镜像"></a>基于centos的docker镜像</h2><pre><code>docker pull centos:7
-</code></pre><h2 id="centos安装yum"><a href="#centos安装yum" class="headerlink" title="centos安装yum"></a>centos安装yum</h2><pre><code>yum install yum-utils
-
-yum install -y git
+</code></pre><h2 id="centos安装yum"><a href="#centos安装yum" class="headerlink" title="centos安装yum"></a>centos安装yum</h2><pre><code>yum install -y git
 
 yum install -y vim
 
@@ -1036,6 +1040,8 @@ gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
 使用yum进行安装
 
 yum install -y mongodb-org
+
+vim /etc/mongod.conf
 
 systemLog:
   destination: file #日志输出方式。file/syslog,如果是file，需指定path，默认是输出到标准输出流中
