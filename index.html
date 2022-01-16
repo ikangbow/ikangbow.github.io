@@ -315,7 +315,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/14/algoplus量化/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/16/algoplus期货量化（2）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Airthink">
@@ -334,7 +334,345 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2022/01/14/algoplus量化/" itemprop="url">algoplus量化</a></h1>
+                <a class="post-title-link" href="/2022/01/16/algoplus期货量化（2）/" itemprop="url">algoplus期货量化（2）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-16T11:12:47+08:00">
+                2022-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/algoplus/" itemprop="url" rel="index">
+                    <span itemprop="name">algoplus</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="买卖撤查请求"><a href="#买卖撤查请求" class="headerlink" title="买卖撤查请求"></a>买卖撤查请求</h2><p>买卖报单、撤单、查询概括了所有的交易业务。这些业务都是由交易者主动发起的，并且提供必要的信息。交易者只需要传递相应参数，AlgoPlus就可以按照CTP标准组织信息并发起请求。</p>
+<pre><code>买开仓
+buy_open(exchange_id, instrument_id, order_price, order_vol)
+
+卖平仓
+sell_close(exchange_id, instrument_id, order_price, order_vol, is_today)
+
+卖开仓
+sell_open(exchange_id, instrument_id, order_price, order_vol)
+
+买平仓
+buy_close(exchange_id, instrument_id, order_price, order_vol, is_today)
+
+撤单
+req_order_action(exchange_id, instrument_id, order_ref, order_sysid)
+
+查成交
+req_qry_trade()
+
+查持仓
+req_qry_investor_position()
+
+查资金账户
+req_qry_trading_account()
+
+查合约
+req_qry_instrument()
+</code></pre><h2 id="买卖撤查通知"><a href="#买卖撤查通知" class="headerlink" title="买卖撤查通知"></a>买卖撤查通知</h2><p>交易者发起的买卖报单、撤单请求后，期货公司柜台会推送一条响应信息，AlgoPlus的回调函数以此作为参数被调用。</p>
+<pre><code>OnRspOrderInsert(pInputOrder, pRspInfo, nRequestID, bIsLast)
+
+OnRspOrderAction(pInputOrderAction, pRspInfo, nRequestID, bIsLast)
+
+pRspInfo是一个python字典，内容如下
+
+{
+&apos;ErrorID&apos;: 0, # 错误代码
+&apos;ErrorMsg&apos;: &quot;&quot;, # 错误信息
+}
+</code></pre><p>买卖报单、撤单请求到达交易所被执行的过程中，交易所实时推送订单状态变化信息，AlgoPlus的回调函数OnRtnOrder(pOrder)以此作为参数被调用。pOrder是一个python字典，内容如下</p>
+<pre><code>{
+&apos;BrokerID&apos;: &quot;&quot;, # 经纪公司代码
+&apos;InvestorID&apos;: &quot;&quot;, # 投资者代码
+&apos;InstrumentID&apos;: &quot;&quot;, # 合约代码
+&apos;OrderRef&apos;: &quot;&quot;, # 报单引用
+&apos;UserID&apos;: &quot;&quot;, # 用户代码
+&apos;OrderPriceType&apos;: &quot;&quot;, # 报单价格条件
+&apos;Direction&apos;: &quot;&quot;, # 买卖方向
+&apos;CombOffsetFlag&apos;: &quot;&quot;, # 组合开平标志
+&apos;CombHedgeFlag&apos;: &quot;&quot;, # 组合投机套保标志
+&apos;LimitPrice&apos;: 0.0, # 价格
+&apos;VolumeTotalOriginal&apos;: 0, # 数量
+&apos;TimeCondition&apos;: &quot;&quot;, # 有效期类型
+&apos;GTDDate&apos;: &quot;&quot;, # GTD日期
+&apos;VolumeCondition&apos;: &quot;&quot;, # 成交量类型
+&apos;MinVolume&apos;: 0, # 最小成交量
+&apos;ContingentCondition&apos;: &quot;&quot;, # 触发条件
+&apos;StopPrice&apos;: 0.0, # 止损价
+&apos;ForceCloseReason&apos;: &quot;&quot;, # 强平原因
+&apos;IsAutoSuspend&apos;: 0, # 自动挂起标志
+&apos;BusinessUnit&apos;: &quot;&quot;, # 业务单元
+&apos;RequestID&apos;: 0, # 请求编号
+&apos;OrderLocalID&apos;: &quot;&quot;, # 本地报单编号
+&apos;ExchangeID&apos;: &quot;&quot;, # 交易所代码
+&apos;ParticipantID&apos;: &quot;&quot;, # 会员代码
+&apos;ClientID&apos;: &quot;&quot;, # 客户代码
+&apos;ExchangeInstID&apos;: &quot;&quot;, # 合约在交易所的代码
+&apos;TraderID&apos;: &quot;&quot;, # 交易所交易员代码
+&apos;InstallID&apos;: 0, # 安装编号
+&apos;OrderSubmitStatus&apos;: &quot;&quot;, # 报单提交状态
+&apos;NotifySequence&apos;: 0, # 报单提示序号
+&apos;TradingDay&apos;: &quot;&quot;, # 交易日
+&apos;SettlementID&apos;: 0, # 结算编号
+&apos;OrderSysID&apos;: &quot;&quot;, # 报单编号
+&apos;OrderSource&apos;: &quot;&quot;, # 报单来源
+&apos;OrderStatus&apos;: &quot;&quot;, # 报单状态
+&apos;OrderType&apos;: &quot;&quot;, # 报单类型
+&apos;VolumeTraded&apos;: 0, # 今成交数量
+&apos;VolumeTotal&apos;: 0, # 剩余数量
+&apos;InsertDate&apos;: &quot;&quot;, # 报单日期
+&apos;InsertTime&apos;: &quot;&quot;, # 委托时间
+&apos;ActiveTime&apos;: &quot;&quot;, # 激活时间
+&apos;SuspendTime&apos;: &quot;&quot;, # 挂起时间
+&apos;UpdateTime&apos;: &quot;&quot;, # 最后修改时间
+&apos;CancelTime&apos;: &quot;&quot;, # 撤销时间
+&apos;ActiveTraderID&apos;: &quot;&quot;, # 最后修改交易所交易员代码
+&apos;ClearingPartID&apos;: &quot;&quot;, # 结算会员编号
+&apos;SequenceNo&apos;: 0, # 序号
+&apos;FrontID&apos;: 0, # 前置编号
+&apos;SessionID&apos;: 0, # 会话编号
+&apos;UserProductInfo&apos;: &quot;&quot;, # 用户端产品信息
+&apos;StatusMsg&apos;: &quot;&quot;, # 状态信息
+&apos;UserForceClose&apos;: 0, # 用户强平标志
+&apos;ActiveUserID&apos;: &quot;&quot;, # 操作用户代码
+&apos;BrokerOrderSeq&apos;: 0, # 经纪公司报单编号
+&apos;RelativeOrderSysID&apos;: &quot;&quot;, # 相关报单
+&apos;ZCETotalTradedVolume&apos;: 0, # 郑商所成交数量
+&apos;IsSwapOrder&apos;: 0, # 互换单标志
+&apos;BranchID&apos;: &quot;&quot;, # 营业部编号
+&apos;InvestUnitID&apos;: &quot;&quot;, # 投资单元代码
+&apos;AccountID&apos;: &quot;&quot;, # 资金账号
+&apos;CurrencyID&apos;: &quot;&quot;, # 币种代码
+&apos;IPAddress&apos;: &quot;&quot;, # IP地址
+&apos;MacAddress&apos;: &quot;&quot;, # Mac地址
+}
+</code></pre><p>OrderStatus取值及含义</p>
+<pre><code>全部成交
+OrderStatus_AllTraded = b&apos;0&apos;
+#部分成交还在队列中
+OrderStatus_PartTradedQueueing = b&apos;1&apos;
+#部分成交不在队列中
+OrderStatus_PartTradedNotQueueing = b&apos;2&apos;
+#未成交还在队列中
+OrderStatus_NoTradeQueueing = b&apos;3&apos;
+#未成交不在队列中
+OrderStatus_NoTradeNotQueueing = b&apos;4&apos;
+#撤单
+OrderStatus_Canceled = b&apos;5&apos;
+#未知
+OrderStatus_Unknown = b&apos;a&apos;
+#尚未触发
+OrderStatus_NotTouched = b&apos;b&apos;
+#已触发
+OrderStatus_Touched = b&apos;c&apos;
+</code></pre><p>OrderSubmitStatus取值及含义</p>
+<pre><code>#已经提交
+OrderSubmitStatus_InsertSubmitted = b&apos;0&apos;
+#撤单已经提交
+OrderSubmitStatus_CancelSubmitted = b&apos;1&apos;
+#修改已经提交
+OrderSubmitStatus_ModifySubmitted = b&apos;2&apos;
+#已经接受
+OrderSubmitStatus_Accepted = b&apos;3&apos;
+#报单已经被拒绝
+OrderSubmitStatus_InsertRejected = b&apos;4&apos;
+#撤单已经被拒绝
+OrderSubmitStatus_CancelRejected = b&apos;5&apos;
+#改单已经被拒绝
+OrderSubmitStatus_ModifyRejected = b&apos;6&apos;
+</code></pre><p>当订单有成交发生时，交易所还会推送一条成交信息，AlgoPlus的回调函数OnRtnTrade(pTrade)以此作为参数被调用。除了成交价格之外，pTrade中的其他信息在pOrder中都有。</p>
+<p>行情数据通知</p>
+<p>创建行情接口实例时，AlgoPlus会根据交易者传递的合约列表参数自动订阅合约。在盘中，AlgoPlus的回调函数OnRtnDepthMarketData(pDepthMarketData)以实时行情数据为参数被调用。pDepthMarketData是一个python字典，内容如下：</p>
+<pre><code>{
+&apos;TradingDay&apos;: b&apos;20200113&apos;, # 交易日
+&apos;InstrumentID&apos;: b&apos;rb2005&apos;, # 合约代码
+&apos;ExchangeID&apos;: b&apos;&apos;, # 交易所代码
+&apos;ExchangeInstID&apos;: b&apos;&apos;, # 合约在交易所的代码
+&apos;LastPrice&apos;: 3559.0, # 最新价
+&apos;PreSettlementPrice&apos;: 3568.0, # 上次结算价
+&apos;PreClosePrice&apos;: 3571.0, # 昨收盘
+&apos;PreOpenInterest&apos;: 1357418.0, # 昨持仓量
+&apos;OpenPrice&apos;: 3565.0, # 今开盘
+&apos;HighestPrice&apos;: 3567.0, # 最高价
+&apos;LowestPrice&apos;: 3544.0, # 最低价
+&apos;Volume&apos;: 347796, # 数量
+&apos;Turnover&apos;: 12361542250.0, # 成交金额
+&apos;OpenInterest&apos;: 1345077.0, # 持仓量
+&apos;ClosePrice&apos;: 1.7976931348623157e+308, # 今收盘
+&apos;SettlementPrice&apos;: 1.7976931348623157e+308, # 本次结算价
+&apos;UpperLimitPrice&apos;: 3782.0, # 涨停板价
+&apos;LowerLimitPrice&apos;: 3353.0, # 跌停板价
+&apos;PreDelta&apos;: 0.0, # 昨虚实度
+&apos;CurrDelta&apos;: 1.7976931348623157e+308, # 今虚实度
+&apos;UpdateTime&apos;: b&apos;23:00:01&apos;, # 最后修改时间
+&apos;UpdateMillisec&apos;: 0, # 最后修改毫秒
+&apos;BidPrice1&apos;: 3559.0, # 申买价一
+&apos;BidVolume1&apos;: 158, # 申买量一
+&apos;AskPrice1&apos;: 3560.0, # 申卖价一
+&apos;AskVolume1&apos;: 18, # 申卖量一
+&apos;BidPrice2&apos;: 1.7976931348623157e+308, # 申买价二
+&apos;BidVolume2&apos;: 0, # 申买量二
+&apos;AskPrice2&apos;: 1.7976931348623157e+308, # 申卖价二
+&apos;AskVolume2&apos;: 0, # 申卖量二
+&apos;BidPrice3&apos;: 1.7976931348623157e+308, # 申买价三
+&apos;BidVolume3&apos;: 0, # 申买量三
+&apos;AskPrice3&apos;: 1.7976931348623157e+308, # 申卖价三
+&apos;AskVolume3&apos;: 0, # 申卖量三
+&apos;BidPrice4&apos;: 1.7976931348623157e+308, # 申买价四
+&apos;BidVolume4&apos;: 0, # 申买量四
+&apos;AskPrice4&apos;: 1.7976931348623157e+308, # 申卖价四
+&apos;AskVolume4&apos;: 0, # 申卖量四
+&apos;BidPrice5&apos;: 1.7976931348623157e+308, # 申买价五
+&apos;BidVolume5&apos;: 0, # 申买量五
+&apos;AskPrice5&apos;: 1.7976931348623157e+308, # 申卖价五
+&apos;AskVolume5&apos;: 0, # 申卖量五
+&apos;AveragePrice&apos;: 35542.50839572623, # 当日均价
+&apos;ActionDay&apos;: b&apos;20200110&apos; # 业务日期
+}
+</code></pre><h2 id="盈损管理"><a href="#盈损管理" class="headerlink" title="盈损管理"></a>盈损管理</h2><p>examples/profit_loss_manager.py是一个相对复杂的例子，启动后可以监控账户的所有的成交，包括从快期或者其他终端软件报的单，当达到止盈止损条件时，就会自动平仓。启动前需要设置好止盈止损参数：</p>
+<pre><code>pl_parameter = {
+    &apos;StrategyID&apos;: 9,
+    # 盈损参数，&apos;0&apos;代表止盈, &apos;1&apos;代表止损，绝对价差
+    &apos;ProfitLossParameter&apos;: {
+        b&apos;rb2010&apos;: {&apos;0&apos;: [2], &apos;1&apos;: [2]},
+        b&apos;ni2007&apos;: {&apos;0&apos;: [20], &apos;1&apos;: [20]},
+    },
+}
+</code></pre><h2 id="技术分析体系"><a href="#技术分析体系" class="headerlink" title="技术分析体系"></a>技术分析体系</h2><p><img src="/2022/01/16/algoplus期货量化（2）/114604.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/14/algoplus期货量化（1）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/01/14/algoplus期货量化（1）/" itemprop="url">algoplus期货量化（1）</a></h1>
         
 
         <div class="post-meta">
@@ -369,8 +707,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/arctic/" itemprop="url" rel="index">
-                    <span itemprop="name">arctic</span>
+                  <a href="/categories/algoplus/" itemprop="url" rel="index">
+                    <span itemprop="name">algoplus</span>
                   </a>
                 </span>
 
@@ -447,6 +785,49 @@ conda config --show channels
 #更新pip源
 
 pip install -i https://pypi.doubanio.com/simple pip -U --user
+</code></pre><h2 id="安装、启动mongo"><a href="#安装、启动mongo" class="headerlink" title="安装、启动mongo"></a>安装、启动mongo</h2><pre><code>vim /etc/yum.repos.d/mongodb-org-4.2.repo
+
+编辑以下内容
+
+[mongodb-enterprise]
+name=MongoDB Enterprise Repository
+baseurl=https://repo.mongodb.com/yum/redhat/$releasever/mongodb-enterprise/4.2/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
+
+使用yum进行安装
+
+yum install -y mongodb-org
+
+vim /etc/mongod.conf
+
+systemLog:
+  destination: file #日志输出方式。file/syslog,如果是file，需指定path，默认是输出到标准输出流中
+  path: /var/log/mongodb/mongod/log  #日志路径
+  logAppend: false #启动时，日志追加在已有日志文件内还是备份旧日志后，创建新文件记录日志, 默认false
+
+net:
+  port: 27017 #监听端口，默认27017
+  bindIp: 127.0.0.1 #绑定监听的ip，设置为127.0.0.1时，只会监听本机
+  maxIncomingConnections: 65536 #最大连接数，可接受的连接数还受限于操作系统配置的最大连接数
+  wireObjectCheck: true #校验客户端的请求，防止错误的或无效BSON插入,多层文档嵌套的对象会有轻微性能影响,默认true
+
+processManagement:
+  fork: true  # 后台运行
+
+security:
+  authorization: enabled  # enabled/disabled #开启客户端认证
+
+storage:
+  dbPath: /var/lib/mongodb  # 数据库地址
+  journal: 
+    enabled: true #启动journal,64位系统默认开启，32位默认关闭
+
+
+启动mongo
+
+mongod -f /etc/mongod.conf
 </code></pre><h2 id="安装algoplus"><a href="#安装algoplus" class="headerlink" title="安装algoplus"></a>安装algoplus</h2><pre><code>pip install AlgoPlus -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
 </code></pre>
           
@@ -2075,212 +2456,6 @@ sellshort();
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/12/本杰明巴顿奇事/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/02/12/本杰明巴顿奇事/" itemprop="url">本杰明巴顿奇事</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-12T13:06:43+08:00">
-                2021-02-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/电影台词/" itemprop="url" rel="index">
-                    <span itemprop="name">电影台词</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>一直很好奇，街上是什么样子的？
-下个街角又是怎么样？
-
-Always had a healthy curiouly , what was up the street ? Or around the next corner ?
-
-有时候，我感觉一切和前一天大不一样了。
-
-Some days I feel different than the day before.
-
-每个人在某种程度上都对自己有不同的认识，但是我们最后都会去往同一个地方，只是走的路不同罢了。
-
-Everybody feels different about themselves , one way or another . Butwe’re all going the same way . Just taking different roads to get there ,that’s all . You’re on your own road .
-
-有时候我觉得很可笑，那些在我们记忆里占据着很小一部分的人们，却往往给我们留下了最深刻的印象。
-It’s funny how sometimes the people we remember the least , make the greatest impression on us .
-
-我们注定要失去我们所爱的人，要不然我们怎么会知道，他们对我们有多么的重要。
-We’re meant to lose the people we love . How else would we know how importantthey are to us ?
-
-长大是件很有意思的事，不经意间就发生了，本来是这样一个人，然后突然间变成了另一个人，不再是原来那样子。
-
-Growing up’s a funny thing , Sneak up on you . One person is there , than suddenly somebodyelse has taken here place . She wasn`t all albows and knees anymore.
-
-你可以像疯狗那样对周围的一切愤愤不平，你可以诅咒命运，但是等到最后一刻，你还是得平静的放手而去。
-
-You can be as mad as a mad dog at the way things went . You could swear, curse the fates . But when it comes to the end , you have to let go .
-
-我们的生命因为各种各样的机遇而变得更有意义。
-
-Our lives are defined by opportunities。
-
-有些时候我们就活在即将发生冲撞的轨道上，浑然不知无论它是意外发生还是蓄谋已久，对此我们都无能为力。
-
-Sometimes we’re on a collision course and we just don’t know it . Whether it’s by accident or by design , there’s not a thing we can do about it .
-
-一件事无论太晚或者对于我来说太早，
-都不会阻拦你成为你想成为的那个人，
-这个过程没有时间的期限，只要你想，随时都可以开始，
-要改变或者保留原状都无所谓，
-做事本不应该有所束缚，
-我们可以办好这件事却也可以把它搞砸，
-但我希望最终你能成为你想成为的人。
-
-For what it’s worth, it’s never too late,
-Or in my case, too early,
-To be whoever you want to be.
-There’s no time limit, stop whenever you want.
-You can change or stay the same.
-There’s no rules to this thing.
-We can make the best or the worst of it.
-I hope you make the best of it.
-
-我希望你有时能驻足于这个令你感到惊叹的世界，
-体会你从未有过的感觉；
-我希望你能见到其他与你观点不同的人们；
-我希望你能有一个值得自豪的人生，
-如果你想象的生活不一样；
-我希望你能有勇气重新再来。
-
-I hope you see things that startle you.
-I hope you feel things you never felt before.
-I hope you meet people with a different point of view.
-I hope you live a life you’re proud of.
-If you find that you are not,
-I hope you have the strength to start all over again.
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2329,7 +2504,7 @@ I hope you have the strength to start all over again.
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">52</span>
+                <span class="site-state-item-count">53</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2340,7 +2515,7 @@ I hope you have the strength to start all over again.
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2351,7 +2526,7 @@ I hope you have the strength to start all over again.
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
