@@ -315,6 +315,229 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/17/algoplus期货量化（3）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/01/17/algoplus期货量化（3）/" itemprop="url">algoplus期货量化（3）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-17T23:40:19+08:00">
+                2022-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/algoplus/" itemprop="url" rel="index">
+                    <span itemprop="name">algoplus</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="使用AlgoPlus接收期货实时行情"><a href="#使用AlgoPlus接收期货实时行情" class="headerlink" title="使用AlgoPlus接收期货实时行情"></a>使用AlgoPlus接收期货实时行情</h2><p>关于CTP</p>
+<p>CTP是Comprehensive Transaction Platform的简称。CTP有MdApi和TraderApi两个独立的开放接口。</p>
+<p>MdApi负责行情相关操作（订阅、接收）。</p>
+<p><img src="/2022/01/17/algoplus期货量化（3）/234200.png" alt=""></p>
+<p>TraderApi负责交易相关的操作（买、卖、撤、查）。</p>
+<p><img src="/2022/01/17/algoplus期货量化（3）/234517.png" alt=""></p>
+<p>MdApi与TraderApi方法的执行过程都是异步的，每一个请求都对应一个或多个负责接收执行结果的回调函数。例如，通过ReqOrderInsert方法向交易所发出买开仓指令，对应的回调方法OnRtnOrder可以实时接收交易所服务器发回来的执行通知。</p>
+<h2 id="AlgoPlus创建行情接口"><a href="#AlgoPlus创建行情接口" class="headerlink" title="AlgoPlus创建行情接口"></a>AlgoPlus创建行情接口</h2><p>MdApi是行情接口，使用时只需要传递账户参数创建一个实例就可以了。示例：</p>
+<pre><code>from AlgoPlus.CTP.MdApi import MdApi
+
+class TickEngine(MdApi):
+    # 深度行情通知
+    def OnRtnDepthMarketData(self, pDepthMarketData):
+        print(pDepthMarketData)
+        # print(f&quot;{pDepthMarketData.InstrumentID}当前最新价：{pDepthMarketData.LastPrice}&quot;)
+
+if __name__ == &apos;__main__&apos;:
+    from account_info import my_future_account_info_dict
+    future_account = my_future_account_info_dict[&apos;SimNow&apos;]
+    tick_engine = TickEngine(future_account.server_dict[&apos;MDServer&apos;]
+                             , future_account.broker_id
+                             , future_account.investor_id
+                             , future_account.password
+                             , future_account.app_id
+                             , future_account.auth_code
+                             , future_account.instrument_id_list
+                             , None
+                             , future_account.md_page_dir)
+    tick_engine.Join()
+</code></pre><p>1、从AlgoPlus.CTP.MdApi文件中导入MdApi类。MdApi已对工作流程的前六步进行了封装。</p>
+<p>2、TickEngine是MdApi的子类。TickEngine类主要实现收到行情的数据处理算法，示例只将收到的行情打印出来。</p>
+<p>3、创建行情接口实例前，需要导入账户信息。示例的账户信息存放在同一个目录下的account_info.py文件中。</p>
+<p>4、交易时间运行以上代码就可以将接收到的实时期货行情打印出来。</p>
+<p>5、回调函数OnRtnDepthMarketData接收到的pDepthMarketData行情是DepthMarketDataField结构体的实例，在AlgoPlus.CTP.ApiStruct中被定义。以调用属性的方式可以获取行情任意字段的数值，例如pDepthMarketData.LastPrice表示最新价。DepthMarketDataField包括以下字段：</p>
+<pre><code>class DepthMarketDataField(BaseField):
+&quot;&quot;&quot;深度行情&quot;&quot;&quot;
+_fields_ = [
+    (&apos;TradingDay&apos;, c_char * 9)  # ///交易日
+    , (&apos;InstrumentID&apos;, c_char * 31)  # 合约代码
+    , (&apos;ExchangeID&apos;, c_char * 9)  # 交易所代码
+    , (&apos;ExchangeInstID&apos;, c_char * 31)  # 合约在交易所的代码
+    , (&apos;LastPrice&apos;, c_double)  # 最新价
+    , (&apos;PreSettlementPrice&apos;, c_double)  # 上次结算价
+    , (&apos;PreClosePrice&apos;, c_double)  # 昨收盘
+    , (&apos;PreOpenInterest&apos;, c_double)  # 昨持仓量
+    , (&apos;OpenPrice&apos;, c_double)  # 今开盘
+    , (&apos;HighestPrice&apos;, c_double)  # 最高价
+    , (&apos;LowestPrice&apos;, c_double)  # 最低价
+    , (&apos;Volume&apos;, c_int)  # 数量
+    , (&apos;Turnover&apos;, c_double)  # 成交金额
+    , (&apos;OpenInterest&apos;, c_double)  # 持仓量
+    , (&apos;ClosePrice&apos;, c_double)  # 今收盘
+    , (&apos;SettlementPrice&apos;, c_double)  # 本次结算价
+    , (&apos;UpperLimitPrice&apos;, c_double)  # 涨停板价
+    , (&apos;LowerLimitPrice&apos;, c_double)  # 跌停板价
+    , (&apos;PreDelta&apos;, c_double)  # 昨虚实度
+    , (&apos;CurrDelta&apos;, c_double)  # 今虚实度
+    , (&apos;UpdateTime&apos;, c_char * 9)  # 最后修改时间
+    , (&apos;UpdateMillisec&apos;, c_int)  # 最后修改毫秒
+    , (&apos;BidPrice1&apos;, c_double)  # 申买价一
+    , (&apos;BidVolume1&apos;, c_int)  # 申买量一
+    , (&apos;AskPrice1&apos;, c_double)  # 申卖价一
+    , (&apos;AskVolume1&apos;, c_int)  # 申卖量一
+    , (&apos;BidPrice2&apos;, c_double)  # 申买价二
+    , (&apos;BidVolume2&apos;, c_int)  # 申买量二
+    , (&apos;AskPrice2&apos;, c_double)  # 申卖价二
+    , (&apos;AskVolume2&apos;, c_int)  # 申卖量二
+    , (&apos;BidPrice3&apos;, c_double)  # 申买价三
+    , (&apos;BidVolume3&apos;, c_int)  # 申买量三
+    , (&apos;AskPrice3&apos;, c_double)  # 申卖价三
+    , (&apos;AskVolume3&apos;, c_int)  # 申卖量三
+    , (&apos;BidPrice4&apos;, c_double)  # 申买价四
+    , (&apos;BidVolume4&apos;, c_int)  # 申买量四
+    , (&apos;AskPrice4&apos;, c_double)  # 申卖价四
+    , (&apos;AskVolume4&apos;, c_int)  # 申卖量四
+    , (&apos;BidPrice5&apos;, c_double)  # 申买价五
+    , (&apos;BidVolume5&apos;, c_int)  # 申买量五
+    , (&apos;AskPrice5&apos;, c_double)  # 申卖价五
+    , (&apos;AskVolume5&apos;, c_int)  # 申卖量五
+    , (&apos;AveragePrice&apos;, c_double)  # 当日均价
+    , (&apos;ActionDay&apos;, c_char * 9)  # 业务日期
+]
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/16/algoplus期货量化（2）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2303,165 +2526,6 @@ sellshort();
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/02/28/考驾照/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/02/28/考驾照/" itemprop="url">考驾照</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-28T09:09:19+08:00">
-                2021-02-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/驾照/" itemprop="url" rel="index">
-                    <span itemprop="name">驾照</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><em>系安全带，查看方向盘是否回正，挡位是否在空挡，手刹是否拉起</em></p>
-<h2 id="坡道定点停车和起步"><a href="#坡道定点停车和起步" class="headerlink" title="坡道定点停车和起步"></a>坡道定点停车和起步</h2><p>一档上坡，要对好边缘线，与右侧边缘线保持30cm。</p>
-<p>左后视镜可看到坡起实线踩离合踩刹车。</p>
-<p>拉起手刹停留超过3秒钟，放下手刹。</p>
-<p>缓抬离合至车身抖动保持不动，松掉刹车，完成起步。</p>
-<h2 id="侧方位停车"><a href="#侧方位停车" class="headerlink" title="侧方位停车"></a>侧方位停车</h2><p>一档行车，车身离边缘线30cm-50cm为宜，当从右侧后视镜看到库位前角时候，踩离合踩刹车停车。</p>
-<p>挂倒挡，松刹车慢松离合开始倒车，当库位前角从右侧后视镜消失时，向右打满方向盘，继续倒车。</p>
-<p>观察左后视镜，当库位后角出现，回正方向盘继续倒车。</p>
-<p>当左侧车门把手越过库位左侧虚线（左后车轮），向左打死方向盘继续倒车。</p>
-<p>观察右后视镜，当车身与右侧边线平行踩离合踩刹车，完成入库。</p>
-<p>挂一档，打左转向灯，松离合向前行驶，当车头中间将触及行车道左侧线向右回正方向盘继续行驶，完成出库。</p>
-<h2 id="直角转弯"><a href="#直角转弯" class="headerlink" title="直角转弯"></a>直角转弯</h2><p>一档行车，车身离右侧边缘线30cm为宜，进入项目打开左转向灯，当听到直角转弯关闭左转向灯。</p>
-<p>观察左侧后视镜，当超过直角边五指向左打死方向盘，继续行驶。</p>
-<p>观察右侧后视镜，车身与右侧边缘线平行回正方向盘，继续向前驶出项目。</p>
-<h2 id="曲线行驶"><a href="#曲线行驶" class="headerlink" title="曲线行驶"></a>曲线行驶</h2><p>一档行车进入曲线行驶，当左侧大灯触及右侧曲线边缘线时，向左打一圈方向盘，保持左侧大灯沿着右侧边缘线行驶，直至第一个弯出来。</p>
-<p>当左侧大灯触及左侧边缘线回正方向盘。</p>
-<p>当右侧大灯触及左侧边缘线，当向右打一圈方向盘，保持右侧大灯贴左侧边缘线行驶，当驶出第二个弯，回正方向盘。</p>
-<h2 id="倒车入库"><a href="#倒车入库" class="headerlink" title="倒车入库"></a>倒车入库</h2><p>。。。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2510,7 +2574,7 @@ sellshort();
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-count">54</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
