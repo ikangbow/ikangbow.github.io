@@ -9,12 +9,11 @@ category: algoplus
 
 关于CTP
 
-
 CTP是Comprehensive Transaction Platform的简称。CTP有MdApi和TraderApi两个独立的开放接口。
 
 MdApi负责行情相关操作（订阅、接收）。
 
-![](234200.png)
+![](234220.png)
 
 TraderApi负责交易相关的操作（买、卖、撤、查）。
 
