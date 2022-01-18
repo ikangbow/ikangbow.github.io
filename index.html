@@ -411,7 +411,7 @@
             <h2 id="使用AlgoPlus接收期货实时行情"><a href="#使用AlgoPlus接收期货实时行情" class="headerlink" title="使用AlgoPlus接收期货实时行情"></a>使用AlgoPlus接收期货实时行情</h2><p>关于CTP</p>
 <p>CTP是Comprehensive Transaction Platform的简称。CTP有MdApi和TraderApi两个独立的开放接口。</p>
 <p>MdApi负责行情相关操作（订阅、接收）。</p>
-<p><img src="/2022/01/17/algoplus期货量化（3）/234200.png" alt=""></p>
+<p><img src="/2022/01/17/algoplus期货量化（3）/234220.png" alt=""></p>
 <p>TraderApi负责交易相关的操作（买、卖、撤、查）。</p>
 <p><img src="/2022/01/17/algoplus期货量化（3）/234517.png" alt=""></p>
 <p>MdApi与TraderApi方法的执行过程都是异步的，每一个请求都对应一个或多个负责接收执行结果的回调函数。例如，通过ReqOrderInsert方法向交易所发出买开仓指令，对应的回调方法OnRtnOrder可以实时接收交易所服务器发回来的执行通知。</p>
