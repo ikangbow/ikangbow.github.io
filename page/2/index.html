@@ -315,6 +315,273 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/22/TBQUANT/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/05/22/TBQUANT/" itemprop="url">TBQUANT</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-22T10:55:31+08:00">
+                2021-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/投资/" itemprop="url" rel="index">
+                    <span itemprop="name">投资</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h2><pre><code>PlotString(&quot;BarStatus&quot;,Text(BarStatus));
+</code></pre><h2 id="定义参数"><a href="#定义参数" class="headerlink" title="定义参数"></a>定义参数</h2><p>整个公式中只能出现一个 Params 宣告，并且要放到公式的开始部分，在变量定义之前</p>
+<pre><code>Params
+ Bool bTest(False); //定义布尔型参数 bTest，默认值为 False;
+ Numberic Length(10); //定义数值型参数 Length，默认值为 10；
+ NumericSeries Price(0); //定义数值型序列参数 Price，默认值为 0；
+ NumericRef output(0); //定义数值型引用参数 output，默认值为 0；
+ String strTmp(&quot;Hello&quot;); //定义字符串参数 strTmp,默认值为 Hello
+</code></pre><h2 id="定义变量"><a href="#定义变量" class="headerlink" title="定义变量"></a>定义变量</h2><p>整个公式中只能出现一个 Vars 声明，并且要放到公式的开始部分，在参数定义之后，正文之前。</p>
+<pre><code>Vars
+NumericSeries MyVal1(0); //定义数值型序列变量 MyVal1，默认值为 0；
+Numeric MyVal2(0); //定义数值型变量 MyVal2，默认值为 0；
+Bool MyVal3(False); //定义布尔型变量 MyVal3，默认值为 False;
+String MyVal4(&quot;Test&quot;); //定义字符串变量 MyVal4，默认值为 Test。
+</code></pre><h2 id="用户函数编写示例"><a href="#用户函数编写示例" class="headerlink" title="用户函数编写示例"></a>用户函数编写示例</h2><pre><code>Average 函数脚本如下：
+Params
+NumericSeries Price(1);
+Numeric Length(10);
+Vars
+Numeric AvgValue; 
+Begin
+AvgValue = Summation(Price, Length) / Length;
+Return AvgValue;
+End
+</code></pre><p>上面的例子，返回值只有一个，即最后求得的平均值，在函数中直接使用 Return 语句返回就可以<br>了。</p>
+<pre><code>Params
+NumericSeries Price(1);
+Numeric Length(10);
+NumericRef HighestBar; //设置引用型的变量
+Vars
+Numeric MyVal;TradeBlazer 公式开发指南 TradeBlazer 用户函数
+- 69 -
+Numeric MyBar;
+Numeric i; 
+Begin
+MyVal = Price;
+MyBar = 0;
+For i = 1 to Length – 1
+{
+If ( Price[i] &gt; MyVal)
+{
+MyVal = Price[i];
+MyBar = i; //记录最大值 Bar 与当前 Bar 的偏移量
+}
+}
+HighestBar = MyBar; //通过将偏移量赋值给引用型变量，它可将该值传递回去
+Return MyVal;
+End
+
+函数参数声明类型 可传入的变量类型
+Numeric== Numeric，NumericRef，NumericSeries
+NumericRe==f Numeric，NumericRef
+NumericSeries== Numeric，NumericRef，NumericSeries
+Bool== Bool，BoolRef，BoolSeriesTradeBlazer
+BoolRef== Bool，BoolRef
+BoolSeries== Bool，BoolRef，BoolSeries
+String== String，StringRef，StringSeries
+StringRef== String，StringRef
+StringSeries== String，StringRef，StringSeries 
+</code></pre><h2 id="输出-1"><a href="#输出-1" class="headerlink" title="输出"></a>输出</h2><pre><code>PlotNumeric-----在当前 Bar 输出一个数值；
+语法：PlotNumeric(String Name,Numeric Number,Numeric Locator=0,Integer Color=-1,Integer 
+BarsBack=0)
+ Name 输出值的名称的字符串，可以为中、英文、数字或者其它字符；
+ Number 输出的数值；
+ Locator 输出值的定位点，默认时输出单点，否则输出连接两个值线段，用法请看例 2；
+ Color 输出值的显示颜色，默认表示使用属性设置框中的颜色；
+ BarsBack 从当前 Bar 向前回溯的 Bar 数，默认值为当前 Bar。
+例 1：PlotNumeric (&quot;RSI&quot;,RSIValue);
+输出 RSI 的值。
+例 2：PlotNumeric (&quot;OpenToClose&quot;,Open,Close);
+输出开盘价与收盘价的连线。（需要在公式属性的输出线形选择柱状图）
+例 3：PlotNumeric (&quot;AvgValue&quot;,average(close,5),0,Blue);
+输出一条蓝色的以收盘价计算的五日平均线。
+注意：当后面的参数都使用默认值的情况下，可省略不写，如例 1。但如果后面还有其它参数要指明，
+而只是中间某一个或者多个参数需要默认值的话，则中间参数不可省略，需将默认值一一填写，如例
+
+
+PlotBool-----在当前 Bar 输出一个布尔值。
+语法：PlotBool(String Name,Bool bPlot,Numeric Locator=0,Integer Color=-1,Integer BarsBack=0)
+Name 输出值的名称，不区分大小写；
+bPlot 输出的布尔值；
+Locator 输出值的定位点；
+Color 输出值的显示颜色，默认表示使用属性设置框中的颜色
+BarsBack 从当前 Bar 向前回溯的 Bar 数，默认值为当前 Bar 
+
+示例 ：PlotBool (&quot;con&quot;,con,High); 
+在 Bar 的最高价位置输出条件 con 的布尔值。
+PlotString-----在当前 Bar 输出一个字符串。
+语法：PlotString(String Name,String str,Numeric Locator=0,Integer Color=-1,Integer BarsBack=0)
+Name 输出值的名称，不区分大小写；
+str 输出的字符串；
+Locator 输出值的定位点；
+Color 输出值的显示颜色，默认表示使用属性设置框中的颜色；
+BarsBack 从当前 Bar 向前回溯的 Bar 数，默认值为当前 Bar。
+示例 ：
+PlotString (&quot;Bear Market&quot;,&quot;Bear Bear&quot;,High,Blue); 
+在 Bar 的最高价位置输出一个蓝色的字符串 Bear Bear
+</code></pre><h2 id="公式正文"><a href="#公式正文" class="headerlink" title="公式正文"></a>公式正文</h2><p>参数与变量的声明之后，在公式的正文部分，对所声明的变量进行赋值计算，必要的话还可以将所需的<br>条件语句编写进公式里。最后则是将计算结果以数值、布尔或字符串的形式在图表上输出。<br>现在我们来试着建立一个技术分析类的公式应用。首先，需要确立我们的指标里需要什么信息，以及需<br>要通过何种计算从而得到我们想要的结果。比如，现在我们需要得到两条移动平均线，那么首先可以确<br>定，要输出的是两个数值型的变量的值，然后我们就可以在公式中进行定义与赋值了。<br>有如下代码：</p>
+<pre><code>Params //参数的声明
+numeric length1(10);
+numeric length2(20);
+Vars //变量的声明
+numeric ma1;
+numeric ma2;
+Begin
+ma1 = averageFC(close,length1);
+ma2 = averageFC(close,length2); // 给变量的赋值
+PlotNumeric(&quot;ma1&quot;,ma1,0,cyan);
+PlotNumeric(&quot;ma2&quot;,ma2,0,Magenta); //输出计算出来的平均值
+End
+</code></pre><p>以上公式先声明参数与变量，然后在 Begin 与 End 之间对公式的主体进行了赋值与输出。</p>
+<h2 id="交易指令函数"><a href="#交易指令函数" class="headerlink" title="交易指令函数"></a>交易指令函数</h2><p>交易开拓者提供 Buy，SellShort， BuyToCover，Sell，A_SendOrder 这五个函数来做下单的动作<br>指令。</p>
+<p>Buy，SellShort， BuyToCover，Sell 这四个函数可以针对历史数据在图表上做出讯号标识，同时在实<br>时行情中也可以及时地发出下单委托的动作。因为可以对历史数据的图表上做出讯号的标识记录，交易<br>设置的性能测试也需要由这几个函数参与计算的公式应用方可实现。</p>
+<p>Buy —- 对当前合约发出买入开仓的指令，如果图表讯号显示当前持有空仓，则会先平掉空仓，再开多<br>仓；</p>
+<p>SellShort —- 对当前合约发出卖出开仓的指令，如果图表讯号显示当前持有多仓，则会先平掉多仓，再<br>开空仓；</p>
+<p>BuyToCover —- 对当前合约发出平空仓的指令，当图表讯号显示有空头持仓时，方可执行此指令；</p>
+<p>Sell —- 对当前合约发出平多仓的指令，当图表讯号显示有多头持仓时，方可执行此指令；</p>
+<pre><code>if(condition1 &amp;&amp; marketposition!=1) //条件满足且没有持多仓情况下开多
+{
+ buy();
+}else if(condition2 &amp;&amp; marketposition!=-1) //条件满足且没有持空仓时开空
+{
+sellshort();
+}
+</code></pre><h2 id="调试语句输出"><a href="#调试语句输出" class="headerlink" title="调试语句输出"></a>调试语句输出</h2><pre><code>If(close&gt;open)
+ Commentary(&quot;收阳=&quot;+Text(close)); // 在收阳的 K 线上显示收盘价
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/29/量化投资基础知识/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -3234,348 +3501,6 @@ self.datas[0].close[-1]
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/29/qa函数/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/29/qa函数/" itemprop="url">qa函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-29T11:08:26+08:00">
-                2020-08-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/投资/" itemprop="url" rel="index">
-                    <span itemprop="name">投资</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h2 id="下单"><a href="#下单" class="headerlink" title="下单"></a>下单</h2><h3 id="QA-Account"><a href="#QA-Account" class="headerlink" title="QA_Account()"></a>QA_Account()</h3><p>QA_Account() 是quantaxis的核心类, 其作用是一个可以使用规则兼容各种市场的账户类<br>1.3.0以后, QA_Account需要由组合来进行创建(推荐)</p>
-<pre><code>调用方式
-import QUANTAXIS as QA
-user = QA.QA_User(username =&apos;quantaxis&apos;, password = &apos;quantaxis&apos;)
-portfolio=user.new_portfolio(&apos;x1&apos;)
-account = *portfolio.new_account*(account_cookie=&apos;test&apos;)
-
-QA_AccountPRO?
-Init signature:
-QA_AccountPRO(
-    user_cookie:str,
-    portfolio_cookie:str,
-    account_cookie=None,
-    strategy_name=None,
-    market_type=&apos;stock_cn&apos;,
-    frequence=&apos;day&apos;,
-    broker=&apos;backtest&apos;,
-    init_hold={},
-    init_cash=1000000,
-    commission_coeff=0.00025,
-    tax_coeff=0.001,
-    margin_level={},
-    allow_t0=False,
-    allow_sellopen=False,
-    allow_margin=False,
-    running_environment=&apos;backtest&apos;,
-    auto_reload=False,
-    generated=&apos;direct&apos;,
-    start=None,
-    end=None,
-)
-Docstring:     
-JOB是worker 需要接受QA_EVENT 需要完善RUN方法
-👻QA_Broker 继承这个类
-👻QA_Account 继承这个类
-👻QA_OrderHandler 继承这个类
-这些类都要实现run方法，在其它线程🌀中允许自己的业务代码
-File:           /usr/local/lib/python3.6/site-packages/QUANTAXIS/QAARP/QAAccountPro.py
-Type:           type
-Subclasses:     
-accpro = *portfolio.new_accountpro*(&apos;pro2&apos;,market_type=QA.MARKET_TYPE.STOCK_CN)
-accpro.positions
-{}
-*accpro.receive_deal*?
-Signature:
-accpro.receive_deal(
-    code,
-    trade_id:str,
-    order_id:str,
-    realorder_id:str,
-    trade_price,
-    trade_amount,
-    trade_towards,
-    trade_time,
-    message=None,
-)
-Docstring: &lt;no docstring&gt;
-File:      /usr/local/lib/python3.6/site-packages/QUANTAXIS/QAARP/QAAccountPro.py
-Type:      method
-`accpro.receive_deal`(&apos;000001&apos;,&apos;001&apos;,&apos;001&apos;,&apos;0001&apos;,trade_price=12,trade_amount=10000,trade_towards=QA.ORDER_DIRECTION.BUY,trade_time=&apos;2020-08-18&apos;)
-*accpro.positions*
-{&apos;000001&apos;: &lt; QAPOSITION 000001 amount 10000/0 &gt;}
-*accpro.history_table*
-
-
-*accpro.send_order?*
-Signature:
-accpro.send_order(
-    code=None,
-    amount=None,
-    time=None,
-    towards=None,
-    price=None,
-    money=None,
-    order_model=&apos;LIMIT&apos;,
-    amount_model=&apos;by_amount&apos;,
-    order_id=None,
-    position_id=None,
-    *args,
-    **kwargs,
-)
-Docstring: &lt;no docstring&gt;
-File:      /usr/local/lib/python3.6/site-packages/QUANTAXIS/QAARP/QAAccountPro.py
-Type:      method
-
-基于期货市场的账户初始化
-future_account = portfolio.new_account(account_cookie =&apos;future&apos;,allow_t0=True,allow_margin=True,allow_sellopen=True, running_environment=QA.MARKET_TYPE.FUTURE_CN)
-
-account的其他属性可以.出来，可以自己试着看
-*accpro.cash*
-[1000000, 879970.0, 779945.0]
-*accpro.cash_available*
-779945.0
-*accpro.get_history*
-*accpro.get_position*(&apos;000001&apos;)
-
-pos2 = accpro.get_position(&apos;000002&apos;)
-
-*pos2.message*
-{&apos;code&apos;: &apos;000002&apos;,
- &apos;instrument_id&apos;: &apos;000002&apos;,
- &apos;user_id&apos;: &apos;pro2&apos;,
- &apos;portfolio_cookie&apos;: &apos;x1&apos;,
- &apos;username&apos;: &apos;quantaxis&apos;,
- &apos;position_id&apos;: &apos;3e2cd89e-7143-4e0e-b344-40571e84eda5&apos;,
- &apos;account_cookie&apos;: &apos;pro2&apos;,
- &apos;frozen&apos;: {},
- &apos;name&apos;: None,
- &apos;spms_id&apos;: None,
- &apos;oms_id&apos;: None,
- &apos;market_type&apos;: &apos;stock_cn&apos;,
- &apos;exchange_id&apos;: None,
- &apos;moneypreset&apos;: 100000,
- &apos;moneypresetLeft&apos;: 0.0,
- &apos;lastupdatetime&apos;: &apos;&apos;,
- &apos;volume_long_today&apos;: 5000,
- &apos;volume_long_his&apos;: 0,
- &apos;volume_long&apos;: 5000,
- &apos;volume_short_today&apos;: 0,
- &apos;volume_short_his&apos;: 0,
- &apos;volume_short&apos;: 0,
- &apos;volume_long_frozen_today&apos;: 0,
- &apos;volume_long_frozen_his&apos;: 0,
- &apos;volume_long_frozen&apos;: 0,
- &apos;volume_short_frozen_today&apos;: 0,
- &apos;volume_short_frozen_his&apos;: 0,
- &apos;volume_short_frozen&apos;: 0,
- &apos;margin_long&apos;: 100000.0,
- &apos;margin_short&apos;: 0,
- &apos;margin&apos;: 100000.0,
- &apos;position_price_long&apos;: 20.0,
- &apos;position_cost_long&apos;: 100000.0,
- &apos;position_price_short&apos;: 0,
- &apos;position_cost_short&apos;: 0.0,
- &apos;open_price_long&apos;: 20.0,
- &apos;open_cost_long&apos;: 100000.0,
- &apos;open_price_short&apos;: 0,
- &apos;open_cost_short&apos;: 0.0,
- &apos;trades&apos;: [],
- &apos;orders&apos;: {},
- &apos;last_price&apos;: 20,
- &apos;float_profit_long&apos;: 0.0,
- &apos;float_profit_short&apos;: 0.0,
- &apos;float_profit&apos;: 0.0,
- &apos;position_profit_long&apos;: 0.0,
- &apos;position_profit_short&apos;: 0.0,
- &apos;position_profit&apos;: 0.0}
-
-*pos2.volume_long*
-5000
-*pos2.volume_long_today*
-5000
-*pos2.volume_long_his*
-0
-*pos2.last_price*
-20
-*pos2.on_price_change*(21)
-if pos2.float_profit_long &gt; 2000:
-    print(&apos;sell&apos;)
-sell
-</code></pre><h3 id="QIFIAccount"><a href="#QIFIAccount" class="headerlink" title="QIFIAccount"></a>QIFIAccount</h3><pre><code>from QIFIAccount import QIFI_Account
-aifiacc = QIFI_Account(username=&apos;x2&apos;,password=&apos;x2&apos;,)
-aifiacc.initial()
-Create new Account
-aifiacc?
-Type:           QIFI_Account
-String form:    &lt;QIFIAccount.QAQIFIAccount.QIFI_Account object at 0x7f6e3b2dfc18&gt;
-File:           /usr/local/lib/python3.6/site-packages/QIFIAccount/QAQIFIAccount.py
-Docstring:      &lt;no docstring&gt;
-Init docstring:
-Initial
-QIFI Account是一个基于 DIFF/ QIFI/ QAAccount后的一个实盘适用的Account基类
-
-
-1. 兼容多持仓组合
-2. 动态计算权益
-
-使用 model = SIM/ REAL来切换
-
-
-sr = aifiacc.send_order(&apos;003&apos;,10,12,ORDER_DIRECTION.BUY)
-aifiacc.send_order?
-Signature:
-aifiacc.send_order(
-    code:str,
-    amount:float,
-    price:float,
-    towards:int,
-    order_id:str=&apos;&apos;,
-)
-Docstring: &lt;no docstring&gt;
-File:      /usr/local/lib/python3.6/site-packages/QIFIAccount/QAQIFIAccount.py
-Type:      method
-sr = aifiacc.send_order(&apos;004&apos;,10.0,12.0,QA.ORDER_DIRECTION.BUY)
-{&apos;volume_long&apos;: 0, &apos;volume_short&apos;: 0, &apos;volume_long_frozen&apos;: 0, &apos;volume_short_frozen&apos;: 0}
-{&apos;volume_long&apos;: 0, &apos;volume_short&apos;: 0}
-order check success
-下单成功 b3f155c7-ab2b-4ac1-94b7-08b6af152738
-td = aifiacc.make_deal(sr)
-全部成交 b3f155c7-ab2b-4ac1-94b7-08b6af152738
-update trade
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3624,7 +3549,7 @@ update trade
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

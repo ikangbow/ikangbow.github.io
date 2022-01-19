@@ -315,6 +315,183 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/分布式环境下redis的使用优化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/03/10/分布式环境下redis的使用优化/" itemprop="url">分布式环境下redis的使用优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-10T08:50:07+08:00">
+                2020-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="分布式与集群"><a href="#分布式与集群" class="headerlink" title="分布式与集群"></a>分布式与集群</h1><p>单机处理到达瓶颈的时候，你就把单机复制几份，这样就构成了一个“集群”。集群中每台服务器就叫做这个集群的一个“节点”，所有节点构成了一个集群。每个节点都提供相同的服务，那么这样系统的处理能力就相当于提升了好几倍（有几个节点就相当于提升了这么多倍）。但问题是用户的请求究竟由哪个节点来处理呢？最好能够让此时此刻负载较小的节点来处理，这样使得每个节点的压力都比较平均。要实现这个功能，就需要在所有节点之前增加一个“调度者”的角色，用户的所有请求都先交给它，然后它根据当前所有节点的负载情况，决定将这个请求交给哪个节点处理。这个“调度者”有个牛逼了名字——负载均衡服务器。集群结构的好处就是系统扩展非常容易。如果随着你们系统业务的发展，当前的系统又支撑不住了，那么给这个集群再增加节点就行了。但是，当你的业务发展到一定程度的时候，你会发现一个问题——无论怎么增加节点，貌似整个集群性能的提升效果并不明显了。这时候，你就需要使用微服务结构了。</p>
+<p>从单机结构到集群结构，你的代码基本无需要作任何修改，你要做的仅仅是多部署几台服务器，每台服务器上运行相同的代码就行了。但是，当你要从集群结构演进到微服务结构的时候，之前的那套代码就需要发生较大的改动了。所以对于新系统我们建议，系统设计之初就采用微服务架构，这样后期运维的成本更低。但如果一套老系统需要升级成微服务结构的话，那就得对代码大动干戈了。所以，对于老系统而言，究竟是继续保持集群模式，还是升级成微服务架构，这需要你们的架构师深思熟虑、权衡投入产出比。OK，下面开始介绍所谓的分布式结构。分布式结构就是将一个完整的系统，按照业务功能，拆分成一个个独立的子系统，在分布式结构中，每个子系统就被称为“服务”。这些子系统能够独立运行在web容器中，它们之间通过RPC方式通信。</p>
+<p>举个例子，假设需要开发一个在线商城。按照微服务的思想，我们需要按照功能模块拆分成多个独立的服务，如：用户服务、产品服务、订单服务、后台管理服务、数据分析服务等等。这一个个服务都是一个个独立的项目，可以独立运行。如果服务之间有依赖关系，那么通过RPC方式调用。这样的好处有很多：系统之间的耦合度大大降低，可以独立开发、独立部署、独立测试，系统与系统之间的边界非常明确，排错也变得相当容易，开发效率大大提升。系统之间的耦合度降低，从而系统更易于扩展。我们可以针对性地扩展某些服务。假设这个商城要搞一次大促，下单量可能会大大提升，因此我们可以针对性地提升订单系统、产品系统的节点数量，而对于后台管理系统、数据分析系统而言，节点数量维持原有水平即可。服务的复用性更高。比如，当我们将用户系统作为单独的服务后，该公司所有的产品都可以使用该系统作为用户系统，无需重复开发。</p>
+<p><img src="/2020/03/10/分布式环境下redis的使用优化/redis0.png" alt=""></p>
+<h1 id="集群环境下redis锁的进一步优化"><a href="#集群环境下redis锁的进一步优化" class="headerlink" title="集群环境下redis锁的进一步优化"></a>集群环境下redis锁的进一步优化</h1><h2 id="死锁的问题"><a href="#死锁的问题" class="headerlink" title="死锁的问题"></a>死锁的问题</h2><p><img src="/2020/03/10/分布式环境下redis的使用优化/redis1.png" alt=""></p>
+<p>解决：<br><img src="/2020/03/10/分布式环境下redis的使用优化/redis2.png" alt=""></p>
+<h2 id="假如程序被kill了，删除锁同样无法执行得到"><a href="#假如程序被kill了，删除锁同样无法执行得到" class="headerlink" title="假如程序被kill了，删除锁同样无法执行得到"></a>假如程序被kill了，删除锁同样无法执行得到</h2><p><img src="/2020/03/10/分布式环境下redis的使用优化/redis3.png" alt=""></p>
+<p>解决：给锁增加过期时间</p>
+<p><img src="/2020/03/10/分布式环境下redis的使用优化/redis4.png" alt=""></p>
+<h2 id="过期时间的确定"><a href="#过期时间的确定" class="headerlink" title="过期时间的确定"></a>过期时间的确定</h2><p> 假如程序1执行到删除锁的时间大于了过期时间，也就是程序1还没执行完锁就被删掉了，此时另外一个线程也可以拿到锁。当线程1执行完去删除锁的时候删掉的就是线程2的锁了，程序就乱了。</p>
+<p>解决：<br>保证当前线程只删除当前线程加的锁</p>
+<p><img src="/2020/03/10/分布式环境下redis的使用优化/redis5.png" alt=""></p>
+<p><img src="/2020/03/10/分布式环境下redis的使用优化/redis6.png" alt=""></p>
+<h2 id="redisson-org的使用"><a href="#redisson-org的使用" class="headerlink" title="redisson.org的使用"></a>redisson.org的使用</h2><pre><code>&lt;dependency&gt;
+        &lt;groupId&gt;org.redisson&lt;/groupId&gt;
+        &lt;artifactId&gt;redisson&lt;/artifactId&gt;
+        &lt;version&gt;3.6.5&lt;/version&gt;
+    &lt;/dependency&gt;
+
+
+  @Bean
+    @ConditionalOnProperty(name=&quot;redisson.address&quot;)
+    RedissonClient redissonSingle() {
+        Config config = new Config();
+        SingleServerConfig serverConfig = config.useSingleServer()
+                .setAddress(redssionProperties.getAddress())
+                .setTimeout(redssionProperties.getTimeout())
+                .setConnectionPoolSize(redssionProperties.getConnectionPoolSize())
+                .setConnectionMinimumIdleSize(redssionProperties.getConnectionMinimumIdleSize());
+
+        if(StringUtils.isNotBlank(redssionProperties.getPassword())) {
+            serverConfig.setPassword(redssionProperties.getPassword());
+        }
+
+        return Redisson.create(config);
+    }
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/04/多核并发缓存架构/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2903,161 +3080,6 @@ http:// 192.168.1.64:8080
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/11/支付模块梳理/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/12/11/支付模块梳理/" itemprop="url">支付模块梳理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-11T20:21:50+08:00">
-                2019-12-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="支付宝和微信"><a href="#支付宝和微信" class="headerlink" title="支付宝和微信"></a>支付宝和微信</h1><p>1、支付宝app支付</p>
-<p>2、支付宝二维码支付</p>
-<p>3、跳转支付地址支付</p>
-<p>4、支付宝WAP支付（H5）</p>
-<p>5、微信app支付</p>
-<p>6、微信二维码支付</p>
-<p>7、微信公众号JSAPI支付</p>
-<p>8、微信WAP支付（H5）</p>
-<p>9、微信小程序支付</p>
-<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="构造pay对象"><a href="#构造pay对象" class="headerlink" title="构造pay对象"></a>构造pay对象</h2><p>pay对象包含属性有：用户id、订单id(List)、支付金额、支付状态、支付类型（aliqr、aliurl、aliwap、aliapp）、支付订单的类型（具体由业务定义）、支付标题，即支付时显示的商品名称、商品信息、服务器异步通知页面路径（回调地址）、页面跳转同步通知页面路径</p>
-<p>若是微信公众号支付，需加上openid，ip(微信支付所需的客户端ip),prepayId（用于发送模板消息）</p>
-<h2 id="入参支付"><a href="#入参支付" class="headerlink" title="入参支付"></a>入参支付</h2><p>将pay对象传入，组装业务参数，调取第三方sdk进行支付。</p>
-<h2 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h2><p>回调结果，支付成功，pay对象写入支付状态1并返回。</p>
-<h2 id="业务数据更新"><a href="#业务数据更新" class="headerlink" title="业务数据更新"></a>业务数据更新</h2><p>根据回调结果以及是否返回pay对象，验证支付成功，进行业务数据更新。<br>主要是订单的记录,创建order并保存。业务数据更新成功后，pay对象写入支付状态2</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3106,7 +3128,7 @@ http:// 192.168.1.64:8080
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">56</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
