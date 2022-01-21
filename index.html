@@ -408,8 +408,164 @@
       
         
           
-            <p>有关期货量化交易的思考</p>
-<ol>
+            <p>用AlgoPlus构建自己的交易盈亏风控系统</p>
+<h2 id="止盈止损方法"><a href="#止盈止损方法" class="headerlink" title="止盈止损方法"></a>止盈止损方法</h2><p>常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。</p>
+<h2 id="撤单次数数据结构"><a href="#撤单次数数据结构" class="headerlink" title="撤单次数数据结构"></a>撤单次数数据结构</h2><pre><code># {&quot;InstrumentID&quot;: 0}
+self.order_action_num_dict = {}
+
+撤单次数是一个以合约名为键值的字典。收到撤单通知后，对撤单次数计算增加。
+
+收到撤单通知时增加撤单次数计数
+
+def OnRtnOrder(self, pOrder):
+&quot;&quot;&quot;
+当收到订单状态变化时，可以在本方法中获得通知。不适宜在回调函数里做比较耗时的操作。
+:param pOrder: AlgoPlus.CTP.ApiStruct中OrderField的实例。
+:return:
+&quot;&quot;&quot;
+if pOrder.OrderStatus == b&quot;5&quot;:
+    if pOrder.InstrumentID in self.action_num_dict.keys():
+        self.action_num_dict[pOrder.InstrumentID] += 1
+    else:
+        self.action_num_dict[pOrder.InstrumentID] = 1
+</code></pre><h2 id="止盈止损参数数据结构"><a href="#止盈止损参数数据结构" class="headerlink" title="止盈止损参数数据结构"></a>止盈止损参数数据结构</h2><pre><code># {&quot;InstrumentID&quot;: {&quot;Type&quot;: []}}
+self.pl_parameter_dict = {}
+
+止损参数是一个以合约名为键值的字典，根据不同的止损止盈类型存储价差/时间差等参数。其中，止损类型参数取值：
+
+Type止损逻辑b”0″固定止盈b”1″固定止损
+
+价差/时间差等参数以列表形式存储，有些止损逻辑可能需要多个参数。
+</code></pre><h2 id="持仓数据结构"><a href="#持仓数据结构" class="headerlink" title="持仓数据结构"></a>持仓数据结构</h2><pre><code># {&quot;InstrumentID&quot;: {&quot;LongVolume&quot;: 0, &quot;LongPositionList&quot;: [], &quot;ShortVolume&quot;: 0, &quot;ShortPositionList&quot;: []}}
+self.local_position_dict = {}
+
+账户持仓以合约名为键值存入字典中，LongVolume统计合约总多头持仓，ShortVolume统计合约总空头持仓，LongPositionList、ShortPositionList以OrderRef为单位存储成交明细。
+
+成交明细是在AlgoPlus.CTP.ApiStruct中TradeField基础上附加IsLock、AnchorTime、StopProfitDict、StopLossDict、MaxProfitPrice字段。
+
+rtn_trade[&quot;IsLock&quot;] = False # 平仓状态
+rtn_trade[&quot;AnchorTime&quot;] = timer() # 成交发生时间
+rtn_trade[&quot;StopProfitDict&quot;] = {} # 止盈触发价格，持仓期间实时更新
+rtn_trade[&quot;StopLossDict&quot;] = {} # 止损触发价格，持仓期间实时更新
+
+成交通知
+
+收到成交通知时放入一个列表中，等待后续处理，避免在此设计复杂的耗时操作。
+
+def OnRtnTrade(self, pTrade):
+&quot;&quot;&quot;
+当报单成交时，可以在本方法中获得通知。不适宜在回调函数里做比较耗时的操作。
+:param pTrade: AlgoPlus.CTP.ApiStruct中的TradeField实例。
+:return:
+&quot;&quot;&quot;
+self.local_rtn_trade_list.append(pTrade.to_dict_raw())
+</code></pre><h2 id="处理成交通知"><a href="#处理成交通知" class="headerlink" title="处理成交通知"></a>处理成交通知</h2><pre><code>根据开买卖开平字段将成交成交信息放入持仓数据结构中。
+
+
+def process_rtn_trade(self):
+    &quot;&quot;&quot;
+    从上次订单ID位置开始处理订单数据。
+    :return:
+    &quot;&quot;&quot;
+    last_rtn_trade_id = len(self.local_rtn_trade_list)
+    for rtn_trade in self.local_rtn_trade_list[self.last_rtn_trade_id:last_rtn_trade_id]:
+        if rtn_trade[&quot;InstrumentID&quot;] not in self.instrument_id_registered:
+            self.instrument_id_registered.append(rtn_trade[&quot;InstrumentID&quot;])
+
+        rtn_trade[&quot;IsLock&quot;] = False
+        rtn_trade[&quot;AnchorTime&quot;] = timer()
+        rtn_trade[&quot;StopProfitDict&quot;] = {}
+        rtn_trade[&quot;StopLossDict&quot;] = {}
+        if rtn_trade[&quot;InstrumentID&quot;] not in self.local_position_dict.keys():
+            self.local_position_dict[rtn_trade[&quot;InstrumentID&quot;]] = {&quot;LongVolume&quot;: 0, &quot;LongPositionList&quot;: [], &quot;ShortVolume&quot;: 0, &quot;ShortPositionList&quot;: []}
+        local_position_info = self.local_position_dict[rtn_trade[&quot;InstrumentID&quot;]]
+
+        # 开仓
+        if rtn_trade[&quot;OffsetFlag&quot;] == b&apos;0&apos;:
+            self.update_stop_price(rtn_trade)
+            if rtn_trade[&quot;Direction&quot;] == b&apos;0&apos;:
+                local_position_info[&quot;LongVolume&quot;] += rtn_trade[&quot;Volume&quot;]
+                local_position_info[&quot;LongPositionList&quot;].append(rtn_trade)
+            elif rtn_trade[&quot;Direction&quot;] == b&apos;1&apos;:
+                local_position_info[&quot;ShortVolume&quot;] += rtn_trade[&quot;Volume&quot;]
+                local_position_info[&quot;ShortPositionList&quot;].append(rtn_trade)
+        elif rtn_trade[&quot;Direction&quot;] == b&apos;0&apos;:
+            local_position_info[&quot;ShortVolume&quot;] = max(local_position_info[&quot;ShortVolume&quot;] - rtn_trade[&quot;Volume&quot;], 0)
+
+        elif rtn_trade[&quot;Direction&quot;] == b&apos;1&apos;:
+            local_position_info[&quot;LongVolume&quot;] = max(local_position_info[&quot;LongVolume&quot;] - rtn_trade[&quot;Volume&quot;], 0)
+
+    self.last_rtn_trade_id = last_rtn_trade_id
+</code></pre><h2 id="实时监控当前行情价格是否触及止盈止损价"><a href="#实时监控当前行情价格是否触及止盈止损价" class="headerlink" title="实时监控当前行情价格是否触及止盈止损价"></a>实时监控当前行情价格是否触及止盈止损价</h2><p>遍历持仓数据结构中的所有成交明细，判断最新行情是否触发某个止盈止损阈值，如果触发则录入平仓报单。</p>
+<pre><code>def check_position(self):
+    &quot;&quot;&quot;
+    检查所有持仓是否触发持仓阈值。
+    &quot;&quot;&quot;
+    try:
+        for instrument_id, position_info in self.local_position_dict.items():
+            for long_position in position_info[&quot;LongPositionList&quot;]:
+                if not long_position[&quot;IsLock&quot;]:
+                    trigger = False
+                    order_price = None
+                    for stop_profit in long_position[&quot;StopProfitDict&quot;].values():
+                        if self.md_dict[instrument_id][&quot;LastPrice&quot;] &amp;gt; stop_profit:
+                            trigger = True
+                            order_price = self.get_stop_profit_price(instrument_id, long_position[&quot;Direction&quot;])
+                            break
+
+                    if not trigger:
+                        for stop_loss in long_position[&quot;StopLossDict&quot;].values():
+                            if self.md_dict[instrument_id][&quot;LastPrice&quot;] &amp;lt; stop_loss:
+                                trigger = True
+                                order_price = self.get_stop_loss_price(instrument_id, long_position[&quot;Direction&quot;])
+                                break
+
+                    if trigger and order_price:
+                        self.order_ref += 1
+                        self.sell_close(long_position[&quot;ExchangeID&quot;], instrument_id, order_price, long_position[&quot;Volume&quot;], self.order_ref)
+                        long_position[&quot;IsLock&quot;] = True
+
+            for short_position in position_info[&quot;ShortPositionList&quot;]:
+                if not short_position[&quot;IsLock&quot;]:
+                    trigger = False
+                    order_price = None
+                    for stop_profit in short_position[&quot;StopProfitDict&quot;].values():
+                        if self.md_dict[instrument_id][&quot;LastPrice&quot;] &amp;lt; stop_profit:
+                            trigger = True
+                            order_price = self.get_stop_profit_price(instrument_id, short_position[&quot;Direction&quot;])
+                            break
+
+                    if not trigger:
+                        for stop_loss in short_position[&quot;StopLossDict&quot;].values():
+                            if self.md_dict[instrument_id][&quot;LastPrice&quot;] &amp;gt; stop_loss:
+                                trigger = True
+                                order_price = self.get_stop_loss_price(instrument_id, short_position[&quot;Direction&quot;])
+                                break
+
+                    if trigger and order_price:
+                        self.order_ref += 1
+                        self.buy_close(short_position[&quot;ExchangeID&quot;], instrument_id, order_price, short_position[&quot;Volume&quot;], self.order_ref)
+                        short_position[&quot;IsLock&quot;] = True
+    except Exception as err:
+        self._write_log(err)
+</code></pre><h2 id="止盈止损逻辑"><a href="#止盈止损逻辑" class="headerlink" title="止盈止损逻辑"></a>止盈止损逻辑</h2><p>根据止盈止损（固定止盈、固定止损、跟踪止损、阶梯止损、保本止损）逻辑计算出触发价格，存入成交明细字典中。这里给出了固定止盈和固定止损的例子</p>
+<pre><code>def update_stop_price(self, position_info):
+    &quot;&quot;&quot;
+    获取止盈止损阈值。止损类型参考https://7jia.com/1002.html
+    :param position_info: 持仓信息
+    :return:
+    &quot;&quot;&quot;
+    for instrument_id, pl_dict in self.pl_parameter_dict.items():
+        if isinstance(pl_dict, dict):
+            for pl_type, delta in pl_dict.items():
+                # 固定止盈
+                sgn = 1 if position_info[&quot;Direction&quot;] == b&apos;0&apos; else -1
+                if pl_type == b&quot;0&quot;:
+                    position_info[&quot;StopProfitDict&quot;][b&quot;0&quot;] = position_info[&quot;Price&quot;] + delta[0] * sgn
+                # 固定止损
+                elif pl_type == b&quot;1&quot;:
+                    position_info[&quot;StopLossDict&quot;][b&quot;1&quot;] = position_info[&quot;Price&quot;] - delta[0] * sgn
+</code></pre><ol>
 <li>行情，目前可获取CTP实时推送的TICK行情，并可合成1minK线</li>
 <li>历史数据+实时行情组装策略计算所需要的数据，由实时行情驱动策略，产生交易信号</li>
 <li>根据产生的交易信号触发交易</li>
@@ -846,7 +1002,200 @@ _fields_ = [
     , (&apos;AveragePrice&apos;, c_double)  # 当日均价
     , (&apos;ActionDay&apos;, c_char * 9)  # 业务日期
 ]
-</code></pre>
+</code></pre><p>说明：</p>
+<p>1、队列是实现行情进程与策略进程之间共享数据的最简单有效的方案，也是AlgoPlus默认使用的方案。</p>
+<p>2、每个策略对应一个队列，将这些队列的列表赋值给参数md_queue_list。</p>
+<p>3、在OnRtnDepthMarketData中，将收到的行情放入所有队列。</p>
+<h2 id="策略接收行情"><a href="#策略接收行情" class="headerlink" title="策略接收行情"></a>策略接收行情</h2><pre><code>作者：&lt;em&gt;AlgoPlus&lt;/em&gt;
+</code></pre><p>链接：<a href="https://zhuanlan.zhihu.com/p/86082225" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/86082225</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h1 id="coding-utf-8"><a href="#coding-utf-8" class="headerlink" title="-- coding: utf-8 --"></a>-<em>- coding: utf-8 -</em>-</h1><h1 id="AlgoPlus量化投资开源框架范例"><a href="#AlgoPlus量化投资开源框架范例" class="headerlink" title="AlgoPlus量化投资开源框架范例"></a>AlgoPlus量化投资开源框架范例</h1><h1 id="微信公众号：AlgoPlus"><a href="#微信公众号：AlgoPlus" class="headerlink" title="微信公众号：AlgoPlus"></a>微信公众号：AlgoPlus</h1><h1 id="项目地址：http-gitee-com-AlgoPlus-AlgoPlus"><a href="#项目地址：http-gitee-com-AlgoPlus-AlgoPlus" class="headerlink" title="项目地址：http://gitee.com/AlgoPlus/AlgoPlus"></a>项目地址：<a href="http://gitee.com/AlgoPlus/AlgoPlus" target="_blank" rel="noopener">http://gitee.com/AlgoPlus/AlgoPlus</a></h1><h1 id="项目网址：http-www-algo-plus"><a href="#项目网址：http-www-algo-plus" class="headerlink" title="项目网址：http://www.algo.plus"></a>项目网址：<a href="http://www.algo.plus" target="_blank" rel="noopener">http://www.algo.plus</a></h1><h1 id="项目网址：http-www-ctp-plus"><a href="#项目网址：http-www-ctp-plus" class="headerlink" title="项目网址：http://www.ctp.plus"></a>项目网址：<a href="http://www.ctp.plus" target="_blank" rel="noopener">http://www.ctp.plus</a></h1><h1 id="项目网址：http-www-7jia-com"><a href="#项目网址：http-www-7jia-com" class="headerlink" title="项目网址：http://www.7jia.com"></a>项目网址：<a href="http://www.7jia.com" target="_blank" rel="noopener">http://www.7jia.com</a></h1><p>import time<br>from datetime import datetime, timedelta<br>from multiprocessing import Process, Queue<br>from AlgoPlus.CTP.TraderApi import TraderApi<br>from AlgoPlus.CTP.ApiStruct import *<br>from tick_engine import TickEngine</p>
+<p>class TraderEngine(TraderApi):<br>    def <strong>init</strong>(self, td_server, broker_id, investor_id, password, app_id, auth_code, md_queue=None<br>                 , page_dir=’’, private_resume_type=2, public_resume_type=2):<br>        self.order_ref = 0  # 报单引用<br>        self.order_time = None  # 报单时间<br>        self.order_status = b””  # 订单状态<br>        self.Join()</p>
+<pre><code># 撤单
+def req_order_action(self, exchange_id, instrument_id, order_ref, order_sysid=&apos;&apos;):
+    input_order_action_field = InputOrderActionField(
+        BrokerID=self.broker_id,
+        InvestorID=self.investor_id,
+        UserID=self.investor_id,
+        ExchangeID=exchange_id,
+        ActionFlag=&quot;0&quot;,
+        InstrumentID=instrument_id,
+        FrontID=self.front_id,
+        SessionID=self.session_id,
+        OrderSysID=order_sysid,
+        OrderRef=str(order_ref),
+    )
+    l_retVal = self.ReqOrderAction(input_order_action_field)
+
+# 报单
+def req_order_insert(self, exchange_id, instrument_id, order_price, order_vol, order_ref, direction, offset_flag):
+    input_order_field = InputOrderField(
+        BrokerID=self.broker_id,
+        InvestorID=self.investor_id,
+        ExchangeID=exchange_id,
+        InstrumentID=instrument_id,
+        UserID=self.investor_id,
+        OrderPriceType=&quot;2&quot;,
+        Direction=direction,
+        CombOffsetFlag=offset_flag,
+        CombHedgeFlag=&quot;1&quot;,
+        LimitPrice=order_price,
+        VolumeTotalOriginal=order_vol,
+        TimeCondition=&quot;3&quot;,
+        VolumeCondition=&quot;1&quot;,
+        MinVolume=1,
+        ContingentCondition=&quot;1&quot;,
+        StopPrice=0,
+        ForceCloseReason=&quot;0&quot;,
+        IsAutoSuspend=0,
+        OrderRef=str(order_ref),
+    )
+    l_retVal = self.ReqOrderInsert(input_order_field)
+
+# 买开仓
+def buy_open(self, exchange_ID, instrument_id, order_price, order_vol, order_ref):
+    self.req_order_insert(exchange_ID, instrument_id, order_price, order_vol, order_ref, &apos;0&apos;, &apos;0&apos;)
+
+# 卖开仓
+def sell_open(self, exchange_ID, instrument_id, order_price, order_vol, order_ref):
+    self.req_order_insert(exchange_ID, instrument_id, order_price, order_vol, order_ref, &apos;1&apos;, &apos;0&apos;)
+
+# 买平仓
+def buy_close(self, exchange_ID, instrument_id, order_price, order_vol, order_ref):
+    if exchange_ID == &quot;SHFE&quot; or exchange_ID == &quot;INE&quot;:
+        self.req_order_insert(exchange_ID, instrument_id, order_price, order_vol, order_ref, &apos;0&apos;, &apos;3&apos;)
+    else:
+        self.req_order_insert(exchange_ID, instrument_id, order_price, order_vol, order_ref, &apos;0&apos;, &apos;1&apos;)
+
+# 卖平仓
+def sell_close(self, exchange_ID, instrument_id, order_price, order_vol, order_ref):
+    if exchange_ID == &quot;SHFE&quot; or exchange_ID == &quot;INE&quot;:
+        self.req_order_insert(exchange_ID, instrument_id, order_price, order_vol, order_ref, &apos;1&apos;, &apos;3&apos;)
+    else:
+        self.req_order_insert(exchange_ID, instrument_id, order_price, order_vol, order_ref, &apos;1&apos;, &apos;1&apos;)
+
+# 报单通知
+def OnRtnOrder(self, pOrder):
+    self.order_status = pOrder.OrderStatus
+    if pOrder.OrderStatus == b&quot;a&quot;:
+        status_msg = &quot;未知状态！&quot;
+    elif pOrder.OrderStatus == b&quot;0&quot;:
+        if pOrder.Direction == b&quot;0&quot;:
+            if pOrder.CombOffsetFlag == b&quot;0&quot;:
+                status_msg = &quot;买开仓已全部成交！&quot;
+            else:
+                status_msg = &quot;买平仓已全部成交！&quot;
+        else:
+            if pOrder.CombOffsetFlag == b&quot;0&quot;:
+                status_msg = &quot;卖开仓已全部成交！&quot;
+            else:
+                status_msg = &quot;卖平仓已全部成交！&quot;
+    elif pOrder.OrderStatus == b&quot;1&quot;:
+        status_msg = &quot;部分成交！&quot;
+    elif pOrder.OrderStatus == b&quot;3&quot;:
+        status_msg = &quot;未成交！&quot;
+    elif pOrder.OrderStatus == b&quot;5&quot;:
+        status_msg = &quot;已撤！&quot;
+    else:
+        status_msg = &quot;其他！&quot;
+
+    self._write_log(f&quot;{status_msg}=&gt;{pOrder}&quot;)
+
+def Join(self):
+    while True:
+        if self.status == 0:
+            last_md = None
+            # 如果队列非空，从队列中取数据
+            while not self.md_queue.empty():
+                last_md = self.md_queue.get(block=False)
+
+            if last_md:
+                # ############################################################################# #
+                if self.order_ref == 0:
+                    # 涨停买开仓
+                    self.order_ref += 1
+                    self.buy_open(test_exchange_id, test_instrument_id, last_md.BidPrice1, test_vol, self.order_ref)
+                    self.order_time = datetime.now()
+                    self._write_log(f&quot;=&gt;买开仓请求！&quot;)
+
+                if self.order_ref == 1 and self.order_status == b&quot;3&quot; and datetime.now() - self.order_time &gt; timedelta(seconds=3):
+                    self.order_status = b&quot;&quot;
+                    self.req_order_action(test_exchange_id, test_instrument_id, self.order_ref)
+                    self._write_log(f&quot;=&gt;发出撤单请求！&quot;)
+
+                if self.order_ref == 1 and self.order_status == b&quot;0&quot;:
+                    self.order_ref += 1
+                    self.order_status = b&quot;&quot;
+                    self.sell_close(test_exchange_id, test_instrument_id, last_md.BidPrice1, test_vol, self.order_ref)
+                    self.order_time = datetime.now()
+                    self._write_log(f&quot;=&gt;买开仓已全部成交，发出卖平仓请求！&quot;)
+
+                # ############################################################################# #
+                if self.order_ref == 1:
+                    if self.order_status == b&quot;5&quot;:
+                        print(&quot;老爷，买开仓单超过3秒未成交，已撤销，这里的测试工作已经按照您的吩咐全部完成！&quot;)
+                        break
+                    elif datetime.now() - self.order_time &gt; timedelta(seconds=3):
+                        print(&quot;买开仓执行等待中！&quot;)
+                elif self.order_ref == 2:
+                    if self.order_status == b&quot;0&quot;:
+                        print(&quot;老爷，卖平仓单已成交，这里的测试工作已经按照您的吩咐全部完成！&quot;)
+                        break
+                    elif datetime.now() - self.order_time &gt; timedelta(seconds=3):
+                        print(&quot;卖平仓执行等待中！&quot;)
+        else:
+            time.sleep(1)
+</code></pre><p>说明：</p>
+<p>1、直接在TraderApi的子类中编写策略是最简单的方案。但是，该方案不适合单账户策略比较多的情况，因为CTP支持同时在线的终端个数有限。如果策略比较多，则创建有限个TraderApi，在独立的Strategy类与MdApi和TraderApi之间实现共享数据。</p>
+<p>2、在Join方法中实现了策略逻辑：登录成功之后，先以排队价发开仓委托，如果挂单超过3秒未成交，则撤单并退出策略。如果开仓全部成交，则以对手价发平仓委托，等待全部成交后退出策略。</p>
+<p>3、Join方法中的策略每次执行时，从队列中取出所有数据，以最后一笔行情的盘口价格作为委托价。4、OnRtnOrder收到订单状态通知时更新本地订单状态、持仓手数，在策略中根据状态的变化进行后续操作。</p>
+<h2 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h2><pre><code>作者：&lt;em&gt;AlgoPlus&lt;/em&gt;
+</code></pre><p>链接：<a href="https://zhuanlan.zhihu.com/p/86082225" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/86082225</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<h1 id="请在这里填写需要测试的合约数据"><a href="#请在这里填写需要测试的合约数据" class="headerlink" title="请在这里填写需要测试的合约数据"></a>请在这里填写需要测试的合约数据</h1><h1 id="警告：该例子只支持上期所品种平今仓测试"><a href="#警告：该例子只支持上期所品种平今仓测试" class="headerlink" title="警告：该例子只支持上期所品种平今仓测试"></a>警告：该例子只支持上期所品种平今仓测试</h1><p>test_exchange_id = ‘SHFE’  # 交易所<br>test_instrument_id = ‘ag1912’  # 合约代码<br>test_vol = 1  # 报单手数</p>
+<p>share_queue = Queue(maxsize=100)  # 队列</p>
+<p>if <strong>name</strong> == “<strong>main</strong>“:<br>    import sys</p>
+<pre><code>sys.path.append(&quot;..&quot;)
+from account_info import my_future_account_info_dict
+
+future_account = my_future_account_info_dict[&apos;SimNow&apos;]
+
+# 行情进程
+md_process = Process(target=TickEngine, args=(future_account.server_dict[&apos;MDServer&apos;]
+                                              , future_account.broker_id
+                                              , future_account.investor_id
+                                              , future_account.password
+                                              , future_account.app_id
+                                              , future_account.auth_code
+                                              , future_account.instrument_id_list
+                                              , [share_queue]
+                                              , future_account.md_page_dir)
+                     )
+
+# 交易进程
+trader_process = Process(target=TraderEngine, args=(future_account.server_dict[&apos;TDServer&apos;]
+                                                    , future_account.broker_id
+                                                    , future_account.investor_id
+                                                    , future_account.password
+                                                    , future_account.app_id
+                                                    , future_account.auth_code
+                                                    , share_queue
+                                                    , future_account.td_page_dir)
+                         )
+
+md_process.start()
+trader_process.start()
+
+md_process.join()
+trader_process.join()
+</code></pre><p>说明：</p>
+<p>1、前几节的例子中需要手动设置涨跌停价作为报单价，这里我们以实时行情的盘口价作为报单价，所以不再需要设置涨跌停价参数。</p>
+<p>2、share_queue是一个队列，在多进程中，队列数据可以实现共享。</p>
+<p>3、md_process和trader_process分别是行情进程和交易进程。这两个进程通过队列share_queue共享数据。</p>
+<p>4、所有进程的join方法须在start方法之后最后调用。5、这段代码放置在策略代码最后，执行即可看到执行结果。6、参考这个例子可以很方便的扩展一对多、多对多的进程间数据共享模式。</p>
+<p>AlgoPlus的设计在登录时通过查询获取初始持仓、可用资金，成交发生时自动增减持仓数量，当平仓报单时自动增加冻结数量。当报撤单、出入金时自动增减可用资金。</p>
+<h2 id="智能交易指令"><a href="#智能交易指令" class="headerlink" title="智能交易指令"></a>智能交易指令</h2><p>买卖智能开平指令</p>
+<p>只关注买卖，不关注平仓还是开仓，优先平仓，无持仓的情况下再开仓。</p>
+<p>除了buyOpen、sellClose、sellOpen、buyClose、closeLong、closeShort这些指定了开平方向的指令，其他都是智能开平指令。</p>
+
           
         
       
