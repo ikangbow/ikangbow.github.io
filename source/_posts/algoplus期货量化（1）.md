@@ -5,6 +5,8 @@ tags: algoplus
 category: algoplus
 ---
 
+记录学习基于AlgoPlus的量化交易开发准备工作，原文参考[https://www.zhihu.com/column/AlgoPlus](https://www.zhihu.com/column/AlgoPlus)
+
 ## centos安装yum
 
 	yum install -y git

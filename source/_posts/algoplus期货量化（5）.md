@@ -5,7 +5,7 @@ tags: algoplus
 category: algoplus
 ---
 
-用AlgoPlus构建自己的交易盈亏风控系统
+记录学习用AlgoPlus构建自己的交易盈亏风控系统，原文参考[https://zhuanlan.zhihu.com/p/88655638](https://zhuanlan.zhihu.com/p/88655638)
 
 ## 止盈止损方法
 
@@ -33,6 +33,15 @@ category: algoplus
             self.action_num_dict[pOrder.InstrumentID] = 1
 
 ## 止盈止损参数数据结构
+
+	`pl_parameter = {
+	    'StrategyID': 9,
+	    # 盈损参数，'0'代表止盈, '1'代表止损，绝对价差
+	    'ProfitLossParameter': {
+	        b'rb2010': {'0': [2], '1': [2]},
+	        b'ni2007': {'0': [20], '1': [20]},
+	    },
+	}`
 
 	# {"InstrumentID": {"Type": []}}
 	self.pl_parameter_dict = {}

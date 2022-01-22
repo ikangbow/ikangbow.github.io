@@ -103,7 +103,3 @@ Pool创建子进程的方法与Process不同,是通过p.apply_async(func,args=(a
 	    pw.join()
 	    #pr进程里是死循环，无法等待其结束，只能强行终止：
 	    pr.terminate()
-
-## algoPlus交易引擎
-
-	交易引擎实现参考共享队列，由行情驱动交易
