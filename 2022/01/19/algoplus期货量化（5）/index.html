@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="用AlgoPlus构建自己的交易盈亏风控系统 止盈止损方法常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。 撤单次数数据结构# {&amp;quot;InstrumentID&amp;quot;: 0} self.order_action_num_dict = {}  撤单次数是一个以合约名为键值的字典。收到撤单通知后，对撤单次数计算增加。  收到撤单通知时增加撤单次数计数  def">
+<meta name="description" content="记录学习用AlgoPlus构建自己的交易盈亏风控系统，原文参考https://zhuanlan.zhihu.com/p/88655638 止盈止损方法常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。 撤单次数数据结构# {&amp;quot;InstrumentID&amp;quot;: 0} self.order_action_num_dict = {}  撤单次数是一个以合约名为">
 <meta name="keywords" content="algoplus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="algoplus期货量化（5）">
 <meta property="og:url" content="http://yoursite.com/2022/01/19/algoplus期货量化（5）/index.html">
 <meta property="og:site_name" content="Airthink">
-<meta property="og:description" content="用AlgoPlus构建自己的交易盈亏风控系统 止盈止损方法常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。 撤单次数数据结构# {&amp;quot;InstrumentID&amp;quot;: 0} self.order_action_num_dict = {}  撤单次数是一个以合约名为键值的字典。收到撤单通知后，对撤单次数计算增加。  收到撤单通知时增加撤单次数计数  def">
+<meta property="og:description" content="记录学习用AlgoPlus构建自己的交易盈亏风控系统，原文参考https://zhuanlan.zhihu.com/p/88655638 止盈止损方法常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。 撤单次数数据结构# {&amp;quot;InstrumentID&amp;quot;: 0} self.order_action_num_dict = {}  撤单次数是一个以合约名为">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-01-21T14:08:07.374Z">
+<meta property="og:updated_time" content="2022-01-22T01:07:55.940Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="algoplus期货量化（5）">
-<meta name="twitter:description" content="用AlgoPlus构建自己的交易盈亏风控系统 止盈止损方法常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。 撤单次数数据结构# {&amp;quot;InstrumentID&amp;quot;: 0} self.order_action_num_dict = {}  撤单次数是一个以合约名为键值的字典。收到撤单通知后，对撤单次数计算增加。  收到撤单通知时增加撤单次数计数  def">
+<meta name="twitter:description" content="记录学习用AlgoPlus构建自己的交易盈亏风控系统，原文参考https://zhuanlan.zhihu.com/p/88655638 止盈止损方法常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。 撤单次数数据结构# {&amp;quot;InstrumentID&amp;quot;: 0} self.order_action_num_dict = {}  撤单次数是一个以合约名为">
 
 
 
@@ -404,7 +404,7 @@
       
 
       
-        <p>用AlgoPlus构建自己的交易盈亏风控系统</p>
+        <p>记录学习用AlgoPlus构建自己的交易盈亏风控系统，原文参考<a href="https://zhuanlan.zhihu.com/p/88655638" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/88655638</a></p>
 <h2 id="止盈止损方法"><a href="#止盈止损方法" class="headerlink" title="止盈止损方法"></a>止盈止损方法</h2><p>常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。</p>
 <h2 id="撤单次数数据结构"><a href="#撤单次数数据结构" class="headerlink" title="撤单次数数据结构"></a>撤单次数数据结构</h2><pre><code># {&quot;InstrumentID&quot;: 0}
 self.order_action_num_dict = {}
@@ -424,7 +424,16 @@ if pOrder.OrderStatus == b&quot;5&quot;:
         self.action_num_dict[pOrder.InstrumentID] += 1
     else:
         self.action_num_dict[pOrder.InstrumentID] = 1
-</code></pre><h2 id="止盈止损参数数据结构"><a href="#止盈止损参数数据结构" class="headerlink" title="止盈止损参数数据结构"></a>止盈止损参数数据结构</h2><pre><code># {&quot;InstrumentID&quot;: {&quot;Type&quot;: []}}
+</code></pre><h2 id="止盈止损参数数据结构"><a href="#止盈止损参数数据结构" class="headerlink" title="止盈止损参数数据结构"></a>止盈止损参数数据结构</h2><pre><code>`pl_parameter = {
+    &apos;StrategyID&apos;: 9,
+    # 盈损参数，&apos;0&apos;代表止盈, &apos;1&apos;代表止损，绝对价差
+    &apos;ProfitLossParameter&apos;: {
+        b&apos;rb2010&apos;: {&apos;0&apos;: [2], &apos;1&apos;: [2]},
+        b&apos;ni2007&apos;: {&apos;0&apos;: [20], &apos;1&apos;: [20]},
+    },
+}`
+
+# {&quot;InstrumentID&quot;: {&quot;Type&quot;: []}}
 self.pl_parameter_dict = {}
 
 止损参数是一个以合约名为键值的字典，根据不同的止损止盈类型存储价差/时间差等参数。其中，止损类型参数取值：
@@ -608,6 +617,10 @@ def process_rtn_trade(self):
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2022/01/22/CTP出现4097、8193报错/" rel="prev" title="CTP出现4097、8193报错">
+                CTP出现4097、8193报错 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -681,7 +694,7 @@ def process_rtn_trade(self):
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

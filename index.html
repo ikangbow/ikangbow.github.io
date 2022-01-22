@@ -315,6 +315,350 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/22/CTP的OrderRef-OrderActionRef字段规则/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/01/22/CTP的OrderRef-OrderActionRef字段规则/" itemprop="url">CTP的OrderRef/OrderActionRef字段规则</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-22T08:57:28+08:00">
+                2022-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/algoplus/" itemprop="url" rel="index">
+                    <span itemprop="name">algoplus</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>记录学习CTP的OrderRef/OrderActionRef字段规则，原文参考<a href="https://zhuanlan.zhihu.com/p/89602892" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/89602892</a></p>
+<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><p>OrderRef用来标识报单，OrderActionRef用来标识标撤单。</p>
+<p>CTP量化投资API要求报单的OrderRef/OrderActionRef字段在同一线程内必须是递增的，长度不超过13的数字字符串。</p>
+<p>如果包含非数字字符，或者非递增关系，都会触发以下的错误：</p>
+<pre><code>{&apos;ErrorID&apos;: 22, &apos;ErrorMsg&apos;: &apos;CTP:报单错误：不允许重复报单&apos;}
+</code></pre><h2 id="设计方案"><a href="#设计方案" class="headerlink" title="设计方案"></a>设计方案</h2><p>如果为每个策略开启一个线程，即一个TraderApi管理一个策略，则指定策略ID，为每个策略分配一个报单区间，据此在回报/通知中分辨出对应策略。</p>
+<p>如果一个TraderApi作为主引擎管理多个策略，则需要在引擎层面管理OrderRef/OrderActionRef，然后维护策略与OrderRef/OrderActionRef的关系表，或者制定一个可标识策略的递增规则，据此在回报/通知中分辨出对应策略。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/22/CTP出现4097、8193报错/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Airthink">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Airthink">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/01/22/CTP出现4097、8193报错/" itemprop="url">CTP出现4097、8193报错</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-22T08:48:49+08:00">
+                2022-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/algoplus/" itemprop="url" rel="index">
+                    <span itemprop="name">algoplus</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>记录学习CTP出现4097、8193报错，原文参考<a href="https://zhuanlan.zhihu.com/p/89263750" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/89263750</a></p>
+<h2 id="追根溯源"><a href="#追根溯源" class="headerlink" title="追根溯源"></a>追根溯源</h2><p>在客户端程序与期货公司行情、交易前置建立连接之后，服务器会定时发送心跳包确认连接是否正常。当网络连接出现异常，客户端可以在回调函数OnFrontDisconnected中收到通知：</p>
+<pre><code>///当客户端与交易后台通信连接断开时，该方法被调用。当发生这个情况后，API会自动重新连接，客户端可不做处理。
+///@param nReason 错误原因
+/// 0x1001 网络读失败 4097
+/// 0x1002 网络写失败 4098
+/// 0x2001 接收心跳超时 8193
+/// 0x2002 发送心跳失败 8194
+/// 0x2003 收到错误报文 8195
+void OnFrontDisconnected(int nReason) {};
+</code></pre><p>交易者最常遇到的就是4097（十六进制：0x1001）和8193（十六进制：0x2001）报错。</p>
+<p>如果网络异常，很容易发现问题。</p>
+<p>但是初次使用CTP的交易者会发现，在网络正常情况下，也会报这个错误。究竟是哪里出了问题呢？</p>
+<p>其实，这是不熟悉CTP异步执行特性导致的。</p>
+<p>CTP所有的方法都是异步执行的，也就是说，调用一个方法返回时，该方法并没有执行完成，而是刚开始执行。如果主线程没有等待子线程执行完成就结束了，会触发OnFrontDisconnected错误。</p>
+<h2 id="网络正常情况下使用AlgoPlus重现该问题"><a href="#网络正常情况下使用AlgoPlus重现该问题" class="headerlink" title="网络正常情况下使用AlgoPlus重现该问题"></a>网络正常情况下使用AlgoPlus重现该问题</h2><pre><code>from AlgoPlus.CTP.MdApi import MdApi
+
+
+class TickEngine(MdApi):
+    #5-8行
+    # def __init__(self, md_server, broker_id, investor_id, password, app_id, auth_code
+    #              , instrument_id_list, md_queue_list=None
+    #              , page_dir=&apos;&apos;, using_udp=False, multicast=False):
+    #     self.Join()
+
+    # ///深度行情通知
+    def OnRtnDepthMarketData(self, pDepthMarketData):
+        print(pDepthMarketData)
+
+
+if __name__ == &apos;__main__&apos;:
+    import sys
+    sys.path.append(&quot;..&quot;)
+
+    from account_info import my_future_account_info_dict
+
+    future_account = my_future_account_info_dict[&apos;SimNow&apos;]
+    tick_engine = TickEngine(future_account.server_dict[&apos;MDServer&apos;]
+                             , future_account.broker_id
+                             , future_account.investor_id
+                             , future_account.password
+                             , future_account.app_id
+                             , future_account.auth_code
+                             , future_account.instrument_id_list
+                             , None
+                             , future_account.md_page_dir)
+
+# 30行
+# tick_engine.Join()
+</code></pre><h2 id="网络正常情况下的解决方案"><a href="#网络正常情况下的解决方案" class="headerlink" title="网络正常情况下的解决方案"></a>网络正常情况下的解决方案</h2><p>解决办法很简单，就是在主线程结束之前调用Join方法，等待子线程执行。</p>
+<p>将以上5-8行代码的注释取消，或者在30行之后调用tick_engine的Join方法，就正常了。</p>
+<p>网络异常情况下的解决方案</p>
+<p>无需做其他处理，等待CTP自动重连，重连成功后自动登录账户，然后就可以正常使用了。</p>
+<p>MdApi同样会自动重连，且重连成功后自动登录账户，但是需要重新订阅行情，否则不会收到断开前订阅的行情数据。</p>
+<p>AlgoPlus已封装了MdApi重连成功时订阅合约的功能。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/19/algoplus期货量化（5）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -408,7 +752,7 @@
       
         
           
-            <p>用AlgoPlus构建自己的交易盈亏风控系统</p>
+            <p>记录学习用AlgoPlus构建自己的交易盈亏风控系统，原文参考<a href="https://zhuanlan.zhihu.com/p/88655638" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/88655638</a></p>
 <h2 id="止盈止损方法"><a href="#止盈止损方法" class="headerlink" title="止盈止损方法"></a>止盈止损方法</h2><p>常用的止盈止损方案有：固定止损、固定止盈、跟踪止损、阶梯止损、保本、时间止损。</p>
 <h2 id="撤单次数数据结构"><a href="#撤单次数数据结构" class="headerlink" title="撤单次数数据结构"></a>撤单次数数据结构</h2><pre><code># {&quot;InstrumentID&quot;: 0}
 self.order_action_num_dict = {}
@@ -428,7 +772,16 @@ if pOrder.OrderStatus == b&quot;5&quot;:
         self.action_num_dict[pOrder.InstrumentID] += 1
     else:
         self.action_num_dict[pOrder.InstrumentID] = 1
-</code></pre><h2 id="止盈止损参数数据结构"><a href="#止盈止损参数数据结构" class="headerlink" title="止盈止损参数数据结构"></a>止盈止损参数数据结构</h2><pre><code># {&quot;InstrumentID&quot;: {&quot;Type&quot;: []}}
+</code></pre><h2 id="止盈止损参数数据结构"><a href="#止盈止损参数数据结构" class="headerlink" title="止盈止损参数数据结构"></a>止盈止损参数数据结构</h2><pre><code>`pl_parameter = {
+    &apos;StrategyID&apos;: 9,
+    # 盈损参数，&apos;0&apos;代表止盈, &apos;1&apos;代表止损，绝对价差
+    &apos;ProfitLossParameter&apos;: {
+        b&apos;rb2010&apos;: {&apos;0&apos;: [2], &apos;1&apos;: [2]},
+        b&apos;ni2007&apos;: {&apos;0&apos;: [20], &apos;1&apos;: [20]},
+    },
+}`
+
+# {&quot;InstrumentID&quot;: {&quot;Type&quot;: []}}
 self.pl_parameter_dict = {}
 
 止损参数是一个以合约名为键值的字典，根据不同的止损止盈类型存储价差/时间差等参数。其中，止损类型参数取值：
@@ -778,7 +1131,6 @@ if __name__ == &apos;__main__&apos;:
     pw.join()
     #pr进程里是死循环，无法等待其结束，只能强行终止：
     pr.terminate()
-</code></pre><h2 id="algoPlus交易引擎"><a href="#algoPlus交易引擎" class="headerlink" title="algoPlus交易引擎"></a>algoPlus交易引擎</h2><pre><code>交易引擎实现参考共享队列，由行情驱动交易
 </code></pre>
           
         
@@ -827,7 +1179,7 @@ if __name__ == &apos;__main__&apos;:
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/17/algoplus期货量化（3）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/17/algoplus期货量化（2）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Airthink">
@@ -846,7 +1198,7 @@ if __name__ == &apos;__main__&apos;:
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2022/01/17/algoplus期货量化（3）/" itemprop="url">algoplus期货量化（3）</a></h1>
+                <a class="post-title-link" href="/2022/01/17/algoplus期货量化（2）/" itemprop="url">algoplus期货量化（2）</a></h1>
         
 
         <div class="post-meta">
@@ -920,12 +1272,13 @@ if __name__ == &apos;__main__&apos;:
       
         
           
-            <h2 id="使用AlgoPlus接收期货实时行情"><a href="#使用AlgoPlus接收期货实时行情" class="headerlink" title="使用AlgoPlus接收期货实时行情"></a>使用AlgoPlus接收期货实时行情</h2><p>关于CTP</p>
+            <p>记录学习使用AlgoPlus接收期货实时行情，原文参考<a href="https://zhuanlan.zhihu.com/p/86082225" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/86082225</a></p>
+<h2 id="使用AlgoPlus接收期货实时行情"><a href="#使用AlgoPlus接收期货实时行情" class="headerlink" title="使用AlgoPlus接收期货实时行情"></a>使用AlgoPlus接收期货实时行情</h2><p>关于CTP</p>
 <p>CTP是Comprehensive Transaction Platform的简称。CTP有MdApi和TraderApi两个独立的开放接口。</p>
 <p>MdApi负责行情相关操作（订阅、接收）。</p>
-<p><img src="/2022/01/17/algoplus期货量化（3）/234220.png" alt=""></p>
+<p><img src="/2022/01/17/algoplus期货量化（2）/234220.png" alt=""></p>
 <p>TraderApi负责交易相关的操作（买、卖、撤、查）。</p>
-<p><img src="/2022/01/17/algoplus期货量化（3）/234517.png" alt=""></p>
+<p><img src="/2022/01/17/algoplus期货量化（2）/234517.png" alt=""></p>
 <p>MdApi与TraderApi方法的执行过程都是异步的，每一个请求都对应一个或多个负责接收执行结果的回调函数。例如，通过ReqOrderInsert方法向交易所发出买开仓指令，对应的回调方法OnRtnOrder可以实时接收交易所服务器发回来的执行通知。</p>
 <h2 id="AlgoPlus创建行情接口"><a href="#AlgoPlus创建行情接口" class="headerlink" title="AlgoPlus创建行情接口"></a>AlgoPlus创建行情接口</h2><p>MdApi是行情接口，使用时只需要传递账户参数创建一个实例就可以了。示例：</p>
 <pre><code>from AlgoPlus.CTP.MdApi import MdApi
@@ -1283,7 +1636,7 @@ AlgoPlus的设计在登录时通过查询获取初始持仓、可用资金，成
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/16/algoplus期货量化（2）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/16/algoplus期货量化（3）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Airthink">
@@ -1302,7 +1655,7 @@ AlgoPlus的设计在登录时通过查询获取初始持仓、可用资金，成
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2022/01/16/algoplus期货量化（2）/" itemprop="url">algoplus期货量化（2）</a></h1>
+                <a class="post-title-link" href="/2022/01/16/algoplus期货量化（3）/" itemprop="url">algoplus期货量化（3）</a></h1>
         
 
         <div class="post-meta">
@@ -1569,16 +1922,7 @@ OrderSubmitStatus_ModifyRejected = b&apos;6&apos;
 &apos;AveragePrice&apos;: 35542.50839572623, # 当日均价
 &apos;ActionDay&apos;: b&apos;20200110&apos; # 业务日期
 }
-</code></pre><h2 id="盈损管理"><a href="#盈损管理" class="headerlink" title="盈损管理"></a>盈损管理</h2><p>examples/profit_loss_manager.py是一个相对复杂的例子，启动后可以监控账户的所有的成交，包括从快期或者其他终端软件报的单，当达到止盈止损条件时，就会自动平仓。启动前需要设置好止盈止损参数：</p>
-<pre><code>pl_parameter = {
-    &apos;StrategyID&apos;: 9,
-    # 盈损参数，&apos;0&apos;代表止盈, &apos;1&apos;代表止损，绝对价差
-    &apos;ProfitLossParameter&apos;: {
-        b&apos;rb2010&apos;: {&apos;0&apos;: [2], &apos;1&apos;: [2]},
-        b&apos;ni2007&apos;: {&apos;0&apos;: [20], &apos;1&apos;: [20]},
-    },
-}
-</code></pre><h2 id="技术分析体系"><a href="#技术分析体系" class="headerlink" title="技术分析体系"></a>技术分析体系</h2><p><img src="/2022/01/16/algoplus期货量化（2）/114604.png" alt=""></p>
+</code></pre><h2 id="技术分析体系"><a href="#技术分析体系" class="headerlink" title="技术分析体系"></a>技术分析体系</h2><p><img src="/2022/01/16/algoplus期货量化（3）/114604.png" alt=""></p>
 
           
         
@@ -1720,7 +2064,8 @@ OrderSubmitStatus_ModifyRejected = b&apos;6&apos;
       
         
           
-            <h2 id="centos安装yum"><a href="#centos安装yum" class="headerlink" title="centos安装yum"></a>centos安装yum</h2><pre><code>yum install -y git
+            <p>记录学习基于AlgoPlus的量化交易开发准备工作，原文参考<a href="https://www.zhihu.com/column/AlgoPlus" target="_blank" rel="noopener">https://www.zhihu.com/column/AlgoPlus</a></p>
+<h2 id="centos安装yum"><a href="#centos安装yum" class="headerlink" title="centos安装yum"></a>centos安装yum</h2><pre><code>yum install -y git
 
 yum install -y vim
 
@@ -2454,411 +2799,6 @@ cp /usr/lib/libta_lib.* /usr/lib64/
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/18/面试题（查漏补缺）/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/10/18/面试题（查漏补缺）/" itemprop="url">面试题（查漏补缺）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-18T21:18:22+08:00">
-                2021-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/面基/" itemprop="url" rel="index">
-                    <span itemprop="name">面基</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="List和Set的区别"><a href="#List和Set的区别" class="headerlink" title="List和Set的区别"></a>List和Set的区别</h2><p>List:有序集合，可重复，按对象的插入顺序保存。允许多个Null元素对象，可以使用iterator取出所有元素，在逐一遍历，还可以使用get(index)获取指定下标的元素。</p>
-<p>Set：无序，不可重复。最多只允许有一个Null元素对象，取元素时只能用iterator接口取得所有元素，在逐一遍历。</p>
-<h2 id="ArrayList和LinkedList区别"><a href="#ArrayList和LinkedList区别" class="headerlink" title="ArrayList和LinkedList区别"></a>ArrayList和LinkedList区别</h2><p>ArrayList：基于动态数组实现，连续内存存储，适合下标访问（随机访问）。有扩容机制，因为数组长度固定，超出长度存数据时需要新建数组，然后将老数组拷贝到新的数组，如果不是尾部插入，还会涉及元素的移动。使用尾插法并指定初始容量可以极大提升性能。</p>
-<p>LinkedList：基于链表实现，可以存储在分散的内存中，适合做数据的插入及删除操作，不适合查询。需要逐一遍历，遍历LinkedList必须使用iterator不能使用for循环，因为每次for循环体内通过get（i）取得某一元素时都需要对List重新遍历，性能消耗大。<br>另外不要用indexOf等返回元素索引，并利用其进行遍历，使用indexOf对list进行遍历，当结果未空时会遍历整个列表。</p>
-<h2 id="和equals比较"><a href="#和equals比较" class="headerlink" title="==和equals比较"></a>==和equals比较</h2><p>==比较的是栈中的值，基本数据类型是变量值，引用类型是堆中内存对象的地址。<br>equals：object中默认也是采用==比较，但通常会重写。</p>
-<h2 id="接口和抽象类的区别"><a href="#接口和抽象类的区别" class="headerlink" title="接口和抽象类的区别"></a>接口和抽象类的区别</h2><p>一个类只能继承一个抽象类，但可以实现多个接口。继承抽象类用关键字extends，实现接口用implements。</p>
-<p>抽象类中的成员变量可以是各种类型的，而接口中的成员变量默认是public static final类型，必须赋初始值，不能被修改。</p>
-<p>抽象类可以存在普通成员函数，接口只有定义，在JDK8之前方法被指定为public abstract，JDK8之后允许添加非抽象的方法，但是必须用default关键字修饰；定义了default的方法可以不被实现子类所实现，但可以被实现子类的对象调用。</p>
-<p>接口的设计目的是对类的行为进行约束，也就是提供一种机制，可以强制要求不同类具有相同的行为，它只约束了行为的有无，但不对如何实现行为进行限制。</p>
-<p>而抽象类的设计目的，是为了代码复用，当不同的类具有某些相同的行为，且其中一部分行为的实现方式一致（A的非真子集，记为B），可以让这些类都派生与一个抽象类。这个抽象类中实现了B，避免让所有的子类来实现B，这样就达到了代码复用的目的。而A-B的部分，留给各个子类自己实现。正是因为A-B在这里没有实现，所有抽象类不允许实例化。</p>
-<p>抽象类是对类本质的抽象，表达的是is a的关系。抽象类包含并实现子类的通用特性，将子类存在差异化的特性进行抽象，交由子类去实现。</p>
-<p>接口的核心是定义行为，，即实现类可以做什么，至于实现类主体是谁，如何实现，接口并不关心。</p>
-<h2 id="重载和重写的区别"><a href="#重载和重写的区别" class="headerlink" title="重载和重写的区别"></a>重载和重写的区别</h2><p>重载：发生在同一个类中，方法名必须相同，参数类型不同，个数不同，顺序不同，方法返回值和访问修饰符可以不同。</p>
-<p>重写：发生在父子类中，方法名，参数列表必须相同，返回值范围小于等于父类，抛出的异常范围小于等于父类，访问修饰符的范围大于等于父类，如果父类方法访问修饰符为private则子类就不能重写该方法。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/10/18/HashMap相关/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Airthink">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Airthink">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/10/18/HashMap相关/" itemprop="url">HashMap相关</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-18T21:16:00+08:00">
-                2021-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/面基/" itemprop="url" rel="index">
-                    <span itemprop="name">面基</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="HashMap底层数据结构详解"><a href="#HashMap底层数据结构详解" class="headerlink" title="HashMap底层数据结构详解"></a>HashMap底层数据结构详解</h2><p>JDK1.7及之前：数组+链表</p>
-<p>JDK1.8:数组+链表+红黑树</p>
-<p>HashMap添加元素时，会根据哈希值和数组长度来计算该元素put的位置。put元素会判断当前位置是否已经有元素，这样在多线程环境下，会发生数据覆盖，导致数据丢失。通常为了使元素分布均匀会使用取模运算，计算出index后，就会将改元素添加进去，但是会出现两个key的哈希值相同，这时候会产生哈希冲突，当哈希冲突时会产生链表的数据结构，冲突的元素会在该索引出以链表的形式保存。</p>
-<p>但是当链表的长度过长时，其固有弊端就显示出来了，即查询效率低。</p>
-<p>此时就引入了第三种数据结构，红黑树，红黑树是一刻接近于平衡的二叉树，远远比链表的查询料率高。但是如果链表的长度不到一定阈值，直接使用红黑树也不行，因为红黑树的自身维护代价也比较高，每插入一个元素都可能打破红黑树的平衡，这时候就需要对红黑树再平衡（左旋，右旋，重新着色）。</p>
-<p>HashMap中数组的初始长度是16，默认的加载因子是0.75</p>
-<p>数组一单达到容量的阈值就需要对数组进行扩容。扩容就意味着要进行数组的移动，数组一旦移动，每移动一次就要重新计算索引，这个过程牵扯大量元素的迁移，会大大影响效率。如果直接使用与运算，这个效率远远高于取模运算。</p>
-<p>为什么链表长度大于等于8时转成了红黑树</p>
-<p>遵循概率论里的泊松分布。链表中元素个数为8的概率已经非常小，红黑树平均查找长度是log（n），当长度为8时，平均查找长度为3，如果继续使用链表，平均查找长度为8、2=4，这时候才有转为树的必要。</p>
-<h2 id="HashMap的遍历方式"><a href="#HashMap的遍历方式" class="headerlink" title="HashMap的遍历方式"></a>HashMap的遍历方式</h2><p>迭代器遍历（iterator）</p>
-<p>For Each方式遍历</p>
-<p>Lambda表达式遍历</p>
-<p>Streams Api遍历</p>
-<p>迭代器entrySet</p>
-<pre><code>@Test
-public void test001(){
-    Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;1&quot;,1);
-    map.put(&quot;2&quot;,2);
-    Iterator&lt;Map.Entry&lt;String,Integer&gt;&gt; iterator = map.entrySet().iterator();
-    while (iterator.hasNext()){
-        Map.Entry&lt;String,Integer&gt; entry = iterator.next();
-        System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
-    }
-}
-
-当遍历时涉及到删除操作，建议使用iterator的remove方法。使用forEach会报错。
-</code></pre><p>迭代器keySet</p>
-<pre><code>@Test
-public void test002(){
-    Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;11&quot;,1);
-    map.put(&quot;22&quot;,2);
-    Iterator&lt;String&gt; iterator = map.keySet().iterator();
-    while (iterator.hasNext()){
-        String key = iterator.next();
-        System.out.println(&quot;key:&quot;+key+&quot;,value:&quot;+map.get(key));
-    }
-}
-</code></pre><p>ForEach EntrySet</p>
-<pre><code>@Test
-public void test003(){
-    Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;111&quot;,1);
-    map.put(&quot;222&quot;,2);
-    for (Map.Entry&lt;String,Integer&gt; entry:map.entrySet()
-         ) {
-        System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
-    }
-}
-
-通过Map.entrySet遍历key和value，代码简洁高效，推荐使用
-</code></pre><p>ForEach keySet(如果只需要获取所有的key，推荐使用，比entrySet遍历要快，代码简洁)</p>
-<pre><code>@Test
-public void test004(){
-    Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;1111&quot;,1);
-    map.put(&quot;2222&quot;,2);
-    for (String str:
-         map.keySet()) {
-        System.out.println(&quot;key:&quot;+str+&quot;,value:&quot;+map.get(str));
-    }
-}
-
-根据键取值是耗时操作，不推荐使用
-
-
-如果只需要获取所有的value，推荐使用，比entrySet快，简洁
-
-@Test
-public void test004(){
-    Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;1111&quot;,1);
-    map.put(&quot;2222&quot;,2);
-    for (String str:
-         map.values()) {
-        System.out.println(&quot;value:&quot;+str);
-    }
-}
-</code></pre><p>Lambda表达式</p>
-<pre><code>@Test
-public void test005(){
-    Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;11111&quot;,1);
-    map.put(&quot;22222&quot;,2);
-    map.forEach((key,value)-&gt;{
-        System.out.println(&quot;key:&quot;+key+&quot;,value:&quot;+value);
-    });
-}
-</code></pre><p>Streams API单线程</p>
-<pre><code> @Test
-public void test006(){
-    Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;111111&quot;,1);
-    map.put(&quot;222222&quot;,2);
-    map.entrySet().stream().forEach((entry)-&gt;{
-        System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
-    });
-}
-</code></pre><p>Streams API多线程</p>
-<pre><code>@Test
-public void test007(){
-    Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
-    map.put(&quot;1111111&quot;,1);
-    map.put(&quot;2222222&quot;,2);
-    map.entrySet().parallelStream().forEach((entry)-&gt;{
-        System.out.println(&quot;key:&quot;+entry.getKey()+&quot;,value:&quot;+entry.getValue());
-    });
-}
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2907,7 +2847,7 @@ public void test007(){
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">58</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
