@@ -98,17 +98,17 @@
 <meta name="keywords" content="algoplus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="algoplus期货量化（2）">
-<meta property="og:url" content="http://yoursite.com/2022/01/17/algoplus期货量化（2）/index.html">
+<meta property="og:url" content="http://yoursite.com/2022/01/16/algoplus期货量化（2）/index.html">
 <meta property="og:site_name" content="Airthink">
 <meta property="og:description" content="记录学习使用AlgoPlus接收期货实时行情，原文参考https://zhuanlan.zhihu.com/p/86082225 使用AlgoPlus接收期货实时行情关于CTP CTP是Comprehensive Transaction Platform的简称。CTP有MdApi和TraderApi两个独立的开放接口。 MdApi负责行情相关操作（订阅、接收）。  TraderApi负责交易相关的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2022/01/17/algoplus期货量化（2）/234220.png">
-<meta property="og:image" content="http://yoursite.com/2022/01/17/algoplus期货量化（2）/234517.png">
-<meta property="og:updated_time" content="2022-01-22T00:39:02.897Z">
+<meta property="og:image" content="http://yoursite.com/2022/01/16/algoplus期货量化（2）/234220.png">
+<meta property="og:image" content="http://yoursite.com/2022/01/16/algoplus期货量化（2）/234517.png">
+<meta property="og:updated_time" content="2022-01-22T01:16:15.894Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="algoplus期货量化（2）">
 <meta name="twitter:description" content="记录学习使用AlgoPlus接收期货实时行情，原文参考https://zhuanlan.zhihu.com/p/86082225 使用AlgoPlus接收期货实时行情关于CTP CTP是Comprehensive Transaction Platform的简称。CTP有MdApi和TraderApi两个独立的开放接口。 MdApi负责行情相关操作（订阅、接收）。  TraderApi负责交易相关的">
-<meta name="twitter:image" content="http://yoursite.com/2022/01/17/algoplus期货量化（2）/234220.png">
+<meta name="twitter:image" content="http://yoursite.com/2022/01/16/algoplus期货量化（2）/234220.png">
 
 
 
@@ -137,7 +137,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2022/01/17/algoplus期货量化（2）/">
+  <link rel="canonical" href="http://yoursite.com/2022/01/16/algoplus期货量化（2）/">
 
 
 
@@ -318,7 +318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/17/algoplus期货量化（2）/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/16/algoplus期货量化（2）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Airthink">
@@ -347,8 +347,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-17T23:40:19+08:00">
-                2022-01-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-16T11:12:47+08:00">
+                2022-01-16
               </time>
             
 
@@ -411,9 +411,9 @@
 <h2 id="使用AlgoPlus接收期货实时行情"><a href="#使用AlgoPlus接收期货实时行情" class="headerlink" title="使用AlgoPlus接收期货实时行情"></a>使用AlgoPlus接收期货实时行情</h2><p>关于CTP</p>
 <p>CTP是Comprehensive Transaction Platform的简称。CTP有MdApi和TraderApi两个独立的开放接口。</p>
 <p>MdApi负责行情相关操作（订阅、接收）。</p>
-<p><img src="/2022/01/17/algoplus期货量化（2）/234220.png" alt=""></p>
+<p><img src="/2022/01/16/algoplus期货量化（2）/234220.png" alt=""></p>
 <p>TraderApi负责交易相关的操作（买、卖、撤、查）。</p>
-<p><img src="/2022/01/17/algoplus期货量化（2）/234517.png" alt=""></p>
+<p><img src="/2022/01/16/algoplus期货量化（2）/234517.png" alt=""></p>
 <p>MdApi与TraderApi方法的执行过程都是异步的，每一个请求都对应一个或多个负责接收执行结果的回调函数。例如，通过ReqOrderInsert方法向交易所发出买开仓指令，对应的回调方法OnRtnOrder可以实时接收交易所服务器发回来的执行通知。</p>
 <h2 id="AlgoPlus创建行情接口"><a href="#AlgoPlus创建行情接口" class="headerlink" title="AlgoPlus创建行情接口"></a>AlgoPlus创建行情接口</h2><p>MdApi是行情接口，使用时只需要传递账户参数创建一个实例就可以了。示例：</p>
 <pre><code>from AlgoPlus.CTP.MdApi import MdApi
@@ -753,8 +753,8 @@ AlgoPlus的设计在登录时通过查询获取初始持仓、可用资金，成
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/01/16/algoplus期货量化（3）/" rel="next" title="algoplus期货量化（3）">
-                <i class="fa fa-chevron-left"></i> algoplus期货量化（3）
+              <a href="/2022/01/14/algoplus期货量化（1）/" rel="next" title="algoplus期货量化（1）">
+                <i class="fa fa-chevron-left"></i> algoplus期货量化（1）
               </a>
             
           </div>
@@ -763,8 +763,8 @@ AlgoPlus的设计在登录时通过查询获取初始持仓、可用资金，成
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2022/01/19/algoplus期货量化（4）/" rel="prev" title="algoplus期货量化（4）">
-                algoplus期货量化（4） <i class="fa fa-chevron-right"></i>
+              <a href="/2022/01/17/algoplus期货量化（3）/" rel="prev" title="algoplus期货量化（3）">
+                algoplus期货量化（3） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
